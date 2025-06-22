@@ -5,6 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TAKUMI & AYAKA Wedding</title>
   <link rel="stylesheet" href="css/style.css">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+  .hero-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    animation: fadeInText 4s ease-in-out forwards;
+  }
+
+  @keyframes fadeInText {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .hero-text span {
+    display: inline-block;
+    opacity: 0;
+    animation: fadeLetter 0.5s forwards;
+  }
+
+  @keyframes fadeLetter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+  
 </head>
 <body>
   <header class="hero" style="background-image: url('assets/beach.jpg'); background-size: cover; height: 100vh; display: flex; justify-content: center; align-items: center;">
