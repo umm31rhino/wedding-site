@@ -34,12 +34,14 @@
       text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
       padding: 2rem;
       text-align: center;
+      transition: all 0.8s ease; /* スクロール切り替えスピード調整 */
     }
 
     .container {
       height: 100vh;
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
     }
 
     h1, h2 {
@@ -72,7 +74,6 @@
       }
     }
 
-    /* メニューボタン */
     #menuButton {
       position: fixed;
       top: 10px;
@@ -86,7 +87,6 @@
       cursor: pointer;
     }
 
-    /* ナビメニュー */
     #navMenu {
       position: fixed;
       top: 0;
@@ -177,7 +177,7 @@
     titleText: "Takumi & Ayaka Wedding",
     subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
     messageText: "どうぞお気軽にメッセージをお寄せください。",
-    scheduleText: "15:00 - 挙式 / 16:30 - 披露宴 / 19:00 - 終了予定",
+    scheduleText: "12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定",
     noteText: "カジュアルフォーマル推奨。羽織りものをお忘れなく。",
     movieText: "ムービーは後日公開予定です。"
   };
@@ -192,7 +192,6 @@
     });
   }
 
-  // Countdown
   const countdownEl = document.getElementById("countdown");
   const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
@@ -216,11 +215,17 @@
   setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  // メニューの開閉
+  // メニュー開閉
   const menuBtn = document.getElementById("menuButton");
   const navMenu = document.getElementById("navMenu");
   menuBtn.addEventListener("click", () => {
     navMenu.classList.toggle("open");
+  });
+
+  document.querySelectorAll("#navMenu a").forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+    });
   });
 </script>
 
