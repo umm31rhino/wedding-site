@@ -1,157 +1,130 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Takumi & Ayaka Wedding</title>
-  <link rel="stylesheet" href="css/style.css">
-
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
-    .hero-text, .sub-text {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
       font-family: 'Parisienne', cursive;
+    }
+
+    .section {
+      height: 100vh;
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      scroll-snap-align: start;
+      flex-direction: column;
       color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+      padding: 2rem;
       text-align: center;
     }
 
-    .hero-text {
-      font-size: 2.8rem;
+    .container {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
     }
 
-    .sub-text {
-      font-size: 1.6rem;
+    h1, h2 {
+      font-size: 2.5rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 80%;
       margin-top: 1rem;
     }
 
-    .overlay {
-      background: rgba(0, 0, 0, 0.4);
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .hero {
-      background-image: url('assets/beach.jpg');
-      background-size: cover;
-      background-position: center;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    section {
-      padding: 2rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    h2 {
-      font-family: 'Alex Brush', cursive;
-    }
-
-    @keyframes fadeLetter {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @media (max-width: 768px) {
+      h1, h2 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header class="hero">
-    <div class="overlay">
-      <h1 class="hero-text" id="animatedText"></h1>
-      <p class="sub-text" id="animatedSubText"></p>
-    </div>
-  </header>
+<div class="container">
+  <section class="section" style="background-image: url('assets/1-1.jpg');">
+    <h1>Takumi & Ayaka Wedding</h1>
+    <p>Welcome to our special day!</p>
+  </section>
 
-  <main>
-    <section id="welcome">
-      <h2>Welcome</h2>
-      <p>このたび私たちは、沖縄・瀬良垣島にて結婚式を挙げることとなりました。<br>
-        当日はあやかが皆様にダンスをお披露目いたします。<br>
-        心ばかりの感謝の気持ちを込めて、当日を皆さまと楽しく過ごせることを楽しみにしています。</p>
-    </section>
+  <section class="section" style="background-image: url('assets/2-1.jpg');">
+    <h2>Countdown</h2>
+    <p id="countdown"></p>
+  </section>
 
-    <section id="schedule">
-      <h2>Schedule</h2>
-      <ul>
-        <li>15:00 - 挙式</li>
-        <li>16:30 - 披露宴開始</li>
-        <li>19:00 - 終了予定</li>
-      </ul>
-    </section>
+  <section class="section" style="background-image: url('assets/3-1.jpg');">
+    <h2>Message</h2>
+    <p>どうぞお気軽にメッセージをお寄せください。</p>
+  </section>
 
-    <section id="access">
-      <h2>Access</h2>
-      <p>沖縄・瀬良垣島協会</p>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!..." width="100%" height="300" style="border:0;" allowfullscreen></iframe>
-    </section>
+  <section class="section" style="background-image: url('assets/4-1.jpg');">
+    <h2>Schedule</h2>
+    <p>15:00 - 挙式 / 16:30 - 披露宴 / 19:00 - 終了予定</p>
+  </section>
 
-    <section id="sightseeing">
-      <h2>Okinawa Sightseeing</h2>
-      <ul>
-        <li>美ら海水族館</li>
-        <li>国際通り</li>
-        <li>アメリカンビレッジ</li>
-      </ul>
-    </section>
+  <section class="section" style="background-image: url('assets/5-1.jpg');">
+    <h2>Access Map</h2>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18..." width="80%" height="300" style="border:0;" allowfullscreen></iframe>
+  </section>
 
-    <section id="gallery">
-      <h2>Photo Gallery</h2>
-      <p>写真は式後に追加予定です。</p>
-    </section>
+  <section class="section" style="background-image: url('assets/6-1.jpg');">
+    <h2>Dress Code & Notes</h2>
+    <p>カジュアルフォーマル推奨。羽織りものをお忘れなく。</p>
+  </section>
 
-    <section id="dresscode">
-      <h2>Dress Code & Notes</h2>
-      <p>リゾート地のため、カジュアルフォーマルを推奨します。<br>天候により気温差がありますので、羽織るものをご用意ください。</p>
-    </section>
+  <section class="section" style="background-image: url('assets/7-1.jpg');">
+    <h2>Movie</h2>
+    <p>ムービーは後日公開予定です。</p>
+  </section>
+</div>
 
-    <section id="message">
-      <h2>Message to Couple</h2>
-      <p>下記フォームからメッセージをお寄せください。</p>
-      <iframe src="https://www.youtube.com/channel/UCpFgmZm65yOU5X-hmWkWjuw" frameborder="0">読み込んでいます…</iframe>
-    </section>
-  </main>
+<script>
+  const countdownEl = document.getElementById("countdown");
+  const weddingDate = new Date("2025-10-10T15:00:00+09:00");
 
-  <footer>
-    <p>&copy; TAKUMI & AYAKA Wedding 2025</p>
-  </footer>
+  function updateCountdown() {
+    const now = new Date();
+    const diff = weddingDate - now;
 
-  <script>
-    const mainText = "Takumi & Ayaka Wedding";
-    const subText = "2025.10.10 Okinawa Seragaki island chapel";
+    if (diff <= 0) {
+      countdownEl.innerText = "It's our wedding day!";
+      return;
+    }
 
-    const mainContainer = document.getElementById("animatedText");
-    const subContainer = document.getElementById("animatedSubText");
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
 
-    mainText.split("").forEach((char, i) => {
-      const span = document.createElement("span");
-      span.innerHTML = (char === " ") ? "&nbsp;" : char;
-      span.style.opacity = "0";
-      span.style.display = "inline-block";
-      span.style.animation = "fadeLetter 0.5s forwards";
-      span.style.animationDelay = `${i * 0.1}s`;
-      mainContainer.appendChild(span);
-    });
+    countdownEl.innerText = `${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+  }
 
-    subText.split("").forEach((char, i) => {
-      const span = document.createElement("span");
-      span.innerHTML = (char === " ") ? "&nbsp;" : char;
-      span.style.opacity = "0";
-      span.style.display = "inline-block";
-      span.style.animation = "fadeLetter 0.5s forwards";
-      span.style.animationDelay = `${(mainText.length * 0.1) + i * 0.05}s`;
-      subContainer.appendChild(span);
-    });
-  </script>
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+</script>
 
 </body>
 </html>
