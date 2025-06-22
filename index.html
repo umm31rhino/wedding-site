@@ -2,12 +2,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Takumi & Ayaka Wedding</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
-
     * {
       margin: 0;
       padding: 0;
@@ -18,13 +17,14 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Parisienne', cursive;
-      scroll-behavior: smooth;
     }
 
     .container {
       height: 100vh;
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      scroll-padding-top: 0;
     }
 
     .section {
@@ -40,29 +40,27 @@
       text-align: center;
       scroll-snap-align: start;
       padding: 2rem;
-      opacity: 0;
-      animation: fadeInSection 1.5s ease forwards;
-      transition: all 1.5s ease;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
     }
 
-    h1, h2 {
-      font-size: 2.5rem;
+    .section.active {
+      opacity: 1;
     }
 
     .animated-text span {
       display: inline-block;
       opacity: 0;
-      animation: fadeLetter 0.5s forwards;
+      transform: translateY(10px);
+      animation: fadeLetter 1s forwards;
     }
 
     @keyframes fadeLetter {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInSection {
-      to { opacity: 1; }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 768px) {
@@ -118,17 +116,10 @@
       text-decoration: none;
       font-size: 1.1rem;
     }
-
-    .animated-text {
-      font-size: 1.2rem;
-      max-width: 80%;
-      margin-top: 1rem;
-    }
   </style>
 </head>
 <body onload="document.querySelector('.container').scrollTo(0,0);">
 
-<!-- Menu Icon Button with Schnauzer -->
 <button id="menuButton">
   <img src="assets/schnauzer.jpeg" alt="Menu">
 </button>
@@ -145,7 +136,7 @@
   </ul>
 </nav>
 
-<div class="container">
+<div class="container" id="container">
   <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');">
     <h1 class="animated-text" id="titleText"></h1>
     <p class="animated-text" id="subTitleText"></p>
@@ -163,42 +154,37 @@
 
   <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');">
     <h2>Schedule</h2>
-    <p class="animated-text" id="scheduleText"></p>
+    <p>12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定</p>
   </section>
 
   <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');">
     <h2>Access Map</h2>
-    <p class="animated-text" id="accessText"></p>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18..." width="80%" height="300" style="border:0;" allowfullscreen></iframe>
+    <p>瀬良垣島教会へは那覇空港から車で約1時間30分（高速利用）<br>おすすめ：オーシャンカフェ瀬良垣、きしもと食堂、nankuruカフェ</p>
   </section>
 
   <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');">
     <h2>Dress Code & Notes</h2>
-    <p class="animated-text" id="noteText"></p>
+    <p>カジュアルフォーマル推奨。羽織りものをお忘れなく。</p>
   </section>
 
   <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');">
     <h2>Movie</h2>
-    <p class="animated-text" id="movieText"></p>
+    <p>ムービーは後日公開予定です。</p>
   </section>
 </div>
 
 <script>
-  const texts = {
+  const textEntries = {
     titleText: "Takumi & Ayaka Wedding",
     subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
-    messageText: "どうぞお気軽にメッセージをお寄せください。",
-    scheduleText: "12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定",
-    noteText: "カジュアルフォーマル推奨。羽織りものをお忘れなく。",
-    movieText: "ムービーは後日公開予定です。",
-    accessText: "瀬良垣島教会へは那覇空港から車で約1時間30分（高速利用）。\nおすすめ：オーシャンカフェ瀬良垣、きしもと食堂、nankuruカフェ"
+    messageText: "私たちらしく 沖縄でのんびり結婚式を挙げることにしました\nゆるやかな時間の中で 皆さんと笑顔のひとときを過ごせたら幸いです\n旅のついでに…という気持ちで お越しいただけると嬉しいです"
   };
 
-  for (const [id, text] of Object.entries(texts)) {
+  for (const [id, text] of Object.entries(textEntries)) {
     const el = document.getElementById(id);
     text.split("").forEach((char, i) => {
       const span = document.createElement("span");
-      span.innerHTML = (char === " ") ? "&nbsp;" : char;
+      span.innerHTML = (char === "\n") ? "<br>" : (char === " " ? "&nbsp;" : char);
       span.style.animationDelay = `${i * 0.05}s`;
       el.appendChild(span);
     });
@@ -232,6 +218,18 @@
       navMenu.classList.remove("open");
     });
   });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+      }
+    });
+  }, {
+    threshold: 0.6
+  });
+
+  document.querySelectorAll(".section").forEach(section => observer.observe(section));
 </script>
 
 </body>
