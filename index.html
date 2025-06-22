@@ -7,12 +7,24 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="hero">
-    <div class="overlay">
-      <h1>TAKUMI & AYAKA</h1>
-      <p>2025.10.10 - Okinawa Seragaki Island Chapel</p>
-    </div>
-  </header>
+  <header class="hero" style="background-image: url('assets/beach.jpg'); background-size: cover; height: 100vh; display: flex; justify-content: center; align-items: center;">
+  <div class="overlay">
+    <h1 class="hero-text" id="animatedText"></h1>
+  </div>
+</header>
+
+<script>
+  const text = "TAKUMI & AYAKA Wedding";
+  const container = document.getElementById("animatedText");
+
+  text.split("").forEach((char, i) => {
+    const span = document.createElement("span");
+    span.textContent = char;
+    span.style.animationDelay = `${i * 0.1}s`;
+    container.appendChild(span);
+  });
+</script>
+
 
   <section id="welcome">
     <h2>Welcome</h2>
