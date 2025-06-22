@@ -57,16 +57,26 @@
 </header>
 
 <script>
-  const text = "TAKUMI & AYAKA Wedding";
-  const container = document.getElementById("animatedText");
+    const mainText = "Takumi & Ayaka Wedding";
+    const subText = "2025.10.10 Okinawa Seragaki island chapel";
 
-  text.split("").forEach((char, i) => {
-    const span = document.createElement("span");
-    span.textContent = char;
-    span.style.animationDelay = `${i * 0.1}s`;
-    container.appendChild(span);
-  });
-</script>
+    const mainContainer = document.getElementById("animatedText");
+    const subContainer = document.getElementById("animatedSubText");
+
+    mainText.split("").forEach((char, i) => {
+      const span = document.createElement("span");
+      span.textContent = char;
+      span.style.animationDelay = `${i * 0.1}s`;
+      mainContainer.appendChild(span);
+    });
+
+    subText.split("").forEach((char, i) => {
+      const span = document.createElement("span");
+      span.textContent = char;
+      span.style.animationDelay = `${(mainText.length * 0.1) + i * 0.05}s`;
+      subContainer.appendChild(span);
+    });
+  </script>
 
   <section id="welcome">
     <h2>Welcome</h2>
