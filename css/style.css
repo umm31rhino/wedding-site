@@ -1,0 +1,33 @@
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+header.hero {
+  background-image: url('../assets/beach.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header .overlay {
+  background: rgba(0,0,0,0.5);
+  padding: 2rem;
+}
+section {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
