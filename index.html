@@ -18,6 +18,7 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Parisienne', cursive;
+      scroll-behavior: smooth;
     }
 
     .section {
@@ -34,7 +35,9 @@
       text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
       padding: 2rem;
       text-align: center;
-      transition: all 0.8s ease; /* スクロール切り替えスピード調整 */
+      opacity: 0;
+      animation: fadeInSection 1.5s ease forwards;
+      transition: all 1.2s ease;
     }
 
     .container {
@@ -42,6 +45,7 @@
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
+      transition: scroll 1.2s ease;
     }
 
     h1, h2 {
@@ -63,6 +67,10 @@
     @keyframes fadeLetter {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInSection {
+      to { opacity: 1; }
     }
 
     @media (max-width: 768px) {
@@ -89,10 +97,10 @@
 
     #navMenu {
       position: fixed;
-      top: 0;
+      top: 60px;
       left: -200px;
       width: 200px;
-      height: 100%;
+      height: calc(100% - 60px);
       background-color: rgba(0, 0, 0, 0.8);
       padding: 2rem 1rem;
       box-shadow: 2px 0 5px rgba(0,0,0,0.3);
@@ -158,6 +166,7 @@
 
   <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');">
     <h2>Access Map</h2>
+    <p class="animated-text" id="accessText"></p>
     <iframe src="https://www.google.com/maps/embed?pb=!1m18..." width="80%" height="300" style="border:0;" allowfullscreen></iframe>
   </section>
 
@@ -179,7 +188,9 @@
     messageText: "どうぞお気軽にメッセージをお寄せください。",
     scheduleText: "12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定",
     noteText: "カジュアルフォーマル推奨。羽織りものをお忘れなく。",
-    movieText: "ムービーは後日公開予定です。"
+    movieText: "ムービーは後日公開予定です。",
+    accessText: "瀬良垣島教会へは那覇空港から車で約1時間30分（高速利用）。
+おすすめの食事処：オーシャンカフェ瀬良垣、沖縄そば きしもと食堂、海の見えるカフェ nankuru"
   };
 
   for (const [id, text] of Object.entries(texts)) {
