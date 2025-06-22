@@ -7,19 +7,27 @@
   <link rel="stylesheet" href="css/style.css">
 
 <style>
-  /* 複数の筆記体フォント候補を読み込む */
   @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
-  .hero-text {
-    font-family: 'Parisienne', cursive; /* ★ここを他の候補に変えるとフォントが変わる */
-    font-size: 2.8rem;
+  .hero-text, .sub-text {
+    font-family: 'Parisienne', cursive;
     color: white;
     text-align: center;
     opacity: 0;
+  }
+
+  .hero-text {
+    font-size: 2.8rem;
     animation: fadeInText 4s ease-in-out forwards;
+  }
+
+  .sub-text {
+    font-size: 1.6rem;
+    margin-top: 1rem;
+    animation: fadeInText 5s ease-in-out forwards;
   }
 
   @keyframes fadeInText {
@@ -27,7 +35,7 @@
     100% { opacity: 1; }
   }
 
-  .hero-text span {
+  .hero-text span, .sub-text span {
     display: inline-block;
     opacity: 0;
     animation: fadeLetter 2.0s forwards;
@@ -39,94 +47,18 @@
   }
 
   .overlay {
-    background: rgba(0, 0, 0, 0.4); /* 背景を半透明にして画像が見えるように */
+    background: rgba(0, 0, 0, 0.4);
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 </style>
-
 </head>
 <body>
+
   <header class="hero" style="background-image: url('assets/beach.jpg'); background-size: cover; height: 100vh; display: flex; justify-content: center; align-items: center;">
-  <div class="overlay">
-    <h1 class="hero-text" id="animatedText"></h1>
-  </div>
-</header>
-
-<script>
-    const mainText = "Takumi & Ayaka Wedding";
-    const subText = "2025.10.10 Okinawa Seragaki island chapel";
-
-    const mainContainer = document.getElementById("animatedText");
-    const subContainer = document.getElementById("animatedSubText");
-
-    mainText.split("").forEach((char, i) => {
-      const span = document.createElement("span");
-      span.textContent = char;
-      span.style.animationDelay = `${i * 0.1}s`;
-      mainContainer.appendChild(span);
-    });
-
-    subText.split("").forEach((char, i) => {
-      const span = document.createElement("span");
-      span.textContent = char;
-      span.style.animationDelay = `${(mainText.length * 0.1) + i * 0.05}s`;
-      subContainer.appendChild(span);
-    });
-  </script>
-
-  <section id="welcome">
-    <h2>Welcome</h2>
-    <p>このたび私たちは、沖縄・瀬良垣島にて結婚式を挙げることとなりました。<br>
-      当日はあやかが皆様にダンスをお披露目いたします。<br>
-    心ばかりの感謝の気持ちを込めて、当日を皆さまと楽しく過ごせることを楽しみにしています。</p>
-  </section>
-
-  <section id="schedule">
-    <h2>Schedule</h2>
-    <ul>
-      <li>15:00 - 挙式</li>
-      <li>16:30 - 披露宴開始</li>
-      <li>19:00 - 終了予定</li>
-    </ul>
-  </section>
-
-  <section id="access">
-    <h2>Access</h2>
-    <p>沖縄・瀬良垣島協会</p>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!..." width="100%" height="300" style="border:0;" allowfullscreen></iframe>
-  </section>
-
-  <section id="sightseeing">
-    <h2>Okinawa Sightseeing</h2>
-    <ul>
-      <li>美ら海水族館</li>
-      <li>国際通り</li>
-      <li>アメリカンビレッジ</li>
-    </ul>
-  </section>
-
-  <section id="gallery">
-    <h2>Photo Gallery</h2>
-    <p>写真は式後に追加予定です。</p>
-  </section>
-
-  <section id="dresscode">
-    <h2>Dress Code & Notes</h2>
-    <p>リゾート地のため、カジュアルフォーマルを推奨します。<br>天候により気温差がありますので、羽織るものをご用意ください。</p>
-  </section>
-
-  <section id="message">
-    <h2>Message to Couple</h2>
-    <p>下記フォームからメッセージをお寄せください。</p>
-    <iframe src="https://www.youtube.com/channel/UCpFgmZm65yOU5X-hmWkWjuw" frameborder="0">読み込んでいます…</iframe>
-  </section>
-
-  <footer>
-    <p>&copy; TAKUMI & AYAKA Wedding 2025</p>
-  </footer>
-</body>
-</html>
+    <div class="overlay">
+      <h1 class="hero-text" id="animatedTex
