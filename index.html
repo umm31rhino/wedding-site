@@ -46,64 +46,155 @@
       font-size: 2.5rem;
     }
 
-    p {
+    p, .animated-text {
       font-size: 1.2rem;
       max-width: 80%;
       margin-top: 1rem;
+    }
+
+    .animated-text span {
+      display: inline-block;
+      opacity: 0;
+      animation: fadeLetter 0.5s forwards;
+    }
+
+    @keyframes fadeLetter {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 768px) {
       h1, h2 {
         font-size: 2rem;
       }
-      p {
+      p, .animated-text {
         font-size: 1rem;
       }
+    }
+
+    /* メニューボタン */
+    #menuButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      font-size: 1.2rem;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* ナビメニュー */
+    #navMenu {
+      position: fixed;
+      top: 0;
+      left: -200px;
+      width: 200px;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      transition: left 0.3s ease;
+      z-index: 998;
+    }
+
+    #navMenu.open {
+      left: 0;
+    }
+
+    #navMenu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #navMenu li {
+      margin-bottom: 1rem;
+    }
+
+    #navMenu a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
 
+<button id="menuButton">☰ Menu</button>
+<nav id="navMenu">
+  <ul>
+    <li><a href="#section1">Title</a></li>
+    <li><a href="#section2">Countdown</a></li>
+    <li><a href="#section3">Message</a></li>
+    <li><a href="#section4">Schedule</a></li>
+    <li><a href="#section5">Map</a></li>
+    <li><a href="#section6">Notes</a></li>
+    <li><a href="#section7">Movie</a></li>
+  </ul>
+</nav>
+
 <div class="container">
-  <section class="section" style="background-image: url('assets/1-1.jpg');">
-    <h1>Takumi & Ayaka Wedding</h1>
-    <p>Welcome to our special day!</p>
+  <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');">
+    <h1 class="animated-text" id="titleText"></h1>
+    <p class="animated-text" id="subTitleText"></p>
   </section>
 
-  <section class="section" style="background-image: url('assets/2-1.jpg');">
+  <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');">
     <h2>Countdown</h2>
     <p id="countdown"></p>
   </section>
 
-  <section class="section" style="background-image: url('assets/3-1.jpg');">
+  <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');">
     <h2>Message</h2>
-    <p>どうぞお気軽にメッセージをお寄せください。</p>
+    <p class="animated-text" id="messageText"></p>
   </section>
 
-  <section class="section" style="background-image: url('assets/4-1.jpg');">
+  <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');">
     <h2>Schedule</h2>
-    <p>15:00 - 挙式 / 16:30 - 披露宴 / 19:00 - 終了予定</p>
+    <p class="animated-text" id="scheduleText"></p>
   </section>
 
-  <section class="section" style="background-image: url('assets/5-1.jpg');">
+  <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');">
     <h2>Access Map</h2>
     <iframe src="https://www.google.com/maps/embed?pb=!1m18..." width="80%" height="300" style="border:0;" allowfullscreen></iframe>
   </section>
 
-  <section class="section" style="background-image: url('assets/6-1.jpg');">
+  <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');">
     <h2>Dress Code & Notes</h2>
-    <p>カジュアルフォーマル推奨。羽織りものをお忘れなく。</p>
+    <p class="animated-text" id="noteText"></p>
   </section>
 
-  <section class="section" style="background-image: url('assets/7-1.jpg');">
+  <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');">
     <h2>Movie</h2>
-    <p>ムービーは後日公開予定です。</p>
+    <p class="animated-text" id="movieText"></p>
   </section>
 </div>
 
 <script>
+  const texts = {
+    titleText: "Takumi & Ayaka Wedding",
+    subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
+    messageText: "どうぞお気軽にメッセージをお寄せください。",
+    scheduleText: "15:00 - 挙式 / 16:30 - 披露宴 / 19:00 - 終了予定",
+    noteText: "カジュアルフォーマル推奨。羽織りものをお忘れなく。",
+    movieText: "ムービーは後日公開予定です。"
+  };
+
+  for (const [id, text] of Object.entries(texts)) {
+    const el = document.getElementById(id);
+    text.split("").forEach((char, i) => {
+      const span = document.createElement("span");
+      span.innerHTML = (char === " ") ? "&nbsp;" : char;
+      span.style.animationDelay = `${i * 0.05}s`;
+      el.appendChild(span);
+    });
+  }
+
+  // Countdown
   const countdownEl = document.getElementById("countdown");
-  const weddingDate = new Date("2025-10-10T15:00:00+09:00");
+  const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
   function updateCountdown() {
     const now = new Date();
@@ -124,6 +215,13 @@
 
   setInterval(updateCountdown, 1000);
   updateCountdown();
+
+  // メニューの開閉
+  const menuBtn = document.getElementById("menuButton");
+  const navMenu = document.getElementById("navMenu");
+  menuBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+  });
 </script>
 
 </body>
