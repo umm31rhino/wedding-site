@@ -57,35 +57,12 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    #stars {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 2s infinite ease-in-out alternate;
-    }
-
-    @keyframes twinkle {
-      from { opacity: 0.2; transform: scale(1); }
-      to { opacity: 1; transform: scale(1.4); }
-    }
-
     #introOverlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background: black;
+      background: white;
       z-index: 9999;
       display: flex;
       overflow: hidden;
@@ -96,39 +73,28 @@
       background-image: url('assets/chapel-door.jpg');
       background-size: cover;
       background-position: center;
+      transition: transform 2s ease-in-out;
       transform-origin: center;
     }
 
-    .left.door {
+    .left {
       transform-origin: left;
-      animation: openLeft 2s ease forwards;
     }
 
-    .right.door {
+    .right {
       transform-origin: right;
-      animation: openRight 2s ease forwards;
+    }
+
+    .left.open {
+      transform: perspective(1000px) rotateY(-100deg);
+    }
+
+    .right.open {
+      transform: perspective(1000px) rotateY(100deg);
     }
 
     #introOverlay.hidden {
       display: none;
-    }
-
-    @keyframes openLeft {
-      to { transform: perspective(800px) rotateY(-90deg); }
-    }
-
-    @keyframes openRight {
-      to { transform: perspective(800px) rotateY(90deg); }
-    }
-
-    #weatherInfo {
-      background: rgba(255,255,255,0.8);
-      color: #333;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-top: 1rem;
-      text-align: center;
-      max-width: 300px;
     }
   </style>
 </head>
@@ -139,120 +105,37 @@
   <div class="door right"></div>
 </div>
 
-<div id="stars"></div>
-
 <div class="container">
   <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');">
     <h1 class="animated-text" id="titleText"></h1>
     <p class="animated-text" id="subTitleText"></p>
   </section>
-
-  <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');">
-    <h2>Countdown</h2>
-    <p id="countdown"></p>
-    <div id="weatherInfo">
-      <strong>那覇市の天気（10/10 12:30 予報）</strong><br>
-      天気：☀️ 晴れ（仮）<br>
-      気温：28℃<br>
-      降水確率：10%
-    </div>
-  </section>
-
-  <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');">
-    <h2>Message</h2>
-    <p class="animated-text" id="messageText"></p>
-  </section>
-
-  <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');">
-    <h2>Schedule</h2>
-    <p>12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定</p>
-  </section>
-
-  <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');">
-    <h2>Access Map</h2>
-    <p>瀬良垣島教会へは那覇空港から車で約1時間30分（高速利用）<br>おすすめ：オーシャンカフェ瀬良垣、きしもと食堂、nankuruカフェ</p>
-  </section>
-
-  <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');">
-    <h2>Dress Code & Notes</h2>
-    <p>カジュアルフォーマル推奨。羽織りものをお忘れなく。</p>
-  </section>
-
-  <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');">
-    <h2>Movie</h2>
-    <p>ムービーは後日公開予定です。</p>
-  </section>
 </div>
 
 <script>
-  const starsContainer = document.getElementById('stars');
-  for (let i = 0; i < 100; i++) {
-    const star = document.createElement('div');
-    star.classList.add('star');
-    star.style.top = Math.random() * 100 + '%';
-    star.style.left = Math.random() * 100 + '%';
-    star.style.animationDuration = (1 + Math.random() * 2) + 's';
-    starsContainer.appendChild(star);
-  }
-
   function openDoors() {
-    document.querySelector('.left.door').classList.add('open-left');
-    document.querySelector('.right.door').classList.add('open-right');
-    document.querySelector('.left.door').style.animationPlayState = 'running';
-    document.querySelector('.right.door').style.animationPlayState = 'running';
+    document.querySelector('.left').classList.add('open');
+    document.querySelector('.right').classList.add('open');
     setTimeout(() => {
       document.getElementById('introOverlay').classList.add('hidden');
-    }, 2000);
+      document.querySelector('#section1').classList.add('fade-in');
+    }, 2200);
   }
 
   const textEntries = {
     titleText: "Takumi & Ayaka Wedding",
-    subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
-    messageText: "私たちらしく 沖縄でのんびり結婚式を挙げることにしました
-ゆるやかな時間の中で 皆さんと笑顔のひとときを過ごせたら幸いです
-旅のついでに…という気持ちで お越しいただけると嬉しいです"
+    subTitleText: "2025.10.10 Okinawa Seragaki island chapel"
   };
 
   for (const [id, text] of Object.entries(textEntries)) {
     const el = document.getElementById(id);
     text.split("").forEach((char, i) => {
       const span = document.createElement("span");
-      span.innerHTML = (char === "
-") ? "<br>" : (char === " " ? "&nbsp;" : char);
+      span.innerHTML = (char === " " ? "&nbsp;" : char);
       span.style.animationDelay = `${i * 0.05}s`;
       el.appendChild(span);
     });
   }
-
-  const countdownEl = document.getElementById("countdown");
-  const weddingDate = new Date("2025-10-10T12:30:00+09:00");
-  function updateCountdown() {
-    const now = new Date();
-    const diff = weddingDate - now;
-    if (diff <= 0) {
-      countdownEl.innerText = "It's our wedding day!";
-      return;
-    }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / 1000 / 60) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-    countdownEl.innerText = `${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
-  }
-  setInterval(updateCountdown, 1000);
-  updateCountdown();
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.remove('fade-in');
-        void entry.target.offsetWidth;
-        entry.target.classList.add('fade-in');
-      }
-    });
-  }, { threshold: 0.6 });
-
-  document.querySelectorAll('.section').forEach(section => observer.observe(section));
 </script>
 
 </body>
