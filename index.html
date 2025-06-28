@@ -44,6 +44,10 @@
       animation: fadeInSection 4s ease-in-out forwards;
     }
 
+    .section.active {
+      animation: fadeInSection 4s ease-in-out forwards;
+    }
+
     @keyframes fadeInSection {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -221,11 +225,9 @@
         entry.target.classList.add("active");
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.6 });
 
-  document.querySelectorAll(".section").forEach(section => {
-    observer.observe(section);
-  });
+  document.querySelectorAll(".section").forEach(section => observer.observe(section));
 </script>
 
 </body>
