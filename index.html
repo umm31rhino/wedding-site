@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -19,6 +20,7 @@
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
+      display: none;
     }
 
     .section {
@@ -26,7 +28,6 @@
       width: 100%;
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -77,25 +78,13 @@
       transition: transform 2s ease-in-out;
     }
 
-    .left {
-      transform-origin: left;
-    }
+    .left { transform-origin: left; }
+    .right { transform-origin: right; }
 
-    .right {
-      transform-origin: right;
-    }
+    .left.open { transform: perspective(1000px) rotateY(-100deg); }
+    .right.open { transform: perspective(1000px) rotateY(100deg); }
 
-    .left.open {
-      transform: perspective(1000px) rotateY(-100deg);
-    }
-
-    .right.open {
-      transform: perspective(1000px) rotateY(100deg);
-    }
-
-    #introOverlay.hidden {
-      display: none;
-    }
+    #introOverlay.hidden { display: none; }
 
     #menuButton {
       position: fixed;
@@ -204,11 +193,14 @@
 
 <script>
   const introOverlay = document.getElementById('introOverlay');
+  const container = document.getElementById('container');
+
   introOverlay.addEventListener('click', () => {
     document.querySelector('.left').classList.add('open');
     document.querySelector('.right').classList.add('open');
     setTimeout(() => {
       introOverlay.classList.add('hidden');
+      container.style.display = 'block';
       document.querySelectorAll('.section').forEach(sec => sec.classList.add('fade-in'));
     }, 2200);
   });
@@ -216,9 +208,7 @@
   const textEntries = {
     titleText: "Takumi & Ayaka Wedding",
     subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
-    messageText: "私たちらしく 沖縄でのんびり結婚式を挙げることにしました
-ゆるやかな時間の中で 皆さんと笑顔のひとときを過ごせたら幸いです
-旅のついでに…という気持ちで お越しいただけると嬉しいです"
+    messageText: "私たちらしく 沖縄でのんびり結婚式を挙げることにしました\nゆるやかな時間の中で 皆さんと笑顔のひとときを過ごせたら幸いです\n旅のついでに…という気持ちで お越しいただけると嬉しいです"
   };
 
   for (const [id, text] of Object.entries(textEntries)) {
