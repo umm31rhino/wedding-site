@@ -66,6 +66,7 @@
       z-index: 9999;
       display: flex;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .door {
@@ -144,12 +145,11 @@
       text-decoration: none;
       font-size: 1.1rem;
     }
-
   </style>
 </head>
 <body>
 
-<div id="introOverlay" onclick="openDoors()">
+<div id="introOverlay">
   <div class="door left"></div>
   <div class="door right"></div>
 </div>
@@ -203,14 +203,15 @@
 </div>
 
 <script>
-  function openDoors() {
+  const introOverlay = document.getElementById('introOverlay');
+  introOverlay.addEventListener('click', () => {
     document.querySelector('.left').classList.add('open');
     document.querySelector('.right').classList.add('open');
     setTimeout(() => {
-      document.getElementById('introOverlay').classList.add('hidden');
+      introOverlay.classList.add('hidden');
       document.querySelectorAll('.section').forEach(sec => sec.classList.add('fade-in'));
     }, 2200);
-  }
+  });
 
   const textEntries = {
     titleText: "Takumi & Ayaka Wedding",
