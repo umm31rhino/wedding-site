@@ -24,7 +24,6 @@
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
-      scroll-padding-top: 0;
     }
 
     .section {
@@ -42,18 +41,19 @@
       padding: 2rem;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
       opacity: 0;
-      transition: opacity 2s ease-in-out;
+      animation: fadeInSection 4s ease-in-out forwards;
     }
 
-    .section.active {
-      opacity: 1;
+    @keyframes fadeInSection {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .animated-text span {
       display: inline-block;
       opacity: 0;
       transform: translateY(10px);
-      animation: fadeLetter 1s forwards;
+      animation: fadeLetter 2s forwards;
     }
 
     @keyframes fadeLetter {
@@ -141,32 +141,26 @@
     <h1 class="animated-text" id="titleText"></h1>
     <p class="animated-text" id="subTitleText"></p>
   </section>
-
   <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');">
     <h2>Countdown</h2>
     <p id="countdown"></p>
   </section>
-
   <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');">
     <h2>Message</h2>
     <p class="animated-text" id="messageText"></p>
   </section>
-
   <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');">
     <h2>Schedule</h2>
     <p>12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定</p>
   </section>
-
   <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');">
     <h2>Access Map</h2>
     <p>瀬良垣島教会へは那覇空港から車で約1時間30分（高速利用）<br>おすすめ：オーシャンカフェ瀬良垣、きしもと食堂、nankuruカフェ</p>
   </section>
-
   <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');">
     <h2>Dress Code & Notes</h2>
     <p>カジュアルフォーマル推奨。羽織りものをお忘れなく。</p>
   </section>
-
   <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');">
     <h2>Movie</h2>
     <p>ムービーは後日公開予定です。</p>
@@ -185,7 +179,7 @@
     text.split("").forEach((char, i) => {
       const span = document.createElement("span");
       span.innerHTML = (char === "\n") ? "<br>" : (char === " " ? "&nbsp;" : char);
-      span.style.animationDelay = `${i * 0.05}s`;
+      span.style.animationDelay = `${i * 0.08}s`;
       el.appendChild(span);
     });
   }
@@ -222,14 +216,16 @@
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
+        entry.target.classList.remove("active");
+        void entry.target.offsetWidth;
         entry.target.classList.add("active");
       }
     });
-  }, {
-    threshold: 0.6
-  });
+  }, { threshold: 0.5 });
 
-  document.querySelectorAll(".section").forEach(section => observer.observe(section));
+  document.querySelectorAll(".section").forEach(section => {
+    observer.observe(section);
+  });
 </script>
 
 </body>
