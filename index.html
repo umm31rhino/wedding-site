@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -41,10 +40,9 @@
       padding: 2rem;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
       opacity: 0;
-      animation: fadeInSection 4s ease-in-out forwards;
     }
 
-    .section.active {
+    .section.fade-in {
       animation: fadeInSection 4s ease-in-out forwards;
     }
 
@@ -217,17 +215,18 @@
     });
   });
 
-  const observer = new IntersectionObserver((entries) => {
+  const sections = document.querySelectorAll('.section');
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.remove("active");
-        void entry.target.offsetWidth;
-        entry.target.classList.add("active");
+        entry.target.classList.remove('fade-in');
+        void entry.target.offsetWidth; // トリガー
+        entry.target.classList.add('fade-in');
       }
     });
   }, { threshold: 0.6 });
 
-  document.querySelectorAll(".section").forEach(section => observer.observe(section));
+  sections.forEach(section => observer.observe(section));
 </script>
 
 </body>
