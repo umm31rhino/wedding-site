@@ -74,7 +74,6 @@
       background-size: cover;
       background-position: center;
       transition: transform 2s ease-in-out;
-      transform-origin: center;
     }
 
     .left {
@@ -96,6 +95,56 @@
     #introOverlay.hidden {
       display: none;
     }
+
+    #menuButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 99;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+    }
+
+    #menuButton img {
+      width: 100%;
+      height: auto;
+    }
+
+    #navMenu {
+      position: fixed;
+      top: 60px;
+      left: -200px;
+      width: 200px;
+      height: calc(100% - 60px);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      transition: left 0.3s ease;
+      z-index: 98;
+    }
+
+    #navMenu.open {
+      left: 0;
+    }
+
+    #navMenu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #navMenu li {
+      margin-bottom: 1rem;
+    }
+
+    #navMenu a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
   </style>
 </head>
 <body>
@@ -105,10 +154,51 @@
   <div class="door right"></div>
 </div>
 
-<div class="container">
+<button id="menuButton">
+  <img src="assets/schnauzer.jpeg" alt="Menu">
+</button>
+
+<nav id="navMenu">
+  <ul>
+    <li><a href="#section1">Title</a></li>
+    <li><a href="#section2">Countdown</a></li>
+    <li><a href="#section3">Message</a></li>
+    <li><a href="#section4">Schedule</a></li>
+    <li><a href="#section5">Map</a></li>
+    <li><a href="#section6">Notes</a></li>
+    <li><a href="#section7">Movie</a></li>
+  </ul>
+</nav>
+
+<div class="container" id="container">
   <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');">
     <h1 class="animated-text" id="titleText"></h1>
     <p class="animated-text" id="subTitleText"></p>
+  </section>
+  <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');">
+    <h2>Countdown</h2>
+    <p id="countdown"></p>
+    <div id="weather">🌤️ 晴れ・28℃・降水確率10%</div>
+  </section>
+  <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');">
+    <h2>Message</h2>
+    <p class="animated-text" id="messageText"></p>
+  </section>
+  <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');">
+    <h2>Schedule</h2>
+    <p>12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定</p>
+  </section>
+  <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');">
+    <h2>Access Map</h2>
+    <p>瀬良垣島教会へは那覇空港から車で約1時間30分（高速利用）<br>おすすめ：オーシャンカフェ瀬良垣、きしもと食堂、nankuruカフェ</p>
+  </section>
+  <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');">
+    <h2>Dress Code & Notes</h2>
+    <p>カジュアルフォーマル推奨。羽織りものをお忘れなく。</p>
+  </section>
+  <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');">
+    <h2>Movie</h2>
+    <p>ムービーは後日公開予定です。</p>
   </section>
 </div>
 
@@ -118,24 +208,56 @@
     document.querySelector('.right').classList.add('open');
     setTimeout(() => {
       document.getElementById('introOverlay').classList.add('hidden');
-      document.querySelector('#section1').classList.add('fade-in');
+      document.querySelectorAll('.section').forEach(sec => sec.classList.add('fade-in'));
     }, 2200);
   }
 
   const textEntries = {
     titleText: "Takumi & Ayaka Wedding",
-    subTitleText: "2025.10.10 Okinawa Seragaki island chapel"
+    subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
+    messageText: "私たちらしく 沖縄でのんびり結婚式を挙げることにしました
+ゆるやかな時間の中で 皆さんと笑顔のひとときを過ごせたら幸いです
+旅のついでに…という気持ちで お越しいただけると嬉しいです"
   };
 
   for (const [id, text] of Object.entries(textEntries)) {
     const el = document.getElementById(id);
     text.split("").forEach((char, i) => {
       const span = document.createElement("span");
-      span.innerHTML = (char === " " ? "&nbsp;" : char);
+      span.innerHTML = (char === "\n") ? "<br>" : (char === " " ? "&nbsp;" : char);
       span.style.animationDelay = `${i * 0.05}s`;
       el.appendChild(span);
     });
   }
+
+  const countdownEl = document.getElementById("countdown");
+  const weddingDate = new Date("2025-10-10T12:30:00+09:00");
+  function updateCountdown() {
+    const now = new Date();
+    const diff = weddingDate - now;
+    if (diff <= 0) {
+      countdownEl.innerText = "It's our wedding day!";
+      return;
+    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+    countdownEl.innerText = `${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  const menuBtn = document.getElementById("menuButton");
+  const navMenu = document.getElementById("navMenu");
+  menuBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+  });
+  document.querySelectorAll("#navMenu a").forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+    });
+  });
 </script>
 
 </body>
