@@ -57,7 +57,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 星空 */
     #stars {
       position: fixed;
       top: 0; left: 0;
@@ -81,7 +80,6 @@
       to { opacity: 1; transform: scale(1.4); }
     }
 
-    /* チャペルの両開き扉 */
     #introOverlay {
       position: fixed;
       top: 0; left: 0;
@@ -95,7 +93,7 @@
 
     .door {
       flex: 1;
-      background-image: url('assets/A_photograph_showcases_a_pair_of_grand_double_door.png');
+      background-image: url('assets/chapel-door.jpg');
       background-size: cover;
       background-position: center;
       transform-origin: center;
@@ -123,7 +121,6 @@
       to { transform: perspective(800px) rotateY(90deg); }
     }
 
-    /* 天気表示 */
     #weatherInfo {
       background: rgba(255,255,255,0.8);
       color: #333;
@@ -133,7 +130,6 @@
       text-align: center;
       max-width: 300px;
     }
-
   </style>
 </head>
 <body>
@@ -161,10 +157,34 @@
       降水確率：10%
     </div>
   </section>
+
+  <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');">
+    <h2>Message</h2>
+    <p class="animated-text" id="messageText"></p>
+  </section>
+
+  <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');">
+    <h2>Schedule</h2>
+    <p>12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定</p>
+  </section>
+
+  <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');">
+    <h2>Access Map</h2>
+    <p>瀬良垣島教会へは那覇空港から車で約1時間30分（高速利用）<br>おすすめ：オーシャンカフェ瀬良垣、きしもと食堂、nankuruカフェ</p>
+  </section>
+
+  <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');">
+    <h2>Dress Code & Notes</h2>
+    <p>カジュアルフォーマル推奨。羽織りものをお忘れなく。</p>
+  </section>
+
+  <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');">
+    <h2>Movie</h2>
+    <p>ムービーは後日公開予定です。</p>
+  </section>
 </div>
 
 <script>
-  // 星空生成
   const starsContainer = document.getElementById('stars');
   for (let i = 0; i < 100; i++) {
     const star = document.createElement('div');
@@ -175,7 +195,6 @@
     starsContainer.appendChild(star);
   }
 
-  // チャペルの扉
   function openDoors() {
     document.querySelector('.left.door').classList.add('open-left');
     document.querySelector('.right.door').classList.add('open-right');
@@ -186,23 +205,25 @@
     }, 2000);
   }
 
-  // タイトル文字アニメーション
   const textEntries = {
     titleText: "Takumi & Ayaka Wedding",
-    subTitleText: "2025.10.10 Okinawa Seragaki island chapel"
+    subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
+    messageText: "私たちらしく 沖縄でのんびり結婚式を挙げることにしました
+ゆるやかな時間の中で 皆さんと笑顔のひとときを過ごせたら幸いです
+旅のついでに…という気持ちで お越しいただけると嬉しいです"
   };
 
   for (const [id, text] of Object.entries(textEntries)) {
     const el = document.getElementById(id);
     text.split("").forEach((char, i) => {
       const span = document.createElement("span");
-      span.innerHTML = (char === " ") ? "&nbsp;" : char;
-      span.style.animationDelay = `${i * 0.08}s`;
+      span.innerHTML = (char === "
+") ? "<br>" : (char === " " ? "&nbsp;" : char);
+      span.style.animationDelay = `${i * 0.05}s`;
       el.appendChild(span);
     });
   }
 
-  // カウントダウン
   const countdownEl = document.getElementById("countdown");
   const weddingDate = new Date("2025-10-10T12:30:00+09:00");
   function updateCountdown() {
@@ -221,7 +242,6 @@
   setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  // セクションが見えた時にfade-in
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
