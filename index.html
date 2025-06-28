@@ -6,16 +6,12 @@
   <title>Takumi & Ayaka Wedding</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       height: 100%;
-      overflow: hidden;
       font-family: 'Parisienne', cursive;
+      overflow: hidden;
     }
 
     .container {
@@ -30,15 +26,14 @@
       width: 100%;
       background-size: cover;
       background-position: center;
+      background-attachment: fixed;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      color: white;
-      text-align: center;
       scroll-snap-align: start;
       padding: 2rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+      color: white;
       opacity: 0;
     }
 
@@ -59,133 +54,155 @@
     }
 
     @keyframes fadeLetter {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 768px) {
-      h1, h2 { font-size: 2rem; }
-      .animated-text { font-size: 1rem; }
-    }
-
-    #menuButton {
+    /* 星空 */
+    #stars {
       position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 999;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-    }
-
-    #menuButton img {
+      top: 0; left: 0;
       width: 100%;
-      height: auto;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    #navMenu {
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite ease-in-out alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.2; transform: scale(1); }
+      to { opacity: 1; transform: scale(1.4); }
+    }
+
+    /* チャペルの両開き扉 */
+    #introOverlay {
       position: fixed;
-      top: 60px;
-      left: -200px;
-      width: 200px;
-      height: calc(100% - 60px);
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 2rem 1rem;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-      transition: left 0.3s ease;
-      z-index: 998;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: 9999;
+      display: flex;
+      overflow: hidden;
     }
 
-    #navMenu.open {
-      left: 0;
+    .door {
+      flex: 1;
+      background-image: url('assets/A_photograph_showcases_a_pair_of_grand_double_door.png');
+      background-size: cover;
+      background-position: center;
+      transform-origin: center;
     }
 
-    #navMenu ul {
-      list-style: none;
-      padding: 0;
+    .left.door {
+      transform-origin: left;
+      animation: openLeft 2s ease forwards;
     }
 
-    #navMenu li {
-      margin-bottom: 1rem;
+    .right.door {
+      transform-origin: right;
+      animation: openRight 2s ease forwards;
     }
 
-    #navMenu a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.1rem;
+    #introOverlay.hidden {
+      display: none;
     }
+
+    @keyframes openLeft {
+      to { transform: perspective(800px) rotateY(-90deg); }
+    }
+
+    @keyframes openRight {
+      to { transform: perspective(800px) rotateY(90deg); }
+    }
+
+    /* 天気表示 */
+    #weatherInfo {
+      background: rgba(255,255,255,0.8);
+      color: #333;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+      max-width: 300px;
+    }
+
   </style>
 </head>
-<body onload="document.querySelector('.container').scrollTo(0,0);">
+<body>
 
-<button id="menuButton">
-  <img src="assets/schnauzer.jpeg" alt="Menu">
-</button>
+<div id="introOverlay" onclick="openDoors()">
+  <div class="door left"></div>
+  <div class="door right"></div>
+</div>
 
-<nav id="navMenu">
-  <ul>
-    <li><a href="#section1">Title</a></li>
-    <li><a href="#section2">Countdown</a></li>
-    <li><a href="#section3">Message</a></li>
-    <li><a href="#section4">Schedule</a></li>
-    <li><a href="#section5">Map</a></li>
-    <li><a href="#section6">Notes</a></li>
-    <li><a href="#section7">Movie</a></li>
-  </ul>
-</nav>
+<div id="stars"></div>
 
-<div class="container" id="container">
+<div class="container">
   <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');">
     <h1 class="animated-text" id="titleText"></h1>
     <p class="animated-text" id="subTitleText"></p>
   </section>
+
   <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');">
     <h2>Countdown</h2>
     <p id="countdown"></p>
-  </section>
-  <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');">
-    <h2>Message</h2>
-    <p class="animated-text" id="messageText"></p>
-  </section>
-  <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');">
-    <h2>Schedule</h2>
-    <p>12:30 - 挙式 / 14:30 - 食事会 / 17:00 - 終了予定</p>
-  </section>
-  <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');">
-    <h2>Access Map</h2>
-    <p>瀬良垣島教会へは那覇空港から車で約1時間30分（高速利用）<br>おすすめ：オーシャンカフェ瀬良垣、きしもと食堂、nankuruカフェ</p>
-  </section>
-  <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');">
-    <h2>Dress Code & Notes</h2>
-    <p>カジュアルフォーマル推奨。羽織りものをお忘れなく。</p>
-  </section>
-  <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');">
-    <h2>Movie</h2>
-    <p>ムービーは後日公開予定です。</p>
+    <div id="weatherInfo">
+      <strong>那覇市の天気（10/10 12:30 予報）</strong><br>
+      天気：☀️ 晴れ（仮）<br>
+      気温：28℃<br>
+      降水確率：10%
+    </div>
   </section>
 </div>
 
 <script>
+  // 星空生成
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    star.style.top = Math.random() * 100 + '%';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.animationDuration = (1 + Math.random() * 2) + 's';
+    starsContainer.appendChild(star);
+  }
+
+  // チャペルの扉
+  function openDoors() {
+    document.querySelector('.left.door').classList.add('open-left');
+    document.querySelector('.right.door').classList.add('open-right');
+    document.querySelector('.left.door').style.animationPlayState = 'running';
+    document.querySelector('.right.door').style.animationPlayState = 'running';
+    setTimeout(() => {
+      document.getElementById('introOverlay').classList.add('hidden');
+    }, 2000);
+  }
+
+  // タイトル文字アニメーション
   const textEntries = {
     titleText: "Takumi & Ayaka Wedding",
-    subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
-    messageText: "私たちらしく 沖縄でのんびり結婚式を挙げることにしました\nゆるやかな時間の中で 皆さんと笑顔のひとときを過ごせたら幸いです\n旅のついでに…という気持ちで お越しいただけると嬉しいです"
+    subTitleText: "2025.10.10 Okinawa Seragaki island chapel"
   };
 
   for (const [id, text] of Object.entries(textEntries)) {
     const el = document.getElementById(id);
     text.split("").forEach((char, i) => {
       const span = document.createElement("span");
-      span.innerHTML = (char === "\n") ? "<br>" : (char === " " ? "&nbsp;" : char);
+      span.innerHTML = (char === " ") ? "&nbsp;" : char;
       span.style.animationDelay = `${i * 0.08}s`;
       el.appendChild(span);
     });
   }
 
+  // カウントダウン
   const countdownEl = document.getElementById("countdown");
   const weddingDate = new Date("2025-10-10T12:30:00+09:00");
   function updateCountdown() {
@@ -204,29 +221,18 @@
   setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  const menuBtn = document.getElementById("menuButton");
-  const navMenu = document.getElementById("navMenu");
-  menuBtn.addEventListener("click", () => {
-    navMenu.classList.toggle("open");
-  });
-  document.querySelectorAll("#navMenu a").forEach(link => {
-    link.addEventListener("click", () => {
-      navMenu.classList.remove("open");
-    });
-  });
-
-  const sections = document.querySelectorAll('.section');
+  // セクションが見えた時にfade-in
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.remove('fade-in');
-        void entry.target.offsetWidth; // トリガー
+        void entry.target.offsetWidth;
         entry.target.classList.add('fade-in');
       }
     });
   }, { threshold: 0.6 });
 
-  sections.forEach(section => observer.observe(section));
+  document.querySelectorAll('.section').forEach(section => observer.observe(section));
 </script>
 
 </body>
