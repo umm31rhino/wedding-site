@@ -1,46 +1,172 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Takumi & Ayaka Wedding</title>
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: 'Parisienne', cursive;
+    }
+    .container {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .section {
+      height: 100vh;
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+      text-align: center;
+      scroll-snap-align: start;
+      padding: 2rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+      opacity: 0;
+      transition: opacity 3s ease-in-out;
+    }
+    .section.active {
+      opacity: 1;
+    }
+    .animated-text span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeLetter 1s forwards;
+    }
+    @keyframes fadeLetter {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    #menuButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 999;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+    }
+    #menuButton img {
+      width: 100%;
+      height: auto;
+    }
+    #navMenu {
+      position: fixed;
+      top: 60px;
+      left: -200px;
+      width: 200px;
+      height: calc(100% - 60px);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      transition: left 0.3s ease;
+      z-index: 998;
+    }
+    #navMenu.open { left: 0; }
+    #navMenu ul { list-style: none; padding: 0; }
+    #navMenu li { margin-bottom: 1rem; }
+    #navMenu a {
+      color: white; text-decoration: none; font-size: 1.1rem;
+    }
+  </style>
 </head>
-<body>
-  <button id="menuButton">
-    <img src="assets/schnauzer.jpeg" alt="Menu">
-  </button>
+<body onload="document.querySelector('.container').scrollTo(0,0);">
 
-  <nav id="navMenu">
-    <ul>
-      <li><a href="#section1">Title</a></li>
-      <li><a href="#section2">Countdown</a></li>
-      <li><a href="#section3">Message</a></li>
-      <li><a href="#section4">Schedule</a></li>
-      <li><a href="#section5">Map</a></li>
-      <li><a href="#section6">Notes</a></li>
-      <li><a href="#section7">Movie</a></li>
-    </ul>
-  </nav>
+<!-- MENU BUTTON -->
+<button id="menuButton">
+  <img src="assets/schnauzer.jpeg" alt="Menu">
+</button>
 
-  <div class="container" id="container">
-    <section id="section1" class="section"></section>
-    <section id="section2" class="section"></section>
-    <section id="section3" class="section"></section>
-    <section id="section4" class="section"></section>
-    <section id="section5" class="section"></section>
-    <section id="section6" class="section"></section>
-    <section id="section7" class="section"></section>
-  </div>
+<!-- NAV MENU -->
+<nav id="navMenu">
+  <ul>
+    <li><a href="#section1">Title</a></li>
+    <li><a href="#section2">Countdown</a></li>
+    <li><a href="#section3">Message</a></li>
+    <li><a href="#section4">Schedule</a></li>
+    <li><a href="#section5">Map</a></li>
+    <li><a href="#section6">Notes</a></li>
+    <li><a href="#section7">Movie</a></li>
+  </ul>
+</nav>
 
-  <script src="js/base.js"></script>
-  <script src="js/section1.js"></script>
-  <script src="js/section2.js"></script>
-  <script src="js/section3.js"></script>
-  <script src="js/section4.js"></script>
-  <script src="js/section5.js"></script>
-  <script src="js/section6.js"></script>
-  <script src="js/section7.js"></script>
+<!-- SECTIONS -->
+<div class="container" id="container">
+  <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');">
+    <h1 class="animated-text" id="titleText"></h1>
+    <p class="animated-text" id="subTitleText"></p>
+  </section>
+  <section id="section2" class="section"></section>
+  <section id="section3" class="section"></section>
+  <section id="section4" class="section"></section>
+  <section id="section5" class="section"></section>
+  <section id="section6" class="section"></section>
+  <section id="section7" class="section"></section>
+</div>
+
+<!-- TEXT ANIMATION & NAVIGATION -->
+<script>
+  const textEntries = {
+    titleText: "Takumi & Ayaka Wedding",
+    subTitleText: "2025.10.10 Okinawa Seragaki island chapel"
+  };
+  for (const [id, text] of Object.entries(textEntries)) {
+    const el = document.getElementById(id);
+    text.split("").forEach((char, i) => {
+      const span = document.createElement("span");
+      span.innerHTML = (char === "\n") ? "<br>" : (char === " " ? "&nbsp;" : char);
+      span.style.animationDelay = `${i * 0.05}s`;
+      el.appendChild(span);
+    });
+  }
+
+  const menuBtn = document.getElementById("menuButton");
+  const navMenu = document.getElementById("navMenu");
+  menuBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+  });
+  document.querySelectorAll("#navMenu a").forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+    });
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+      } else {
+        entry.target.classList.remove("active");
+      }
+    });
+  }, { threshold: 0.6 });
+
+  document.querySelectorAll(".section").forEach(section => observer.observe(section));
+</script>
+
+<!-- 各セクションの内容を外部JSで読み込む -->
+<script src="js/section2.js"></script>
+<script src="js/section3.js"></script>
+<script src="js/section4.js"></script>
+<script src="js/section5.js"></script>
+<script src="js/section6.js"></script>
+<script src="js/section7.js"></script>
+
 </body>
 </html>
