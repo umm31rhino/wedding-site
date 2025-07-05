@@ -1,18 +1,11 @@
-const section2 = document.getElementById('section2');
-section2.style.backgroundImage = "url('assets/2-1.jpg')";
-section2.innerHTML = `
-  <h2 class="animated-text">Countdown</h2>
-  <p id="countdown" class="animated-text"></p>
-  <div class="weather-popup animated-text">
-    <p>予想気温：28℃</p>
-    <p>降水確率：20%</p>
-    <p>天気：晴れ</p>
-  </div>
+document.getElementById('section2').innerHTML = `
+  <h2>Countdown</h2>
+  <p id="countdown"></p>
+  <div id="weather">天気：晴れ / 気温：28℃ / 降水確率：10%</div>
 `;
 
 const countdownEl = document.getElementById("countdown");
 const weddingDate = new Date("2025-10-10T12:30:00+09:00");
-
 function updateCountdown() {
   const now = new Date();
   const diff = weddingDate - now;
