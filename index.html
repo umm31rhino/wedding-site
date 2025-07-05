@@ -4,16 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Takumi & Ayaka Wedding</title>
+
+  <!-- フォントと基本スタイル -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+
+    /* 全体のリセットとフォント設定 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       height: 100%;
       font-family: 'Parisienne', cursive;
-      overflow: hidden;
     }
 
+    /* スクロールコンテナ：ページごとに切り替わるセクション */
     .container {
       height: 100vh;
       overflow-y: scroll;
@@ -21,6 +25,7 @@
       scroll-behavior: smooth;
     }
 
+    /* セクションごとのスタイルとアニメーション */
     .section {
       height: 100vh;
       width: 100%;
@@ -35,17 +40,14 @@
       padding: 2rem;
       color: white;
       opacity: 0;
+      transition: opacity 2s ease-in-out;
     }
 
     .section.fade-in {
-      animation: fadeInSection 4s ease-in-out forwards;
+      opacity: 1;
     }
 
-    @keyframes fadeInSection {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
+    /* 文字を一文字ずつフェードインさせるアニメーション */
     .animated-text span {
       display: inline-block;
       opacity: 0;
@@ -57,6 +59,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* 最初に表示される左右の扉のオーバーレイ */
     #introOverlay {
       position: fixed;
       top: 0; left: 0;
@@ -73,7 +76,6 @@
       background-size: cover;
       background-position: center;
       transition: transform 2s ease-in-out;
-      transform-origin: center;
     }
 
     .left {
@@ -101,32 +103,48 @@
 </head>
 <body>
 
-<!-- 扉オーバーレイ -->
+<!-- 最初に表示される扉の要素 -->
 <div id="introOverlay" onclick="openDoors()">
   <div class="door left"></div>
   <div class="door right"></div>
 </div>
 
-<!-- メインコンテンツ -->
-<div class="container">
+<!-- スクロール可能なメインセクション -->
+<div class="container" id="mainContent" style="display: none;">
   <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');">
     <h1 class="animated-text" id="titleText"></h1>
     <p class="animated-text" id="subTitleText"></p>
   </section>
+
+  <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');">
+    <h2>Countdown</h2>
+    <p>あと◯日！</p>
+  </section>
+
+  <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');">
+    <h2>Message</h2>
+    <p>ようこそ私たちの結婚式へ</p>
+  </section>
 </div>
 
+<!-- JavaScriptエリア：扉開閉処理と文字アニメーション -->
 <script>
-  // 扉開閉処理
+  // 扉クリック時の処理：開いてから本体を表示
   function openDoors() {
     document.querySelector('.left').classList.add('open');
     document.querySelector('.right').classList.add('open');
+
+    // 扉が完全に開いた後にセクション表示
     setTimeout(() => {
       document.getElementById('introOverlay').classList.add('hidden');
+      document.getElementById('mainContent').style.display = 'block';
+
+      // 最初のセクションにフェードインを適用
       document.querySelector('#section1').classList.add('fade-in');
     }, 2200);
   }
 
-  // テキストアニメーション
+  // テキストを一文字ずつアニメーション表示
   const textEntries = {
     titleText: "Takumi & Ayaka Wedding",
     subTitleText: "2025.10.10 Okinawa Seragaki island chapel"
@@ -141,6 +159,19 @@
       el.appendChild(span);
     });
   }
+
+  // スクロール時にセクションをフェードイン表示
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("fade-in");
+      }
+    });
+  }, {
+    threshold: 0.6
+  });
+
+  document.querySelectorAll(".section").forEach(section => observer.observe(section));
 </script>
 
 </body>
