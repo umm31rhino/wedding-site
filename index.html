@@ -4,21 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Takumi & Ayaka Wedding</title>
+  <link rel="stylesheet" href="css/style.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
     * {
-      margin: 0; padding: 0; box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
+
     html, body {
-      height: 100%; overflow: hidden;
+      height: 100%;
+      overflow: hidden;
       font-family: 'Parisienne', cursive;
     }
+
     .container {
       height: 100vh;
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
     }
+
     .section {
       height: 100vh;
       width: 100%;
@@ -32,25 +39,14 @@
       text-align: center;
       scroll-snap-align: start;
       padding: 2rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
       opacity: 0;
       transition: opacity 3s ease-in-out;
     }
+
     .section.active {
       opacity: 1;
     }
-    .animated-text span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: fadeLetter 1s forwards;
-    }
-    @keyframes fadeLetter {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+
     #menuButton {
       position: fixed;
       top: 10px;
@@ -62,10 +58,12 @@
       width: 40px;
       height: 40px;
     }
+
     #menuButton img {
       width: 100%;
       height: auto;
     }
+
     #navMenu {
       position: fixed;
       top: 60px;
@@ -78,22 +76,74 @@
       transition: left 0.3s ease;
       z-index: 998;
     }
-    #navMenu.open { left: 0; }
-    #navMenu ul { list-style: none; padding: 0; }
-    #navMenu li { margin-bottom: 1rem; }
+
+    #navMenu.open {
+      left: 0;
+    }
+
+    #navMenu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #navMenu li {
+      margin-bottom: 1rem;
+    }
+
     #navMenu a {
-      color: white; text-decoration: none; font-size: 1.1rem;
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
+    /* 扉のスタイル */
+    #doorContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1000;
+      display: flex;
+    }
+
+    .door {
+      flex: 1;
+      background-size: cover;
+      background-position: center;
+      transition: transform 2s ease-in-out;
+    }
+
+    .door-left {
+      background-image: url('assets/doorleft.jpg');
+    }
+
+    .door-right {
+      background-image: url('assets/doorright.jpg');
+    }
+
+    .open-left {
+      transform: translateX(-100%);
+    }
+
+    .open-right {
+      transform: translateX(100%);
     }
   </style>
 </head>
 <body onload="document.querySelector('.container').scrollTo(0,0);">
 
-<!-- MENU BUTTON -->
+<!-- 扉 -->
+<div id="doorContainer">
+  <div class="door door-left" id="leftDoor"></div>
+  <div class="door door-right" id="rightDoor"></div>
+</div>
+
+<!-- メニュー -->
 <button id="menuButton">
   <img src="assets/schnauzer.jpeg" alt="Menu">
 </button>
 
-<!-- NAV MENU -->
 <nav id="navMenu">
   <ul>
     <li><a href="#section1">Title</a></li>
@@ -106,36 +156,38 @@
   </ul>
 </nav>
 
-<!-- SECTIONS -->
-<div class="container" id="container">
-  <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');">
-    <h1 class="animated-text" id="titleText"></h1>
-    <p class="animated-text" id="subTitleText"></p>
-  </section>
-  <section id="section2" class="section"></section>
-  <section id="section3" class="section"></section>
-  <section id="section4" class="section"></section>
-  <section id="section5" class="section"></section>
-  <section id="section6" class="section"></section>
-  <section id="section7" class="section"></section>
+<!-- コンテンツ -->
+<div class="container" id="container" style="display:none;">
+  <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');"></section>
+  <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');"></section>
+  <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');"></section>
+  <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');"></section>
+  <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');"></section>
+  <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');"></section>
+  <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');"></section>
 </div>
 
-<!-- TEXT ANIMATION & NAVIGATION -->
-<script>
-  const textEntries = {
-    titleText: "Takumi & Ayaka Wedding",
-    subTitleText: "2025.10.10 Okinawa Seragaki island chapel"
-  };
-  for (const [id, text] of Object.entries(textEntries)) {
-    const el = document.getElementById(id);
-    text.split("").forEach((char, i) => {
-      const span = document.createElement("span");
-      span.innerHTML = (char === "\n") ? "<br>" : (char === " " ? "&nbsp;" : char);
-      span.style.animationDelay = `${i * 0.05}s`;
-      el.appendChild(span);
-    });
-  }
+<script src="js/doorEffect.js"></script>
+<script src="js/section2.js"></script>
+<script src="js/section3.js"></script>
+<script src="js/section4.js"></script>
+<script src="js/section5.js"></script>
+<script src="js/section6.js"></script>
+<script src="js/section7.js"></script>
 
+<script>
+  // セクションフェード用 IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+      }
+    });
+  }, { threshold: 0.6 });
+
+  document.querySelectorAll(".section").forEach(section => observer.observe(section));
+
+  // メニュー開閉
   const menuBtn = document.getElementById("menuButton");
   const navMenu = document.getElementById("navMenu");
   menuBtn.addEventListener("click", () => {
@@ -146,27 +198,7 @@
       navMenu.classList.remove("open");
     });
   });
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("active");
-      } else {
-        entry.target.classList.remove("active");
-      }
-    });
-  }, { threshold: 0.6 });
-
-  document.querySelectorAll(".section").forEach(section => observer.observe(section));
 </script>
-
-<!-- 各セクションの内容を外部JSで読み込む -->
-<script src="js/section2.js"></script>
-<script src="js/section3.js"></script>
-<script src="js/section4.js"></script>
-<script src="js/section5.js"></script>
-<script src="js/section6.js"></script>
-<script src="js/section7.js"></script>
 
 </body>
 </html>
