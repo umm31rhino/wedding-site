@@ -31,3 +31,42 @@ footer {
   text-align: center;
   padding: 1rem;
 }
+
+
+/* 扉全体を包むコンテナ */
+#doorContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 9999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  perspective: 1000px; /* 立体感の設定 */
+  overflow: hidden;
+}
+
+/* 扉共通のスタイル */
+.door {
+  width: 50%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transform-style: preserve-3d;
+  transition: transform 2s ease-in-out; /* 扉が開く速度 */
+}
+
+/* 左側の扉 */
+#leftDoor {
+  background-image: url('assets/doorleft.jpg');
+  transform-origin: left center;
+}
+
+/* 右側の扉 */
+#rightDoor {
+  background-image: url('assets/doorright.jpg');
+  transform-origin: right center;
+}
