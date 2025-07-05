@@ -6,14 +6,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!leftDoor || !rightDoor || !doorContainer || !mainContent) return;
 
+  // CSS perspective を使って、扉を手前に回転する
   function openDoors() {
-    leftDoor.classList.add("open-left");
-    rightDoor.classList.add("open-right");
+    leftDoor.style.transform = "perspective(1000px) rotateY(90deg)";
+    rightDoor.style.transform = "perspective(1000px) rotateY(-90deg)";
+    leftDoor.style.transition = "transform 2s ease-in-out";
+    rightDoor.style.transition = "transform 2s ease-in-out";
 
     setTimeout(() => {
       doorContainer.style.display = "none";
       mainContent.style.display = "block";
-    }, 2500); // エフェクト後に非表示にする時間
+    }, 2500);
   }
 
   leftDoor.addEventListener("click", openDoors);
