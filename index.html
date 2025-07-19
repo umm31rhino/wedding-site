@@ -1,14 +1,50 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Takumi & Ayaka Wedding</title>
+
   <style>
     html, body {
       margin: 0; padding: 0; height: 100%; overflow: hidden;
       font-family: 'Parisienne', cursive;
     }
+
+    #doorContainer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      z-index: 9999;
+      perspective: 1000px;
+    }
+
+    .door {
+      width: 50%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transform-style: preserve-3d;
+      transition: transform 2s ease-in-out;
+    }
+
+    #leftDoor {
+      background-image: url('assets/doorleft.jpg');
+      transform-origin: left center;
+    }
+
+    #rightDoor {
+      background-image: url('assets/doorright.jpg');
+      transform-origin: right center;
+    }
+
+    .open-left { transform: rotateY(-100deg); }
+    .open-right { transform: rotateY(100deg); }
+
     .section {
       height: 100vh;
       width: 100%;
@@ -29,7 +65,13 @@
   </style>
 </head>
 <body>
-  <div id="container">
+
+  <div id="doorContainer">
+    <div id="leftDoor" class="door"></div>
+    <div id="rightDoor" class="door"></div>
+  </div>
+
+  <div id="container" style="display:none;">
     <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');"></section>
     <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');"></section>
     <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');"></section>
@@ -39,6 +81,34 @@
     <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');"></section>
   </div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const leftDoor = document.getElementById("leftDoor");
+      const rightDoor = document.getElementById("rightDoor");
+      const doorContainer = document.getElementById("doorContainer");
+      const container = document.getElementById("container");
+
+      doorContainer.addEventListener("click", () => {
+        leftDoor.classList.add("open-left");
+        rightDoor.classList.add("open-right");
+        setTimeout(() => {
+          doorContainer.style.display = "none";
+          container.style.display = "block";
+        }, 2000);
+      });
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          }
+        });
+      }, { threshold: 0.6 });
+
+      document.querySelectorAll('.section').forEach(section => observer.observe(section));
+    });
+  </script>
+
   <script src="js/section1.js"></script>
   <script src="js/section2.js"></script>
   <script src="js/section3.js"></script>
@@ -47,13 +117,5 @@
   <script src="js/section6.js"></script>
   <script src="js/section7.js"></script>
 
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("active");
-      });
-    }, { threshold: 0.6 });
-    document.querySelectorAll(".section").forEach(section => observer.observe(section));
-  </script>
 </body>
 </html>
