@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -16,20 +15,17 @@
       overflow: hidden;
     }
 
-    /* ========== 扉スタイル ========== */
     #doorContainer {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      background: #fff;
-      z-index: 9999;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: #fff;
+      z-index: 9999;
       perspective: 1000px;
-      overflow: hidden;
     }
 
     .door {
@@ -51,7 +47,13 @@
       transform-origin: right center;
     }
 
-    /* ========== ページ全体のスクロール領域 ========== */
+    .open-left {
+      transform: perspective(1000px) rotateY(-100deg);
+    }
+    .open-right {
+      transform: perspective(1000px) rotateY(100deg);
+    }
+
     #container {
       display: none;
       height: 100vh;
@@ -63,16 +65,15 @@
     .section {
       height: 100vh;
       width: 100%;
-      scroll-snap-align: start;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 2rem;
-      color: white;
-      text-align: center;
+      scroll-snap-align: start;
       background-size: cover;
       background-position: center;
+      color: white;
+      text-align: center;
+      font-size: 2rem;
       opacity: 0;
       transition: opacity 2s ease-in-out;
     }
@@ -80,97 +81,50 @@
     .section.active {
       opacity: 1;
     }
-
-    .animated-text span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: fadeLetter 1s forwards;
-    }
-
-    @keyframes fadeLetter {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
   </style>
 </head>
 <body>
 
-  <!-- 扉 -->
   <div id="doorContainer">
     <div id="leftDoor" class="door"></div>
     <div id="rightDoor" class="door"></div>
   </div>
 
-  <!-- コンテンツ -->
   <div id="container">
-    <section class="section" style="background-image: url('assets/1-1.jpg');">
-      <h1 class="animated-text" id="titleText"></h1>
-      <p class="animated-text" id="subTitleText"></p>
-    </section>
-    <section class="section" style="background-image: url('assets/2-1.jpg');">
-      <h2>Countdown</h2>
-      <p id="countdown"></p>
-    </section>
-    <section class="section" style="background-image: url('assets/3-1.jpg');">
-      <h2>Message</h2>
-      <p class="animated-text" id="messageText"></p>
-    </section>
+    <section class="section" style="background-image: url('assets/1-1.jpg');">ページ1</section>
+    <section class="section" style="background-image: url('assets/2-1.jpg');">ページ2</section>
+    <section class="section" style="background-image: url('assets/3-1.jpg');">ページ3</section>
   </div>
 
-  <!-- スクリプト -->
   <script>
-    // 扉アニメーション処理
-    const left = document.getElementById("leftDoor");
-    const right = document.getElementById("rightDoor");
-    const container = document.getElementById("container");
-    const doorContainer = document.getElementById("doorContainer");
+    document.addEventListener("DOMContentLoaded", () => {
+      const leftDoor = document.getElementById("leftDoor");
+      const rightDoor = document.getElementById("rightDoor");
+      const doorContainer = document.getElementById("doorContainer");
+      const mainContent = document.getElementById("container");
 
-    doorContainer.addEventListener("click", () => {
-      left.style.transform = "rotateY(-100deg)";
-      right.style.transform = "rotateY(100deg)";
-      setTimeout(() => {
-        doorContainer.style.display = "none";
-        container.style.display = "block";
-        container.scrollTo(0, 0);
-      }, 2000);
+      function openDoors() {
+        leftDoor.classList.add("open-left");
+        rightDoor.classList.add("open-right");
+        setTimeout(() => {
+          doorContainer.style.display = "none";
+          mainContent.style.display = "block";
+          mainContent.scrollTo(0,0);
+        }, 2000);
+      }
+
+      doorContainer.addEventListener("click", openDoors);
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          }
+        });
+      }, { threshold: 0.6 });
+
+      document.querySelectorAll(".section").forEach(section => observer.observe(section));
     });
-
-    // テキストアニメーション
-    const textEntries = {
-      titleText: "Takumi & Ayaka Wedding",
-      subTitleText: "2025.10.10 Okinawa Seragaki island chapel",
-      messageText: "私たちらしく 沖縄でのんびり結婚式を挙げることにしました
-ゆるやかな時間の中で 皆さんと笑顔のひとときを過ごせたら幸いです
-旅のついでに…という気持ちで お越しいただけると嬉しいです"
-    };
-
-    for (const [id, text] of Object.entries(textEntries)) {
-      const el = document.getElementById(id);
-      if (!el) continue;
-      text.split("").forEach((char, i) => {
-        const span = document.createElement("span");
-        span.innerHTML = (char === "
-") ? "<br>" : (char === " " ? "&nbsp;" : char);
-        span.style.animationDelay = `${i * 0.05}s`;
-        el.appendChild(span);
-      });
-    }
-
-    // フェードインエフェクト
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("active");
-        }
-      });
-    }, {
-      threshold: 0.6
-    });
-
-    document.querySelectorAll(".section").forEach(section => observer.observe(section));
   </script>
 
 </body>
