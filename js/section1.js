@@ -1,4 +1,4 @@
 document.getElementById('section1').innerHTML = `
-  <h2>Section 1</h2>
-  <p>これはセクション1のコンテンツです。</p>
+  <h1 class="animated-text">Takumi & Ayaka Wedding</h1>
+  <p class="animated-text">2025.10.10 Okinawa Seragaki island chapel</p>
 `;
