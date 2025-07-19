@@ -7,115 +7,143 @@
 
   <style>
     html, body {
-      margin: 0; padding: 0; height: 100%; overflow: hidden;
+      margin: 0; padding: 0; height: 100%;
       font-family: 'Parisienne', cursive;
+      overflow: hidden;
     }
 
+    /* 扉 */
     #doorContainer {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #fff;
-      z-index: 9999;
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      display: flex; justify-content: space-between; align-items: center;
+      background: #fff; z-index: 9999;
       perspective: 1000px;
     }
-
     .door {
-      width: 50%;
-      height: 100%;
+      width: 50%; height: 100%;
       background-size: cover;
       background-position: center;
       transform-style: preserve-3d;
       transition: transform 2s ease-in-out;
     }
-
-    #leftDoor {
-      background-image: url('assets/doorleft.jpg');
-      transform-origin: left center;
-    }
-
-    #rightDoor {
-      background-image: url('assets/doorright.jpg');
-      transform-origin: right center;
-    }
-
+    #leftDoor { background-image: url('assets/doorleft.jpg'); transform-origin: left center; }
+    #rightDoor { background-image: url('assets/doorright.jpg'); transform-origin: right center; }
     .open-left { transform: rotateY(-100deg); }
     .open-right { transform: rotateY(100deg); }
 
-    .section {
+    /* メニュー */
+    #menuButton {
+      position: fixed; top: 10px; left: 10px; z-index: 10000;
+      background: transparent; border: none; cursor: pointer;
+    }
+    #navMenu {
+      position: fixed; top: 50px; left: 10px; z-index: 9999;
+      background: rgba(0,0,0,0.7); padding: 10px; display: none;
+    }
+    #navMenu a {
+      display: block; color: white; text-decoration: none; margin: 5px 0;
+    }
+
+    /* コンテンツスクロール */
+    #container {
+      display: none;
       height: 100vh;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .section {
+      height: 100vh; width: 100%;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      background-size: cover; background-position: center;
+      color: white; text-align: center; font-size: 2rem;
       scroll-snap-align: start;
-      background-size: cover;
-      background-position: center;
-      color: white;
-      text-align: center;
-      font-size: 2rem;
-      opacity: 0;
-      transition: opacity 2s ease-in-out;
+      opacity: 0; transition: opacity 2s ease-in-out;
     }
     .section.active { opacity: 1; }
   </style>
 </head>
 <body>
 
-  <div id="doorContainer">
-    <div id="leftDoor" class="door"></div>
-    <div id="rightDoor" class="door"></div>
-  </div>
+<!-- 扉 -->
+<div id="doorContainer">
+  <div id="leftDoor" class="door"></div>
+  <div id="rightDoor" class="door"></div>
+</div>
 
-  <div id="container" style="display:none;">
-    <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');"></section>
-    <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');"></section>
-    <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');"></section>
-    <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');"></section>
-    <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');"></section>
-    <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');"></section>
-    <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');"></section>
-  </div>
+<!-- メニューボタン -->
+<button id="menuButton">☰</button>
+<nav id="navMenu">
+  <a href="#section1">Title</a>
+  <a href="#section2">Countdown</a>
+  <a href="#section3">Message</a>
+  <a href="#section4">Schedule</a>
+  <a href="#section5">Map</a>
+  <a href="#section6">Notes</a>
+  <a href="#section7">Movie</a>
+</nav>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const leftDoor = document.getElementById("leftDoor");
-      const rightDoor = document.getElementById("rightDoor");
-      const doorContainer = document.getElementById("doorContainer");
-      const container = document.getElementById("container");
+<!-- メインコンテンツ -->
+<div id="container">
+  <section id="section1" class="section" style="background-image: url('assets/1-1.jpg');"></section>
+  <section id="section2" class="section" style="background-image: url('assets/2-1.jpg');"></section>
+  <section id="section3" class="section" style="background-image: url('assets/3-1.jpg');"></section>
+  <section id="section4" class="section" style="background-image: url('assets/4-1.jpg');"></section>
+  <section id="section5" class="section" style="background-image: url('assets/5-1.jpg');"></section>
+  <section id="section6" class="section" style="background-image: url('assets/6-1.jpg');"></section>
+  <section id="section7" class="section" style="background-image: url('assets/7-1.jpg');"></section>
+</div>
 
-      doorContainer.addEventListener("click", () => {
-        leftDoor.classList.add("open-left");
-        rightDoor.classList.add("open-right");
-        setTimeout(() => {
-          doorContainer.style.display = "none";
-          container.style.display = "block";
-        }, 2000);
-      });
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const leftDoor = document.getElementById("leftDoor");
+  const rightDoor = document.getElementById("rightDoor");
+  const doorContainer = document.getElementById("doorContainer");
+  const container = document.getElementById("container");
 
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-          }
-        });
-      }, { threshold: 0.6 });
+  doorContainer.addEventListener("click", () => {
+    leftDoor.classList.add("open-left");
+    rightDoor.classList.add("open-right");
+    setTimeout(() => {
+      doorContainer.style.display = "none";
+      container.style.display = "block";
+    }, 2000);
+  });
 
-      document.querySelectorAll('.section').forEach(section => observer.observe(section));
+  // メニュー開閉
+  const menuBtn = document.getElementById("menuButton");
+  const navMenu = document.getElementById("navMenu");
+  menuBtn.addEventListener("click", () => {
+    navMenu.style.display = navMenu.style.display === "block" ? "none" : "block";
+  });
+
+  document.querySelectorAll("#navMenu a").forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.style.display = "none";
     });
-  </script>
+  });
 
-  <script src="js/section1.js"></script>
-  <script src="js/section2.js"></script>
-  <script src="js/section3.js"></script>
-  <script src="js/section4.js"></script>
-  <script src="js/section5.js"></script>
-  <script src="js/section6.js"></script>
-  <script src="js/section7.js"></script>
+  // フェードイン
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+      }
+    });
+  }, { threshold: 0.6 });
+
+  document.querySelectorAll('.section').forEach(section => observer.observe(section));
+});
+</script>
+
+<script src="js/section1.js"></script>
+<script src="js/section2.js"></script>
+<script src="js/section3.js"></script>
+<script src="js/section4.js"></script>
+<script src="js/section5.js"></script>
+<script src="js/section6.js"></script>
+<script src="js/section7.js"></script>
 
 </body>
 </html>
