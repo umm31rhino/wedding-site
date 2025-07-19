@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Takumi & Ayaka Wedding</title>
 
@@ -91,9 +91,13 @@
   </div>
 
   <div id="container">
-    <section class="section" style="background-image: url('assets/1-1.jpg');">ページ1</section>
-    <section class="section" style="background-image: url('assets/2-1.jpg');">ページ2</section>
-    <section class="section" style="background-image: url('assets/3-1.jpg');">ページ3</section>
+    <section id="section1" class="section"></section>
+    <section id="section2" class="section"></section>
+    <section id="section3" class="section"></section>
+    <section id="section4" class="section"></section>
+    <section id="section5" class="section"></section>
+    <section id="section6" class="section"></section>
+    <section id="section7" class="section"></section>
   </div>
 
   <script>
@@ -126,6 +130,15 @@
       document.querySelectorAll(".section").forEach(section => observer.observe(section));
     });
   </script>
+
+  <!-- ページごとのJS読込 -->
+  <script src="js/section1.js"></script>
+  <script src="js/section2.js"></script>
+  <script src="js/section3.js"></script>
+  <script src="js/section4.js"></script>
+  <script src="js/section5.js"></script>
+  <script src="js/section6.js"></script>
+  <script src="js/section7.js"></script>
 
 </body>
 </html>
