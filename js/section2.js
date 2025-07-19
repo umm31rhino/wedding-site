@@ -2,7 +2,6 @@ document.getElementById('section2').innerHTML = `
   <h2>Countdown</h2>
   <p id="countdown"></p>
 `;
-
 const countdownEl = document.getElementById("countdown");
 const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 function updateCountdown() {
