@@ -1,72 +1,80 @@
 
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body, html { height: 100%; overflow: hidden; font-family: 'Parisienne', cursive; }
+
+.container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
 }
-header.hero {
-  background-image: url('../assets/beach.jpg');
+
+.section {
+  height: 100vh;
+  scroll-snap-align: start;
   background-size: cover;
   background-position: center;
-  height: 100vh;
-  color: white;
-  text-align: center;
   display: flex;
-  justify-content: center;
   align-items: center;
-}
-header .overlay {
-  background: rgba(0,0,0,0.5);
-  padding: 2rem;
-}
-section {
-  padding: 2rem;
-  max-width: 800px;
-  margin: auto;
-}
-footer {
-  background: #333;
-  color: white;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 3s ease;
   text-align: center;
-  padding: 1rem;
+  color: white;
+  padding: 2rem;
+  text-shadow: 1px 1px 4px black;
 }
 
+.section.active { opacity: 1; }
 
-/* 扉全体を包むコンテナ */
-#doorContainer {
+#menuButton {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+#menuButton img { width: 40px; }
+
+#navMenu {
+  position: fixed;
+  top: 60px;
+  left: -200px;
+  width: 200px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 1rem;
+  transition: left 0.3s ease;
+  z-index: 999;
+}
+#navMenu.open { left: 0; }
+#navMenu a { color: white; text-decoration: none; display: block; margin-bottom: 1rem; }
+
+.door-container {
+  position: fixed;
+  z-index: 2000;
   width: 100%;
   height: 100%;
-  background: #fff;
-  z-index: 9999;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  perspective: 1000px; /* 立体感の設定 */
   overflow: hidden;
 }
-
-/* 扉共通のスタイル */
 .door {
+  position: absolute;
+  top: 0;
   width: 50%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
-  transform-style: preserve-3d;
-  transition: transform 2s ease-in-out; /* 扉が開く速度 */
+  object-fit: cover;
+  transition: transform 2s ease-in-out;
 }
-
-/* 左側の扉 */
-#leftDoor {
-  background-image: url('assets/doorleft.jpg');
-  transform-origin: left center;
-}
-
-/* 右側の扉 */
-#rightDoor {
-  background-image: url('assets/doorright.jpg');
-  transform-origin: right center;
+.door.left { left: 0; transform: translateX(0); }
+.door.right { right: 0; transform: translateX(0); }
+.door.open-left { transform: translateX(-100%); }
+.door.open-right { transform: translateX(100%); }
+.door-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 10;
 }
