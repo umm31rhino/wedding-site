@@ -1,4 +1,2 @@
-document.getElementById('section7').innerHTML = `
-  <h2>Movie</h2>
-  <p>ムービーは後日公開予定です。</p>
-`;
+
+document.getElementById("section7").innerHTML = `<h1>Section 7</h1><p>This is section 7 content.</p>`;

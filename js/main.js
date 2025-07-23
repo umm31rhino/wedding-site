@@ -1,7 +1,23 @@
 
-function initializeSite() {
-  document.getElementById("container").scrollTo(0, 0);
-  const observer = new IntersectionObserver((entries) => {
+document.addEventListener("DOMContentLoaded", () => {
+  const doors = document.querySelectorAll(".door");
+  doors.forEach(door => door.addEventListener("click", openDoors));
+
+  function openDoors() {
+    document.getElementById("leftDoor").classList.add("open-left");
+    document.getElementById("rightDoor").classList.add("open-right");
+    setTimeout(() => {
+      document.getElementById("doorContainer").style.display = "none";
+      enableScroll();
+    }, 2000);
+  }
+
+  function enableScroll() {
+    document.body.style.overflow = "auto";
+  }
+
+  // スクロール時のエフェクト
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add("active");
@@ -11,28 +27,13 @@ function initializeSite() {
 
   document.querySelectorAll(".section").forEach(section => {
     const bg = section.getAttribute("data-bg");
-    if (bg) section.style.backgroundImage = `url('${bg}')`;
+    section.style.backgroundImage = `url(${bg})`;
     observer.observe(section);
   });
 
   const menuBtn = document.getElementById("menuButton");
-  const navMenu = document.getElementById("navMenu");
+  const nav = document.getElementById("navMenu");
   menuBtn.addEventListener("click", () => {
-    navMenu.classList.toggle("open");
+    nav.classList.toggle("open");
   });
-
-  document.querySelectorAll("#navMenu a").forEach(link => {
-    link.addEventListener("click", () => {
-      navMenu.classList.remove("open");
-    });
-  });
-}
-
-function openDoors() {
-  document.querySelector(".door.left").classList.add("open-left");
-  document.querySelector(".door.right").classList.add("open-right");
-  document.querySelector(".door-overlay").style.display = "none";
-  setTimeout(() => {
-    document.getElementById("doorContainer").style.display = "none";
-  }, 2000);
-}
+});
