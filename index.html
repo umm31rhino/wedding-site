@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,20 +6,14 @@
   <title>Takumi & Ayaka Wedding</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body onload="initializeSite()">
 
-<!-- 扉 -->
-<div id="doorContainer">
-  <img src="assets/doorleft.jpg" id="doorLeft" class="door" />
-  <img src="assets/doorright.jpg" id="doorRight" class="door" />
-</div>
-
-<!-- メニューボタン -->
+<!-- Menu Button -->
 <button id="menuButton">
   <img src="assets/schnauzer.jpeg" alt="Menu">
 </button>
 
-<!-- メニュー -->
+<!-- Navigation Menu -->
 <nav id="navMenu">
   <ul>
     <li><a href="#section1">Title</a></li>
@@ -33,26 +26,24 @@
   </ul>
 </nav>
 
-<!-- コンテンツ -->
-<div class="container" id="container">
-  <section id="section1" class="section"></section>
-  <section id="section2" class="section"></section>
-  <section id="section3" class="section"></section>
-  <section id="section4" class="section"></section>
-  <section id="section5" class="section"></section>
-  <section id="section6" class="section"></section>
-  <section id="section7" class="section"></section>
+<!-- Opening Door -->
+<div class="door-container" id="doorContainer">
+  <img src="assets/doorleft.jpg" class="door left" />
+  <img src="assets/doorright.jpg" class="door right" />
+  <div class="door-overlay" onclick="openDoors()"></div>
 </div>
 
-<!-- JS -->
-<script src="main.js"></script>
-<script src="section1.js"></script>
-<script src="section2.js"></script>
-<script src="section3.js"></script>
-<script src="section4.js"></script>
-<script src="section5.js"></script>
-<script src="section6.js"></script>
-<script src="section7.js"></script>
+<!-- Main Container -->
+<div class="container" id="container">
+  <section id="section1" class="section" data-bg="assets/1-1.jpg"></section>
+  <section id="section2" class="section" data-bg="assets/2-1.jpg"></section>
+  <section id="section3" class="section" data-bg="assets/3-1.jpg"></section>
+  <section id="section4" class="section" data-bg="assets/4-1.jpg"></section>
+  <section id="section5" class="section" data-bg="assets/5-1.jpg"></section>
+  <section id="section6" class="section" data-bg="assets/6-1.jpg"></section>
+  <section id="section7" class="section" data-bg="assets/7-1.jpg"></section>
+</div>
 
+<script src="main.js"></script>
 </body>
 </html>
