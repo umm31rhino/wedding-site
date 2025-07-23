@@ -1,25 +1,23 @@
 
-document.addEventListener("DOMContentLoaded", () => {
-  const sections = document.querySelectorAll(".section");
-  const observer = new IntersectionObserver(entries => {
+function initializeSite() {
+  document.getElementById("container").scrollTo(0, 0);
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add("active");
-      } else {
-        entry.target.classList.remove("active");
       }
     });
-  }, {
-    threshold: 0.6
+  }, { threshold: 0.6 });
+
+  document.querySelectorAll(".section").forEach(section => {
+    const bg = section.getAttribute("data-bg");
+    if (bg) section.style.backgroundImage = `url('${bg}')`;
+    observer.observe(section);
   });
 
-  sections.forEach(section => observer.observe(section));
-
-  // Menu toggle
-  const menuButton = document.getElementById("menuButton");
+  const menuBtn = document.getElementById("menuButton");
   const navMenu = document.getElementById("navMenu");
-
-  menuButton.addEventListener("click", () => {
+  menuBtn.addEventListener("click", () => {
     navMenu.classList.toggle("open");
   });
 
@@ -28,22 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
       navMenu.classList.remove("open");
     });
   });
+}
 
-  // Door animation
-  const leftDoor = document.getElementById("leftDoor");
-  const rightDoor = document.getElementById("rightDoor");
-  const doorOverlay = document.getElementById("doorOverlay");
-
-  const openDoors = () => {
-    leftDoor.classList.add("open-left");
-    rightDoor.classList.add("open-right");
-    setTimeout(() => {
-      doorOverlay.style.display = "none";
-      document.body.classList.remove("no-scroll");
-    }, 2000);
-  };
-
-  [leftDoor, rightDoor, doorOverlay].forEach(el => {
-    el.addEventListener("click", openDoors);
-  });
-});
+function openDoors() {
+  document.querySelector(".door.left").classList.add("open-left");
+  document.querySelector(".door.right").classList.add("open-right");
+  document.querySelector(".door-overlay").style.display = "none";
+  setTimeout(() => {
+    document.getElementById("doorContainer").style.display = "none";
+  }, 2000);
+}
