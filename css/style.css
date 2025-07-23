@@ -1,64 +1,37 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body, html { height: 100%; overflow: hidden; font-family: 'Parisienne', cursive; }
-
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  overflow: hidden;
+}
 .container {
   height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
-
 .section {
   height: 100vh;
-  scroll-snap-align: start;
+  width: 100%;
   background-size: cover;
   background-position: center;
+  scroll-snap-align: start;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   opacity: 0;
-  transition: opacity 3s ease;
-  text-align: center;
-  color: white;
-  padding: 2rem;
-  text-shadow: 1px 1px 4px black;
+  transition: opacity 2s ease-in-out;
 }
-
-.section.active { opacity: 1; }
-
-#menuButton {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  background: none;
-  border: none;
-  cursor: pointer;
+.section.active {
+  opacity: 1;
 }
-#menuButton img { width: 40px; }
-
-#navMenu {
+#doorContainer {
   position: fixed;
-  top: 60px;
-  left: -200px;
-  width: 200px;
-  background: rgba(0,0,0,0.8);
-  color: white;
-  padding: 1rem;
-  transition: left 0.3s ease;
-  z-index: 999;
-}
-#navMenu.open { left: 0; }
-#navMenu a { color: white; text-decoration: none; display: block; margin-bottom: 1rem; }
-
-.door-container {
-  position: fixed;
-  z-index: 2000;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  z-index: 1000;
 }
 .door {
   position: absolute;
@@ -68,13 +41,50 @@ body, html { height: 100%; overflow: hidden; font-family: 'Parisienne', cursive;
   object-fit: cover;
   transition: transform 2s ease-in-out;
 }
-.door.left { left: 0; transform: translateX(0); }
-.door.right { right: 0; transform: translateX(0); }
-.door.open-left { transform: translateX(-100%); }
-.door.open-right { transform: translateX(100%); }
-.door-overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 10;
+#leftDoor {
+  left: 0;
+}
+#rightDoor {
+  right: 0;
+}
+.door.open-left {
+  transform: translateX(-100%);
+}
+.door.open-right {
+  transform: translateX(100%);
+}
+#menuButton {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 500;
+  background: none;
+  border: none;
+}
+#menuButton img {
+  width: 40px;
+}
+#navMenu {
+  position: fixed;
+  top: 60px;
+  left: -200px;
+  width: 200px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  z-index: 400;
+  transition: left 0.3s ease;
+}
+#navMenu.open {
+  left: 0;
+}
+#navMenu ul {
+  list-style: none;
+  padding: 20px;
+}
+#navMenu li {
+  margin: 10px 0;
+}
+#navMenu a {
+  color: white;
+  text-decoration: none;
 }
