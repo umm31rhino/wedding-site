@@ -4,16 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Takumi & Ayaka Wedding</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
-<body onload="initializeSite()">
+<body>
 
-<!-- Menu Button -->
+<!-- 扉エフェクト -->
+<div id="doorContainer">
+  <img src="assets/doorleft.jpg" id="leftDoor" class="door" />
+  <img src="assets/doorright.jpg" id="rightDoor" class="door" />
+</div>
+
+<!-- メニュー -->
 <button id="menuButton">
-  <img src="assets/schnauzer.jpeg" alt="Menu">
+  <img src="assets/menu-icon.png" alt="Menu">
 </button>
-
-<!-- Navigation Menu -->
 <nav id="navMenu">
   <ul>
     <li><a href="#section1">Title</a></li>
@@ -26,15 +30,7 @@
   </ul>
 </nav>
 
-<!-- Opening Door -->
-<div class="door-container" id="doorContainer">
-  <img src="assets/doorleft.jpg" class="door left" />
-  <img src="assets/doorright.jpg" class="door right" />
-  <div class="door-overlay" onclick="openDoors()"></div>
-</div>
-
-<!-- Main Container -->
-<div class="container" id="container">
+<div class="container">
   <section id="section1" class="section" data-bg="assets/1-1.jpg"></section>
   <section id="section2" class="section" data-bg="assets/2-1.jpg"></section>
   <section id="section3" class="section" data-bg="assets/3-1.jpg"></section>
@@ -44,6 +40,14 @@
   <section id="section7" class="section" data-bg="assets/7-1.jpg"></section>
 </div>
 
-<script src="main.js"></script>
+<script src="js/main.js"></script>
+<script src="js/section1.js"></script>
+<script src="js/section2.js"></script>
+<script src="js/section3.js"></script>
+<script src="js/section4.js"></script>
+<script src="js/section5.js"></script>
+<script src="js/section6.js"></script>
+<script src="js/section7.js"></script>
+
 </body>
 </html>
