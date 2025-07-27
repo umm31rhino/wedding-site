@@ -1,90 +1,181 @@
-
-body, html {
+/* 全体共通の設定 */
+body {
   margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  overflow: hidden;
-}
-.container {
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
+  font-family: 'Georgia', 'Times New Roman', serif; /* 大人っぽいクラシックなフォント */
+  line-height: 1.6; /* 行間を調整：行間を変える場合はこの値を変更 */
+  color: #333;
   scroll-behavior: smooth;
 }
-.section {
+
+/* 各セクション（ページ）共通設定 */
+section {
+  padding: 80px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ===== ★表紙ページ ===== */
+#cover {
+  position: relative;
   height: 100vh;
+  overflow: hidden;
+  text-align: center;
+  color: white;
+}
+
+#background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  scroll-snap-align: start;
+  transition: opacity 1s ease-in-out;
+  z-index: -1;
+}
+
+.cover-text h1,
+.cover-text h2,
+.cover-text h3 {
+  font-family: 'Cursive', 'Great Vibes', 'Dancing Script', sans-serif; /* 筆記体 */
+  font-weight: normal;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s forwards;
+}
+
+/* フェードイン順番制御 */
+.fade-in.delay-1 { animation-delay: 0.5s; }
+.fade-in.delay-2 { animation-delay: 1s; }
+.fade-in.delay-3 { animation-delay: 1.5s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* カウントダウンのスタイル */
+#countdown {
+  margin-top: 20px;
+  font-size: 1.2rem; /* 文字サイズ変更するにはこの値を調整 */
+  color: #fff;
+}
+
+/* ===== 2ページ目：メッセージ ===== */
+.page.message {
+  background-color: #f3e5e1; /* ピンクベージュ背景 */
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
-  transition: opacity 2s ease-in-out;
 }
-.section.active {
-  opacity: 1;
+
+.message-box {
+  background: #fff;
+  padding: 30px;
+  border: 2px solid #e2cfc3;
+  max-width: 600px;
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  position: relative;
 }
-#doorContainer {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-}
-.door {
+
+/* おしゃれな装飾の淵：疑似要素で */
+.message-box::before,
+.message-box::after {
+  content: \"\";
   position: absolute;
-  top: 0;
-  width: 50%;
-  height: 100%;
+  width: 100px;
+  height: 5px;
+  background: #e2cfc3;
+  top: -10px;
+  left: calc(50% - 50px);
+  border-radius: 5px;
+}
+
+/* ===== 3ページ目：プロフィール ===== */
+.page.profile {
+  background-color: #f3e5e1;
+}
+
+.profile-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0;
+}
+
+.profile-item img {
+  width: 200px;  /* 正方形画像：サイズ変更はここ */
+  height: 200px;
   object-fit: cover;
-  transition: transform 2s ease-in-out;
+  border-radius: 8px;
+  margin: 10px;
+  transition: transform 0.5s ease-in-out;
 }
-#leftDoor {
-  left: 0;
+
+.profile-text {
+  max-width: 400px;
+  margin: 10px;
 }
-#rightDoor {
-  right: 0;
+
+.profile-item.groom {
+  flex-direction: row;
 }
-.door.open-left {
-  transform: translateX(-100%);
+
+.profile-item.bride {
+  flex-direction: row-reverse;
 }
-.door.open-right {
-  transform: translateX(100%);
+
+/* 横からスライドイン（追加予定：JSと合わせる） */
+
+/* ===== 4, 5, 6, 7ページ目共通 ===== */
+.page.schedule,
+.page.hotel,
+.page.sightseeing,
+.page.ending {
+  background-color: #f3e5e1;
 }
-#menuButton {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 500;
-  background: none;
+
+.page h2 {
+  text-align: center;
+  font-size: 2rem; /* タイトルの文字サイズ変更はここ */
+  margin-bottom: 1rem;
+}
+
+.page ul, .page p {
+  max-width: 700px;
+  margin: 0 auto 1rem;
+  font-size: 1rem; /* 本文の文字サイズ変更はここ */
+  line-height: 1.8; /* 本文の行間変更はここ */
+}
+
+/* Google Map iframe */
+iframe {
   border: none;
+  border-radius: 8px;
+  margin-top: 1rem;
 }
-#menuButton img {
-  width: 40px;
-}
-#navMenu {
-  position: fixed;
-  top: 60px;
-  left: -200px;
-  width: 200px;
-  background: rgba(0,0,0,0.8);
-  color: white;
-  z-index: 400;
-  transition: left 0.3s ease;
-}
-#navMenu.open {
-  left: 0;
-}
-#navMenu ul {
-  list-style: none;
-  padding: 20px;
-}
-#navMenu li {
-  margin: 10px 0;
-}
-#navMenu a {
-  color: white;
-  text-decoration: none;
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .profile-item {
+    flex-direction: column !important;
+  }
+
+  .profile-item img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .cover-text h1,
+  .cover-text h2,
+  .cover-text h3 {
+    font-size: 1.5rem; /* モバイルでの表紙文字サイズ調整 */
+  }
 }
