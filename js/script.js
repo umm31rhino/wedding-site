@@ -1,3 +1,4 @@
+
 // ========= 背景画像スライドショー =========
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`); // 枚数変更はここ
 const background = document.getElementById("background");
@@ -16,20 +17,37 @@ function changeBackground() {
 
 // ========= カウントダウン =========
 const countdown = document.getElementById("countdown");
-const weddingDate = new Date("2025-10-10T12:30:00+09:00"); // 日時を変更する場合はここ
+const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
-function updateCountdown() {
+function revealCountdownText(text) {
+  countdown.innerHTML = '';
+  [...text].forEach((char, i) => {
+    const span = document.createElement('span');
+    span.textContent = char;
+    span.style.opacity = 0;
+    span.style.display = 'inline-block';
+    span.style.animation = `letterFadeUp 0.6s forwards`;
+    span.style.animationDelay = `${i * 40}ms`;
+    countdown.appendChild(span);
+  });
+}
+
+function updateCountdownAnimated() {
   const now = new Date();
   const diff = weddingDate - now;
+  let text = '';
+
   if (diff <= 0) {
-    countdown.textContent = "いよいよスタート！";
-    return;
+    text = 'いよいよスタート！';
+  } else {
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+    text = `挙式まであと ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
   }
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-  countdown.textContent = `挙式まであと ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+
+  revealCountdownText(text);
 }
 
 // ========= プロフィール スクロール時表示 =========
@@ -47,8 +65,8 @@ profileItems.forEach(item => {
 });
 
 // ========= 表紙タイトルを1文字ずつ・行順に表示 =========
-const letterDelay = 80;  // 1文字ごとの表示間隔（ms）
-const lineDelay = 600;   // 各行のあとに待つ時間（ms）
+const letterDelay = 80;
+const lineDelay = 600;
 
 function animateLettersSequential(selectors, delayBase = letterDelay, afterLineDelay = lineDelay, onComplete) {
   let totalDelay = 0;
@@ -75,16 +93,36 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
   }
 }
 
-// 最初はピンクベージュ背景で待機
+// ========= 初期状態設定 =========
 background.style.backgroundColor = '#f3e5e1';
 background.style.opacity = 1;
 
-// アニメーション後に背景とカウントダウンを表示
 animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'], letterDelay, lineDelay, () => {
-  background.style.backgroundColor = '';
-  background.style.backgroundImage = `url(${images[0]})`;
-  setInterval(changeBackground, displayTime);
+  // 背景画像：最初だけ特にゆっくりフェードイン
+  background.style.transition = `opacity ${fadeDuration * 2}ms ease-in-out`;
+  background.style.opacity = 0;
 
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+  setTimeout(() => {
+    background.style.backgroundColor = '';
+    background.style.backgroundImage = `url(${images[0]})`;
+    background.style.opacity = 1;
+  }, 100);
+
+  setTimeout(() => {
+    background.style.transition = `opacity ${fadeDuration}ms ease-in-out`;
+    setInterval(changeBackground, displayTime);
+  }, fadeDuration * 2 + 200);
+
+  updateCountdownAnimated();
+  setInterval(updateCountdownAnimated, 1000);
 });
+
+// ========= スケジュールセクションのスタイル適用 =========
+const scheduleSection = document.querySelector('.page.schedule');
+if (scheduleSection) {
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('message-box');
+  wrapper.innerHTML = scheduleSection.innerHTML;
+  scheduleSection.innerHTML = '<h2>Schedule</h2>';
+  scheduleSection.appendChild(wrapper);
+}
