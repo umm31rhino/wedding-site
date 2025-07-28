@@ -52,22 +52,30 @@ profileItems.forEach(item => {
   observer.observe(item);
 });
 
-// ========= 表紙タイトルを1文字ずつ表示 =========
-function animateLetters(selector, delayBase = 100) {
-  const el = document.querySelector(selector);
-  const text = el.textContent.trim();
-  el.textContent = '';
-  el.style.visibility = 'visible';
+// ========= 表紙タイトルを1文字ずつ・行順に表示 =========
+// ▼ 表示速度を変えたいときは以下の2つの変数を変更してください
+const letterDelay = 80;  // 1文字ごとの表示間隔（ms）
+const lineDelay = 600;   // 各行のあとに待つ時間（ms）
 
-  text.split('').forEach((char, i) => {
-    const span = document.createElement('span');
-    span.classList.add('letter');
-    span.style.animationDelay = `${delayBase * i}ms`;
-    span.textContent = char;
-    el.appendChild(span);
+function animateLettersSequential(selectors, delayBase = letterDelay, afterLineDelay = lineDelay) {
+  let totalDelay = 0;
+
+  selectors.forEach(selector => {
+    const el = document.querySelector(selector);
+    const text = el.textContent.trim();
+    el.textContent = '';
+    el.style.visibility = 'visible';
+
+    text.split('').forEach((char, i) => {
+      const span = document.createElement('span');
+      span.classList.add('letter');
+      span.style.animationDelay = `${totalDelay + delayBase * i}ms`;
+      span.textContent = char;
+      el.appendChild(span);
+    });
+
+    totalDelay += delayBase * text.length + afterLineDelay; // 次の行にずらすための合計待機時間
   });
 }
 
-animateLetters('.cover-text h1', 80);
-animateLetters('.cover-text h2', 80);
-animateLetters('.cover-text h3', 80);
+animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3']);
