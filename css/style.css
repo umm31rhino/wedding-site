@@ -19,7 +19,7 @@ h1, h2, h3, p {
   margin: 0 0 1rem;
 }
 
-/* ========= 表紙の背景切り替え ========= */
+/* ========= 表紙セクション ========= */
 #cover {
   position: relative;
   height: 100vh;
@@ -48,33 +48,14 @@ h1, h2, h3, p {
 .cover-text h1,
 .cover-text h2,
 .cover-text h3 {
-  font-family: 'Dancing Script', cursive; /* 表紙の筆記体フォント */
+  font-family: 'Dancing Script', cursive; /* 表紙の筆記体 */
   font-weight: 700;
-  font-size: 3rem; /* 大きく表示 */
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 1s forwards;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.5); /* 文字が背景に埋もれないよう影を追加 */
-}
-
-@media (max-width: 768px) {
-  .cover-text h1,
-  .cover-text h2,
-  .cover-text h3 {
-    font-size: 2.2rem; /* スマホでも読みやすく */
-  }
-}
-
-/* フェードイン順序 */
-.fade-in.delay-1 { animation-delay: 0.5s; }
-.fade-in.delay-2 { animation-delay: 1s; }
-.fade-in.delay-3 { animation-delay: 1.5s; }
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  font-size: 3rem;
+  opacity: 1;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+  display: inline-block;
+  white-space: pre-wrap;
+  visibility: hidden;
 }
 
 #countdown {
@@ -82,6 +63,22 @@ h1, h2, h3, p {
   margin-top: 30px;
   color: white;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+/* 1文字ずつ出すアニメーション */
+.letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: letterFadeUp 0.5s forwards;
+}
+
+@keyframes letterFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ========= メッセージページ ========= */
@@ -156,7 +153,7 @@ h1, h2, h3, p {
   margin: 10px;
 }
 
-/* ========= その他のセクション共通 ========= */
+/* ========= その他共通ページ ========= */
 .page.schedule,
 .page.hotel,
 .page.sightseeing {
@@ -169,7 +166,8 @@ h1, h2, h3, p {
   margin-bottom: 1rem;
 }
 
-.page ul, .page p {
+.page ul,
+.page p {
   max-width: 700px;
   margin: 0 auto 1rem;
   font-size: 1rem;
@@ -182,7 +180,14 @@ iframe {
   margin-top: 1rem;
 }
 
+/* ========= レスポンシブ対応 ========= */
 @media (max-width: 768px) {
+  .cover-text h1,
+  .cover-text h2,
+  .cover-text h3 {
+    font-size: 2.2rem;
+  }
+
   .profile-item {
     flex-direction: column !important;
   }
