@@ -51,3 +51,23 @@ const observer = new IntersectionObserver(entries => {
 profileItems.forEach(item => {
   observer.observe(item);
 });
+
+// ========= 表紙タイトルを1文字ずつ表示 =========
+function animateLetters(selector, delayBase = 100) {
+  const el = document.querySelector(selector);
+  const text = el.textContent.trim();
+  el.textContent = '';
+  el.style.visibility = 'visible';
+
+  text.split('').forEach((char, i) => {
+    const span = document.createElement('span');
+    span.classList.add('letter');
+    span.style.animationDelay = `${delayBase * i}ms`;
+    span.textContent = char;
+    el.appendChild(span);
+  });
+}
+
+animateLetters('.cover-text h1', 80);
+animateLetters('.cover-text h2', 80);
+animateLetters('.cover-text h3', 80);
