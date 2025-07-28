@@ -1,4 +1,4 @@
-/* ========= 共通設定 ========= */
+
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
 body {
@@ -19,7 +19,6 @@ h1, h2, h3, p {
   margin: 0 0 1rem;
 }
 
-/* ========= 表紙セクション ========= */
 #cover {
   position: relative;
   height: 100vh;
@@ -41,14 +40,14 @@ h1, h2, h3, p {
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 2s ease-in-out;
   z-index: -1;
 }
 
 .cover-text h1,
 .cover-text h2,
 .cover-text h3 {
-  font-family: 'Dancing Script', cursive; /* 表紙の筆記体 */
+  font-family: 'Dancing Script', cursive;
   font-weight: 700;
   font-size: 3rem;
   opacity: 1;
@@ -62,11 +61,9 @@ h1, h2, h3, p {
   font-size: 1.4rem;
   margin-top: 30px;
   color: white;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
   text-align: center;
 }
 
-/* 1文字ずつ出すアニメーション */
 .letter {
   display: inline-block;
   opacity: 0;
@@ -81,7 +78,6 @@ h1, h2, h3, p {
   }
 }
 
-/* ========= メッセージページ ========= */
 .page.message {
   background-color: #f3e5e1;
   display: flex;
@@ -93,7 +89,7 @@ h1, h2, h3, p {
   background: #fff;
   padding: 30px;
   border: 2px solid #e2cfc3;
-  max-width: 600px;
+  max-width: 700px;
   text-align: center;
   border-radius: 16px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -112,7 +108,6 @@ h1, h2, h3, p {
   border-radius: 5px;
 }
 
-/* ========= プロフィールページ ========= */
 .page.profile {
   background-color: #f3e5e1;
 }
@@ -123,16 +118,15 @@ h1, h2, h3, p {
   align-items: center;
   justify-content: center;
   margin: 50px 0;
-  opacity: 0;
-  transform: translateX(100px);
   transition: all 1s ease-out;
+  opacity: 0;
 }
 
 .profile-item.groom {
-  flex-direction: row;
+  transform: translateX(100px);
 }
 .profile-item.bride {
-  flex-direction: row-reverse;
+  transform: translateX(-100px);
 }
 
 .profile-item.show {
@@ -153,7 +147,6 @@ h1, h2, h3, p {
   margin: 10px;
 }
 
-/* ========= その他共通ページ ========= */
 .page.schedule,
 .page.hotel,
 .page.sightseeing {
@@ -180,7 +173,6 @@ iframe {
   margin-top: 1rem;
 }
 
-/* ========= レスポンシブ対応 ========= */
 @media (max-width: 768px) {
   .cover-text h1,
   .cover-text h2,
