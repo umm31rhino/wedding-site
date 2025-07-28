@@ -22,8 +22,7 @@
   <!-- ★2ページ目：メッセージ -->
   <section class="page message">
     <div class="message-box">
-      <!-- text/message.txt の内容をここに反映 -->
-      <p id="message-text"></p>
+      <p id="message-text"></p> <!-- text/message.txtの内容をJavaScriptで読み込む -->
     </div>
   </section>
 
@@ -69,5 +68,14 @@
     <img src="assets/okinawa_map.jpg" alt="沖縄マップ">
     <p>地図上におすすめスポットのピン（仮）</p>
   </section>
+
+  <script>
+    // ▼ text/message.txt の読み込み処理
+    fetch('text/message.txt')
+      .then(response => response.text())
+      .then(text => {
+        document.getElementById('message-text').textContent = text;
+      });
+  </script>
 </body>
 </html>
