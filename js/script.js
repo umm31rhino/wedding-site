@@ -14,9 +14,6 @@ function changeBackground() {
   }, fadeDuration);
 }
 
-background.style.backgroundImage = `url(${images[0]})`;
-setInterval(changeBackground, displayTime);
-
 // ========= カウントダウン =========
 const countdown = document.getElementById("countdown");
 const weddingDate = new Date("2025-10-10T12:30:00+09:00"); // 日時を変更する場合はここ
@@ -35,9 +32,6 @@ function updateCountdown() {
   countdown.textContent = `挙式まであと ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
 // ========= プロフィール スクロール時表示 =========
 const profileItems = document.querySelectorAll('.profile-item');
 const observer = new IntersectionObserver(entries => {
@@ -53,11 +47,10 @@ profileItems.forEach(item => {
 });
 
 // ========= 表紙タイトルを1文字ずつ・行順に表示 =========
-// ▼ 表示速度を変えたいときは以下の2つの変数を変更してください
 const letterDelay = 80;  // 1文字ごとの表示間隔（ms）
 const lineDelay = 600;   // 各行のあとに待つ時間（ms）
 
-function animateLettersSequential(selectors, delayBase = letterDelay, afterLineDelay = lineDelay) {
+function animateLettersSequential(selectors, delayBase = letterDelay, afterLineDelay = lineDelay, onComplete) {
   let totalDelay = 0;
 
   selectors.forEach(selector => {
@@ -74,8 +67,24 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
       el.appendChild(span);
     });
 
-    totalDelay += delayBase * text.length + afterLineDelay; // 次の行にずらすための合計待機時間
+    totalDelay += delayBase * text.length + afterLineDelay;
   });
+
+  if (onComplete) {
+    setTimeout(onComplete, totalDelay);
+  }
 }
 
-animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3']);
+// 最初はピンクベージュ背景で待機
+background.style.backgroundColor = '#f3e5e1';
+background.style.opacity = 1;
+
+// アニメーション後に背景とカウントダウンを表示
+animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'], letterDelay, lineDelay, () => {
+  background.style.backgroundColor = '';
+  background.style.backgroundImage = `url(${images[0]})`;
+  setInterval(changeBackground, displayTime);
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
