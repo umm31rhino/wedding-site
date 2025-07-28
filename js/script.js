@@ -11,12 +11,12 @@ function changeBackground() {
   setTimeout(() => {
     background.style.backgroundImage = `url(${images[currentIndex]})`;
     background.style.opacity = 1;
-    currentIndex = (currentIndex + 1) % images.length;
-    if (currentIndex === 0) currentIndex = 1; // 1枚目はスキップして2〜7でループ
+    currentIndex++;
+    if (currentIndex >= images.length) currentIndex = 1; // 2～7でループ（1枚目は初回のみ）
   }, fadeDuration);
 }
 
-// ========= カウントダウン（初回表示のみアニメーション） =========
+// ========= カウントダウン（初回のみアニメ付き） =========
 const countdown = document.getElementById("countdown");
 const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
@@ -44,10 +44,6 @@ function revealCountdownText(text) {
     span.style.animationDelay = `${i * 40}ms`;
     countdown.appendChild(span);
   });
-}
-
-function updateCountdown() {
-  countdown.textContent = formatCountdownText();
 }
 
 // ========= プロフィール スクロール時表示 =========
@@ -97,7 +93,7 @@ background.style.backgroundColor = '#f3e5e1';
 background.style.opacity = 1;
 
 animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'], letterDelay, lineDelay, () => {
-  // 最初の背景画像のみ遅いフェード
+  // 背景画像：最初だけ特にゆっくりフェードイン
   background.style.transition = `opacity ${fadeDuration * 2}ms ease-in-out`;
   background.style.opacity = 0;
 
@@ -112,9 +108,11 @@ animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'],
     setInterval(changeBackground, displayTime);
   }, fadeDuration * 2 + 200);
 
-  // 初回のみカウントダウンをアニメーション表示
+  // 初回のみアニメ表示 → 以降は静的に更新
   revealCountdownText(formatCountdownText());
-  setInterval(updateCountdown, 1000); // 以降は数値のみ更新
+  setInterval(() => {
+    countdown.textContent = formatCountdownText();
+  }, 1000);
 });
 
 // ========= スケジュールセクションのスタイル適用 =========
