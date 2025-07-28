@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wedding Invention</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script defer src="js/script.js"></script>
+  <link rel="stylesheet" href="css/style.css"><!-- CSSはcssフォルダ内 -->
+  <script defer src="js/script.js"></script><!-- JSはjsフォルダ内 -->
 </head>
 <body>
   <!-- ★表紙ページ -->
@@ -22,11 +22,8 @@
   <!-- ★2ページ目：メッセージ -->
   <section class="page message">
     <div class="message-box">
-      <p>
-        皆さまへ<br>
-        本日は私たちの結婚式にご列席いただき、心より感謝申し上げます。<br>
-        笑顔あふれるひとときをお過ごしください。
-      </p>
+      <!-- text/message.txt の内容をここに反映 -->
+      <p id="message-text"></p>
     </div>
   </section>
 
@@ -62,7 +59,7 @@
   <!-- ★5ページ目：宿泊施設 -->
   <section class="page hotel">
     <h2>宿泊施設のご案内</h2>
-    <p>ハイアットリージェンシー瀬良垣<br>10/9~ 2泊（朝食ビュッフェ付き）<br>施設内ナイトプールではアルコールも提供されています。</p>
+    <p>ハイアットリージェンシー瀬良垣<br>10/9~ 2泊（朝食ビュッフェ付き）<br>施設内ナイトプールではアルコールも提供されています。チケットもご利用ください。</p>
     <iframe src="https://www.google.com/maps?q=ハイアットリージェンシー瀬良垣&output=embed" width="100%" height="300" style="border:0;"></iframe>
   </section>
 
@@ -71,12 +68,6 @@
     <h2>沖縄おすすめスポット</h2>
     <img src="assets/okinawa_map.jpg" alt="沖縄マップ">
     <p>地図上におすすめスポットのピン（仮）</p>
-  </section>
-
-  <!-- ★7ページ目：結びの挨拶 -->
-  <section class="page ending">
-    <h2>結びのご挨拶</h2>
-    <p>本日は誠にありがとうございました。<br>今後ともどうぞよろしくお願いいたします。（仮）</p>
   </section>
 </body>
 </html>
