@@ -1,20 +1,23 @@
-/* 全体共通の設定 */
+/* ========= 共通設定 ========= */
 body {
   margin: 0;
-  font-family: 'Georgia', 'Times New Roman', serif; /* 大人っぽいクラシックなフォント */
-  line-height: 1.6; /* 行間を調整：行間を変える場合はこの値を変更 */
+  font-family: 'Georgia', serif; /* 書式を変更したい場合はここ */
+  line-height: 1.6; /* 行間を変えたい場合はここ */
   color: #333;
   scroll-behavior: smooth;
 }
 
-/* 各セクション（ページ）共通設定 */
 section {
   padding: 80px 20px;
   min-height: 100vh;
   box-sizing: border-box;
 }
 
-/* ===== ★表紙ページ ===== */
+h1, h2, h3, p {
+  margin: 0 0 1rem;
+}
+
+/* ========= 表紙の背景切り替え ========= */
 #cover {
   position: relative;
   height: 100vh;
@@ -31,22 +34,21 @@ section {
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out; /* フェードの時間：変更可 */
   z-index: -1;
 }
 
 .cover-text h1,
 .cover-text h2,
 .cover-text h3 {
-  font-family: 'Cursive', 'Great Vibes', 'Dancing Script', sans-serif; /* 筆記体 */
+  font-family: 'Dancing Script', cursive; /* 筆記体に変更 */
   font-weight: normal;
-  margin: 0;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 1s forwards;
 }
 
-/* フェードイン順番制御 */
+/* フェードイン順序 */
 .fade-in.delay-1 { animation-delay: 0.5s; }
 .fade-in.delay-2 { animation-delay: 1s; }
 .fade-in.delay-3 { animation-delay: 1.5s; }
@@ -58,16 +60,14 @@ section {
   }
 }
 
-/* カウントダウンのスタイル */
 #countdown {
+  font-size: 1.2rem; /* カウントダウンの文字サイズ */
   margin-top: 20px;
-  font-size: 1.2rem; /* 文字サイズ変更するにはこの値を調整 */
-  color: #fff;
 }
 
-/* ===== 2ページ目：メッセージ ===== */
+/* ========= メッセージページ ========= */
 .page.message {
-  background-color: #f3e5e1; /* ピンクベージュ背景 */
+  background-color: #f3e5e1; /* 背景色：変更したい場合はここ */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,10 +84,9 @@ section {
   position: relative;
 }
 
-/* おしゃれな装飾の淵：疑似要素で */
 .message-box::before,
 .message-box::after {
-  content: \"\";
+  content: "";
   position: absolute;
   width: 100px;
   height: 5px;
@@ -97,9 +96,9 @@ section {
   border-radius: 5px;
 }
 
-/* ===== 3ページ目：プロフィール ===== */
+/* ========= プロフィールページ ========= */
 .page.profile {
-  background-color: #f3e5e1;
+  background-color: #f3e5e1; /* 背景色：変更する場合はここ */
 }
 
 .profile-item {
@@ -108,15 +107,29 @@ section {
   align-items: center;
   justify-content: center;
   margin: 50px 0;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 1s ease-out;
+}
+
+.profile-item.groom {
+  flex-direction: row;
+}
+.profile-item.bride {
+  flex-direction: row-reverse;
+}
+
+.profile-item.show {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .profile-item img {
-  width: 200px;  /* 正方形画像：サイズ変更はここ */
+  width: 200px; /* 写真サイズ：変更可 */
   height: 200px;
   object-fit: cover;
   border-radius: 8px;
   margin: 10px;
-  transition: transform 0.5s ease-in-out;
 }
 
 .profile-text {
@@ -124,45 +137,33 @@ section {
   margin: 10px;
 }
 
-.profile-item.groom {
-  flex-direction: row;
-}
-
-.profile-item.bride {
-  flex-direction: row-reverse;
-}
-
-/* 横からスライドイン（追加予定：JSと合わせる） */
-
-/* ===== 4, 5, 6, 7ページ目共通 ===== */
+/* ========= その他のセクション共通 ========= */
 .page.schedule,
 .page.hotel,
-.page.sightseeing,
-.page.ending {
-  background-color: #f3e5e1;
+.page.sightseeing {
+  background-color: #f3e5e1; /* 背景色：必要に応じて調整 */
 }
 
 .page h2 {
   text-align: center;
-  font-size: 2rem; /* タイトルの文字サイズ変更はここ */
+  font-size: 2rem;
   margin-bottom: 1rem;
 }
 
 .page ul, .page p {
   max-width: 700px;
   margin: 0 auto 1rem;
-  font-size: 1rem; /* 本文の文字サイズ変更はここ */
-  line-height: 1.8; /* 本文の行間変更はここ */
+  font-size: 1rem; /* 本文のサイズ変更はここ */
+  line-height: 1.8; /* 行間を変える場合はここ */
 }
 
-/* Google Map iframe */
 iframe {
   border: none;
   border-radius: 8px;
   margin-top: 1rem;
 }
 
-/* レスポンシブ対応 */
+/* ========= レスポンシブ対応 ========= */
 @media (max-width: 768px) {
   .profile-item {
     flex-direction: column !important;
@@ -176,6 +177,6 @@ iframe {
   .cover-text h1,
   .cover-text h2,
   .cover-text h3 {
-    font-size: 1.5rem; /* モバイルでの表紙文字サイズ調整 */
+    font-size: 1.5rem;
   }
 }
