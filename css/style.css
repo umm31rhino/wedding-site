@@ -1,8 +1,10 @@
 /* ========= 共通設定 ========= */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
 body {
   margin: 0;
-  font-family: 'Georgia', serif; /* 書式を変更したい場合はここ */
-  line-height: 1.6; /* 行間を変えたい場合はここ */
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
   color: #333;
   scroll-behavior: smooth;
 }
@@ -24,6 +26,11 @@ h1, h2, h3, p {
   overflow: hidden;
   text-align: center;
   color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
 }
 
 #background {
@@ -34,18 +41,28 @@ h1, h2, h3, p {
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: opacity 1s ease-in-out; /* フェードの時間：変更可 */
+  transition: opacity 1s ease-in-out;
   z-index: -1;
 }
 
 .cover-text h1,
 .cover-text h2,
 .cover-text h3 {
-  font-family: 'Dancing Script', cursive; /* 筆記体に変更 */
-  font-weight: normal;
+  font-family: 'Dancing Script', cursive; /* 表紙の筆記体フォント */
+  font-weight: 700;
+  font-size: 3rem; /* 大きく表示 */
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 1s forwards;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5); /* 文字が背景に埋もれないよう影を追加 */
+}
+
+@media (max-width: 768px) {
+  .cover-text h1,
+  .cover-text h2,
+  .cover-text h3 {
+    font-size: 2.2rem; /* スマホでも読みやすく */
+  }
 }
 
 /* フェードイン順序 */
@@ -61,13 +78,15 @@ h1, h2, h3, p {
 }
 
 #countdown {
-  font-size: 1.2rem; /* カウントダウンの文字サイズ */
-  margin-top: 20px;
+  font-size: 1.4rem;
+  margin-top: 30px;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
 }
 
 /* ========= メッセージページ ========= */
 .page.message {
-  background-color: #f3e5e1; /* 背景色：変更したい場合はここ */
+  background-color: #f3e5e1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,7 +117,7 @@ h1, h2, h3, p {
 
 /* ========= プロフィールページ ========= */
 .page.profile {
-  background-color: #f3e5e1; /* 背景色：変更する場合はここ */
+  background-color: #f3e5e1;
 }
 
 .profile-item {
@@ -125,7 +144,7 @@ h1, h2, h3, p {
 }
 
 .profile-item img {
-  width: 200px; /* 写真サイズ：変更可 */
+  width: 200px;
   height: 200px;
   object-fit: cover;
   border-radius: 8px;
@@ -141,7 +160,7 @@ h1, h2, h3, p {
 .page.schedule,
 .page.hotel,
 .page.sightseeing {
-  background-color: #f3e5e1; /* 背景色：必要に応じて調整 */
+  background-color: #f3e5e1;
 }
 
 .page h2 {
@@ -153,8 +172,8 @@ h1, h2, h3, p {
 .page ul, .page p {
   max-width: 700px;
   margin: 0 auto 1rem;
-  font-size: 1rem; /* 本文のサイズ変更はここ */
-  line-height: 1.8; /* 行間を変える場合はここ */
+  font-size: 1rem;
+  line-height: 1.8;
 }
 
 iframe {
@@ -163,7 +182,6 @@ iframe {
   margin-top: 1rem;
 }
 
-/* ========= レスポンシブ対応 ========= */
 @media (max-width: 768px) {
   .profile-item {
     flex-direction: column !important;
@@ -172,11 +190,5 @@ iframe {
   .profile-item img {
     width: 150px;
     height: 150px;
-  }
-
-  .cover-text h1,
-  .cover-text h2,
-  .cover-text h3 {
-    font-size: 1.5rem;
   }
 }
