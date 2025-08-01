@@ -1,15 +1,14 @@
 
 // ========= 背景画像スライドショー =========
-// 表紙の背景画像：assets/hyoshi1.jpg ~ hyoshi7.jpg を使用
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 
 // === フェード時間設定（ミリ秒） ===
 const displayTime = 5000;        // 写真の表示時間（ループ間隔）
-const fadeDuration = 2000;       // 通常のフェードイン・フェードアウトの時間（変更する場合はここ）
-const firstFadeDuration = 3000;  // 最初の写真だけゆっくり表示する時間（変更する場合はここ）
+const fadeDuration = 2000;       // 通常のフェード時間（変更するならここ）
+const firstFadeDuration = 3000;  // 最初の写真だけのフェードイン時間（変更するならここ）
 
-let currentIndex = 0;  // 1～7ループ用の現在のインデックス（初回は使わない）
+let currentIndex = 0;
 
 function changeBackground() {
   background.style.opacity = 0;
@@ -20,7 +19,7 @@ function changeBackground() {
   }, fadeDuration);
 }
 
-// ========= カウントダウン（初回のみアニメ付き） =========
+// ========= カウントダウン =========
 const countdown = document.getElementById("countdown");
 const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
@@ -64,7 +63,7 @@ profileItems.forEach(item => {
   observer.observe(item);
 });
 
-// ========= 表紙タイトルを1文字ずつ・行順に表示 =========
+// ========= 表紙タイトルアニメーション =========
 const letterDelay = 80;
 const lineDelay = 600;
 
@@ -96,33 +95,36 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
 background.style.backgroundColor = '#f3e5e1';
 background.style.opacity = 1;
 
-// 表紙タイトルアニメ → その後に背景とカウントダウン
 animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'], letterDelay, lineDelay, () => {
-  // === 最初の背景画像（hyoshi7.jpg）をゆっくり表示 ===
+  // === 最初の画像を hyoshi7.jpg に指定して遅くフェードイン ===
   background.style.transition = `opacity ${firstFadeDuration}ms ease-in-out`;
   background.style.opacity = 0;
 
+  // 先に画像を設定してから次のイベントループで opacity を戻す
   setTimeout(() => {
     background.style.backgroundColor = '';
-    background.style.backgroundImage = `url(${images[6]})`; // 最初は hyoshi7.jpg を明示的に
-    background.style.opacity = 1;
+    background.style.backgroundImage = `url(${images[6]})`;
+    // 一瞬後に opacity を 1 に変更してフェードインを発火させる
+    requestAnimationFrame(() => {
+      background.style.opacity = 1;
+    });
   }, 100);
 
-  // その後は hyoshi1.jpg から順にループ（1～7）
+  // 通常のループへ
   setTimeout(() => {
     background.style.transition = `opacity ${fadeDuration}ms ease-in-out`;
-    currentIndex = 0; // hyoshi1.jpg からループ
+    currentIndex = 0;
     setInterval(changeBackground, displayTime);
-  }, firstFadeDuration + 200);
+  }, firstFadeDuration + 500);
 
-  // カウントダウン表示（初回だけアニメ表示）
+  // カウントダウン
   revealCountdownText(formatCountdownText());
   setInterval(() => {
     countdown.textContent = formatCountdownText();
   }, 1000);
 });
 
-// ========= スケジュールセクションのスタイル適用 =========
+// ========= スケジュールセクションの白枠化 =========
 const scheduleSection = document.querySelector('.page.schedule');
 if (scheduleSection) {
   const wrapper = document.createElement('div');
