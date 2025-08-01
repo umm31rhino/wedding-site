@@ -63,7 +63,7 @@ h1, h2, h3, p {
   margin-top: 20px;
   display: none; /* 初期は非表示 */
   color: #333;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* ← ここが影の設定 */
+  text-shadow: 1px 1px 3px rgba(100, 100, 100, 0.5); /* ← ここが影の設定 */
   opacity: 0; /* フェードイン用 */
   transition: opacity 1.5s ease-in-out;
 }
