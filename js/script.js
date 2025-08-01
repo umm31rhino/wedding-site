@@ -3,12 +3,11 @@
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 
-// === フェード時間設定（ミリ秒） ===
-const displayTime = 5000;        // 写真の表示時間
-const fadeDuration = 2000;       // 通常フェード時間（変更可）
-const firstFadeDuration = 10000;  // 最初の画像だけゆっくり表示（変更可）
+const displayTime = 5000;
+const fadeDuration = 2000;        // 通常フェード
+const firstFadeDuration = 3000;   // 最初のフェード
 
-let currentIndex = 0; // hyoshi1.jpg からスタート（hyoshi7.jpg は最初のみ個別設定）
+let currentIndex = 0;
 
 function changeBackground() {
   background.style.opacity = 0;
@@ -19,16 +18,14 @@ function changeBackground() {
   }, fadeDuration);
 }
 
-// ========= カウントダウン表示 =========
+// ========= カウントダウン =========
 const countdown = document.getElementById("countdown");
 const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
 function formatCountdownText() {
   const now = new Date();
   const diff = weddingDate - now;
-  if (diff <= 0) {
-    return "いよいよスタート！";
-  }
+  if (diff <= 0) return "いよいよスタート！";
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
@@ -49,7 +46,7 @@ function revealCountdownText(text) {
   });
 }
 
-// ========= プロフィール スクロール時表示 =========
+// ========= プロフィール アニメーション =========
 const profileItems = document.querySelectorAll('.profile-item');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -58,12 +55,9 @@ const observer = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.2 });
+profileItems.forEach(item => observer.observe(item));
 
-profileItems.forEach(item => {
-  observer.observe(item);
-});
-
-// ========= 表紙タイトルアニメーション =========
+// ========= 表紙タイトル アニメーション =========
 const letterDelay = 80;
 const lineDelay = 600;
 
@@ -74,7 +68,6 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
     const text = el.textContent.trim();
     el.textContent = '';
     el.style.visibility = 'visible';
-
     text.split('').forEach((char, i) => {
       const span = document.createElement('span');
       span.classList.add('letter');
@@ -82,46 +75,45 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
       span.textContent = char;
       el.appendChild(span);
     });
-
     totalDelay += delayBase * text.length + afterLineDelay;
   });
-
-  if (onComplete) {
-    setTimeout(onComplete, totalDelay);
-  }
+  if (onComplete) setTimeout(onComplete, totalDelay);
 }
 
-// ========= 初期背景設定 =========
+// ========= 初期処理 =========
 background.style.backgroundColor = '#f3e5e1';
 background.style.opacity = 1;
 
 animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'], letterDelay, lineDelay, () => {
-  // === 最初の背景画像：hyoshi7.jpg を個別設定してゆっくりフェードイン ===
+  // 最初の背景画像（hyoshi7）を2段階requestAnimationFrameで確実にフェードイン
   background.style.transition = `opacity ${firstFadeDuration}ms ease-in-out`;
   background.style.opacity = 0;
 
   setTimeout(() => {
     background.style.backgroundColor = '';
-    background.style.backgroundImage = 'url(assets/hyoshi7.jpg)'; // 明示的に hyoshi7.jpg を指定
-    background.offsetHeight; // フォースリフローで再描画強制
-    background.style.opacity = 1;
+    background.style.backgroundImage = 'url(assets/hyoshi7.jpg)';
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        background.style.opacity = 1;
+      });
+    });
   }, 100);
 
-  // 通常ループ（hyoshi1.jpg〜）開始
+  // その後 hyoshi1〜7でループ
   setTimeout(() => {
     background.style.transition = `opacity ${fadeDuration}ms ease-in-out`;
     currentIndex = 0;
     setInterval(changeBackground, displayTime);
   }, firstFadeDuration + 500);
 
-  // カウントダウン表示
   revealCountdownText(formatCountdownText());
   setInterval(() => {
     countdown.textContent = formatCountdownText();
   }, 1000);
 });
 
-// ========= スケジュールセクション白枠化 =========
+// ========= スケジュール装飾 =========
 const scheduleSection = document.querySelector('.page.schedule');
 if (scheduleSection) {
   const wrapper = document.createElement('div');
