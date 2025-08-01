@@ -58,14 +58,15 @@ h1, h2, h3, p {
 }
 
 #countdown {
-  font-size: 1.5rem; /* 必要に応じてサイズ調整 */
+  font-size: 1.6rem;
   text-align: center;
   margin-top: 20px;
-  display: none; /* 初期は非表示 */
-  color: #333;
-  text-shadow: 1px 1px 3px rgba(100, 100, 100, 0.5); /* ← ここが影の設定 */
-  opacity: 0; /* フェードイン用 */
+  opacity: 0; /* 最初は透明 */
   transition: opacity 1.5s ease-in-out;
+  color: #333;
+
+  /* ✅ クラシカルな影を追加 */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .letter {
