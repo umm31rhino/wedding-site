@@ -30,7 +30,7 @@ function formatCountdownText() {
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
-  return `挙式まであと ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+  return ` ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
 }
 
 function revealCountdownText(text) {
