@@ -5,7 +5,7 @@ const background = document.getElementById("background");
 
 const displayTime = 5000;
 const fadeDuration = 2000;        // 通常フェード
-const firstFadeDuration = 3000;   // 最初のフェード（ここを変えれば最初の写真フェードイン時間が変えられる）
+const firstFadeDuration = 0000;   // 最初のフェード（ここを変えれば最初の写真フェードイン時間が変えられる）
 
 let currentIndex = 0;
 
