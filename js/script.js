@@ -5,7 +5,7 @@ const background = document.getElementById("background");
 
 const displayTime = 5000;
 const fadeDuration = 2000;        // 通常フェード
-const firstFadeDuration = 3000;   // 最初のフェード
+const firstFadeDuration = 3000;   // 最初のフェード（ここを変えれば最初の写真フェードイン時間が変えられる）
 
 let currentIndex = 0;
 
@@ -13,6 +13,7 @@ function changeBackground() {
   background.style.opacity = 0;
   setTimeout(() => {
     background.style.backgroundImage = `url(${images[currentIndex]})`;
+    background.offsetHeight; // ← 強制リフロー（再描画）
     background.style.opacity = 1;
     currentIndex = (currentIndex + 1) % images.length;
   }, fadeDuration);
@@ -30,7 +31,7 @@ function formatCountdownText() {
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
-  return ` ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+  return `挙式まであと ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
 }
 
 function revealCountdownText(text) {
@@ -82,25 +83,19 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
 
 // ========= 初期処理 =========
 background.style.backgroundColor = '#f3e5e1';
-background.style.opacity = 1;
+background.style.opacity = 0;
 
 animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'], letterDelay, lineDelay, () => {
-  // 最初の背景画像（hyoshi7）を2段階requestAnimationFrameで確実にフェードイン
+  // 最初の画像設定
   background.style.transition = `opacity ${firstFadeDuration}ms ease-in-out`;
-  background.style.opacity = 0;
+  background.style.backgroundColor = '';
+  background.style.backgroundImage = 'url(assets/hyoshi7.jpg)';
 
-  setTimeout(() => {
-    background.style.backgroundColor = '';
-    background.style.backgroundImage = 'url(assets/hyoshi7.jpg)';
+  // 強制リフロー + 遅延で transition 発火を確実にする
+  background.offsetHeight; // ← 強制再描画
+  background.style.opacity = 1;
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        background.style.opacity = 1;
-      });
-    });
-  }, 100);
-
-  // その後 hyoshi1〜7でループ
+  // その後のループ（1〜7）開始
   setTimeout(() => {
     background.style.transition = `opacity ${fadeDuration}ms ease-in-out`;
     currentIndex = 0;
