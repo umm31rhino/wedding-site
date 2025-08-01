@@ -63,8 +63,7 @@ h1, h2, h3, p {
   margin-top: 20px;
   opacity: 0; /* 最初は透明 */
   transition: opacity 1.5s ease-in-out;
-  color: #333;
-
+  color: white; /* ← ✅ ここで白に変更できます */
   /* ✅ クラシカルな影を追加 */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
