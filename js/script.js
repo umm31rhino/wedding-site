@@ -3,19 +3,17 @@
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 
-const displayTime = 5000;
-const fadeDuration = 2000;        // 通常フェード
-const firstFadeDuration = 0000;   // 最初のフェード（ここを変えれば最初の写真フェードイン時間が変えられる）
+const displayTime = 5000;          // 写真の表示時間（ms）
+const fadeDuration = 2000;         // フェードイン/アウトの時間（変更可）
 
 let currentIndex = 0;
 
 function changeBackground() {
   background.style.opacity = 0;
   setTimeout(() => {
-    background.style.backgroundImage = `url(${images[currentIndex]})`;
-    background.offsetHeight; // ← 強制リフロー（再描画）
-    background.style.opacity = 1;
     currentIndex = (currentIndex + 1) % images.length;
+    background.style.backgroundImage = `url(${images[currentIndex]})`;
+    background.style.opacity = 1;
   }, fadeDuration);
 }
 
@@ -23,10 +21,12 @@ function changeBackground() {
 const countdown = document.getElementById("countdown");
 const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
-function formatCountdownText() {
+function updateCountdownText() {
   const now = new Date();
   const diff = weddingDate - now;
-  if (diff <= 0) return "いよいよスタート！";
+  if (diff <= 0) {
+    return "いよいよスタート！";
+  }
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
@@ -34,20 +34,21 @@ function formatCountdownText() {
   return `挙式まであと ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
 }
 
-function revealCountdownText(text) {
-  countdown.innerHTML = '';
-  [...text].forEach((char, i) => {
-    const span = document.createElement('span');
-    span.textContent = char;
-    span.style.opacity = 0;
-    span.style.display = 'inline-block';
-    span.style.animation = `letterFadeUp 0.6s forwards`;
-    span.style.animationDelay = `${i * 40}ms`;
-    countdown.appendChild(span);
+function showCountdown() {
+  countdown.textContent = updateCountdownText();
+  countdown.style.opacity = 0;
+  countdown.style.display = "block";
+  countdown.style.transition = "opacity 1.5s ease-in-out";
+  requestAnimationFrame(() => {
+    countdown.style.opacity = 1;
   });
+
+  setInterval(() => {
+    countdown.textContent = updateCountdownText();
+  }, 1000);
 }
 
-// ========= プロフィール アニメーション =========
+// ========= プロフィール スクロール時表示 =========
 const profileItems = document.querySelectorAll('.profile-item');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -58,7 +59,7 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 profileItems.forEach(item => observer.observe(item));
 
-// ========= 表紙タイトル アニメーション =========
+// ========= 表紙タイトルアニメーション =========
 const letterDelay = 80;
 const lineDelay = 600;
 
@@ -78,37 +79,34 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
     });
     totalDelay += delayBase * text.length + afterLineDelay;
   });
-  if (onComplete) setTimeout(onComplete, totalDelay);
+  if (onComplete) {
+    setTimeout(onComplete, totalDelay);
+  }
 }
 
 // ========= 初期処理 =========
 background.style.backgroundColor = '#f3e5e1';
-background.style.opacity = 0;
+background.style.opacity = 1; // ピンクベージュで最初待機
 
 animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'], letterDelay, lineDelay, () => {
-  // 最初の画像設定
-  background.style.transition = `opacity ${firstFadeDuration}ms ease-in-out`;
-  background.style.backgroundColor = '';
-  background.style.backgroundImage = 'url(assets/hyoshi7.jpg)';
+  showCountdown();
 
-  // 強制リフロー + 遅延で transition 発火を確実にする
-  background.offsetHeight; // ← 強制再描画
-  background.style.opacity = 1;
-
-  // その後のループ（1〜7）開始
+  // 背景フェードイン処理開始（最初に hyoshi1）
   setTimeout(() => {
     background.style.transition = `opacity ${fadeDuration}ms ease-in-out`;
-    currentIndex = 0;
-    setInterval(changeBackground, displayTime);
-  }, firstFadeDuration + 500);
+    background.style.opacity = 0;
+    setTimeout(() => {
+      background.style.backgroundColor = '';
+      background.style.backgroundImage = `url(${images[0]})`;
+      background.style.opacity = 1;
 
-  revealCountdownText(formatCountdownText());
-  setInterval(() => {
-    countdown.textContent = formatCountdownText();
-  }, 1000);
+      // 通常ループ開始
+      setInterval(changeBackground, displayTime);
+    }, fadeDuration);
+  }, 2000); // カウントダウン後に背景切り替えを少し遅らせる
 });
 
-// ========= スケジュール装飾 =========
+// ========= スケジュールセクション装飾 =========
 const scheduleSection = document.querySelector('.page.schedule');
 if (scheduleSection) {
   const wrapper = document.createElement('div');
