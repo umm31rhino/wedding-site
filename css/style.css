@@ -58,10 +58,14 @@ h1, h2, h3, p {
 }
 
 #countdown {
-  font-size: 1.4rem;
-  margin-top: 30px;
-  color: white;
+  font-size: 1.5rem; /* 必要に応じてサイズ調整 */
   text-align: center;
+  margin-top: 20px;
+  display: none; /* 初期は非表示 */
+  color: #333;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* ← ここが影の設定 */
+  opacity: 0; /* フェードイン用 */
+  transition: opacity 1.5s ease-in-out;
 }
 
 .letter {
