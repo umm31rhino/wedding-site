@@ -6,7 +6,7 @@ const background = document.getElementById("background");
 // === フェード時間設定（ミリ秒） ===
 const displayTime = 5000;        // 写真の表示時間
 const fadeDuration = 2000;       // 通常フェード時間（変更可）
-const firstFadeDuration = 6000;  // 最初の画像だけゆっくり表示（変更可）
+const firstFadeDuration = 10000;  // 最初の画像だけゆっくり表示（変更可）
 
 let currentIndex = 0; // hyoshi1.jpg からスタート（hyoshi7.jpg は最初のみ個別設定）
 
