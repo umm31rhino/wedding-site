@@ -61,12 +61,12 @@ h1, h2, h3, p {
   font-size: 1.6rem;
   text-align: center;
   margin-top: 20px;
-  opacity: 0; /* 最初は透明 */
+  opacity: 0;
   transition: opacity 1.5s ease-in-out;
-  color: rgb(255,255,255); /* ← ✅ ここで白に変更できます */
-  /* ✅ クラシカルな影を追加 */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  color: white !important; /* ← これで確実に白に */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* 影も強めに */
 }
+
 
 .letter {
   display: inline-block;
