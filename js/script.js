@@ -36,13 +36,16 @@ function updateCountdownText() {
 
 function showCountdown() {
   countdown.textContent = updateCountdownText();
-  countdown.style.opacity = 0;
-  countdown.style.display = "block";
-  countdown.style.transition = "opacity 1.5s ease-in-out";
+
+  // ✅ ここで display をいじらず、opacity だけ変える
+  countdown.style.opacity = 0;  // 念のため初期化
   requestAnimationFrame(() => {
-    countdown.style.opacity = 1;
+    requestAnimationFrame(() => {
+      countdown.style.opacity = 1;  // ✅ フェードインをトリガー
+    });
   });
 
+  // ✅ カウントダウンの数値は更新され続ける
   setInterval(() => {
     countdown.textContent = updateCountdownText();
   }, 1000);
