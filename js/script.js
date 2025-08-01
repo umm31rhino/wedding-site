@@ -4,7 +4,7 @@ const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 let currentIndex = 1; // 2枚目（index=1）からループ開始
 const displayTime = 5000;
-const fadeDuration = 1000;
+const fadeDuration = 2000;
 
 function changeBackground() {
   background.style.opacity = 0;
