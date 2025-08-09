@@ -20,11 +20,23 @@
   </section>
 
   <!-- ★2ページ目：メッセージ -->
-  <section class="page message">
-    <div class="message-box">
-      <p id="message-text"></p> <!-- text/message.txtの内容をJavaScriptで読み込む -->
-    </div>
-  </section>
+<section class="page message">
+  <h2 class="visually-hidden">Message</h2>
+  <div class="pdf-wrap">
+    <iframe
+      class="pdf-frame"
+      src="assets/site.pdf#page=1"
+      title="Message PDF page 1"
+      loading="lazy"
+    ></iframe>
+    <p class="pdf-fallback">
+      PDFを表示できない場合は
+      <a href="assets/site.pdf" target="_blank" rel="noopener">こちら</a>
+      から開いてください。
+    </p>
+  </div>
+</section>
+
 
   <!-- ★3ページ目：プロフィール -->
   <section class="page profile">
@@ -45,15 +57,41 @@
   </section>
 
   <!-- ★4ページ目：スケジュール -->
-  <section class="page schedule">
-    <h2>schedule</h2>
-    <ul>
-      <li><strong>12:30~</strong> 挙式開始<br>→ 30分前にロビー集合、スタッフがご案内します。</li>
-      <li><strong>14:30~16:30</strong> パーティー<br>→ 素敵な食事とお酒をご用意しております。</li>
-    </ul>
-    <h3>ドレスコード</h3>
-    <p>事前にお渡ししたかりゆしウェア<br>シューズや羽織物などは自由です。</p>
-  </section>
+<section class="page schedule">
+  <h2 class="visually-hidden">Schedule</h2>
+  <div class="pdf-wrap">
+    <iframe
+      class="pdf-frame"
+      src="assets/site.pdf#page=2"
+      title="Schedule PDF page 2"
+      loading="lazy"
+    ></iframe>
+    <p class="pdf-fallback">
+      PDFを表示できない場合は
+      <a href="assets/site.pdf#page=2" target="_blank" rel="noopener">こちら</a>
+      から開いてください。
+    </p>
+  </div>
+</section>
+
+
+  <section class="page extra-pdf">
+  <h2 class="visually-hidden">Extra</h2>
+  <div class="pdf-wrap">
+    <iframe
+      class="pdf-frame"
+      src="assets/site.pdf#page=3"
+      title="PDF page 3"
+      loading="lazy"
+    ></iframe>
+    <p class="pdf-fallback">
+      PDFを表示できない場合は
+      <a href="assets/site.pdf#page=3" target="_blank" rel="noopener">こちら</a>
+      から開いてください。
+    </p>
+  </div>
+</section>
+
 
   <!-- ★5ページ目：宿泊施設 -->
   <section class="page hotel">
