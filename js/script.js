@@ -109,12 +109,3 @@ animateLettersSequential(['.cover-text h1', '.cover-text h2', '.cover-text h3'],
   }, 2000); // カウントダウン後に背景切り替えを少し遅らせる
 });
 
-// ========= スケジュールセクション装飾 =========
-const scheduleSection = document.querySelector('.page.schedule');
-if (scheduleSection) {
-  const wrapper = document.createElement('div');
-  wrapper.classList.add('message-box');
-  wrapper.innerHTML = scheduleSection.innerHTML;
-  scheduleSection.innerHTML = '<h2>Schedule</h2>';
-  scheduleSection.appendChild(wrapper);
-}
