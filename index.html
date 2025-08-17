@@ -1,120 +1,104 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wedding Invention</title>
-  <link rel="stylesheet" href="css/style.css"><!-- CSSはcssフォルダ内 -->
-  <script defer src="js/script.js"></script><!-- JSはjsフォルダ内 -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wedding Invention Takumi & Ayaka</title>
+  <!-- スタイル -->
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- ★表紙ページ -->
+
+  <!-- 表紙 -->
   <section id="cover">
     <div id="background"></div>
     <div class="cover-text">
-      <h1 class="fade-in">Wedding Invention</h1>
-      <h2 class="fade-in delay-1">Takumi & Ayaka</h2>
-      <h3 class="fade-in delay-2">2025.10.10</h3>
-      <div id="countdown" class="fade-in delay-3"></div>
+      <!-- 行ごとに改行しておく（JSが1文字ずつ表示） -->
+      <h1>Wedding Invention</h1>
+      <h2>Takumi &amp; Ayaka</h2>
+      <h3>2025.10.10</h3>
+    </div>
+    <div id="countdown"></div>
+  </section>
+
+  <!-- 2ページ目：Message（PDF 1ページ目を埋め込み） -->
+  <section class="page message">
+    <h2 class="visually-hidden">Message</h2>
+    <div class="pdf-wrap">
+      <!-- PDFの1ページ目を“全体表示”で埋め込み。クリックで別タブを開く導線は無し -->
+      <iframe
+        class="pdf-frame"
+        src="assets/site.pdf#page=1&zoom=page-fit"
+        title="Message (PDF page 1)"
+        loading="lazy"
+      ></iframe>
     </div>
   </section>
 
-  <!-- ★2ページ目：メッセージ -->
-<section class="page message">
-  <h2 class="visually-hidden">Message</h2>
-  <div class="pdf-wrap">
-    <iframe
-      class="pdf-frame"
-      src="assets/site.pdf#page=1"
-      title="Message PDF page 1"
-      loading="lazy"
-    ></iframe>
-    <p class="pdf-fallback">
-      PDFを表示できない場合は
-      <a href="assets/site.pdf" target="_blank" rel="noopener">こちら</a>
-      から開いてください。
-    </p>
-  </div>
-</section>
-
-
-  <!-- ★3ページ目：プロフィール -->
+  <!-- 3ページ目：プロフィール -->
   <section class="page profile">
+    <h2>Profile</h2>
+
+    <!-- 新郎（右→左に入ってくる） -->
     <div class="profile-item groom">
-      <img src="assets/groom.jpg" alt="新郎">
+      <img src="assets/groom.jpg" alt="Groom" />
       <div class="profile-text">
         <h3>Takumi</h3>
-        <p>趣味や仕事など、紹介文（仮）</p>
+        <p>出身や趣味、好きなものなど、仮テキストを入れています。後で自由に差し替えてください。</p>
       </div>
     </div>
+
+    <!-- 新婦（左→右に入ってくる） -->
     <div class="profile-item bride">
-      <img src="assets/bride.jpg" alt="新婦">
+      <img src="assets/bride.jpg" alt="Bride" />
       <div class="profile-text">
         <h3>Ayaka</h3>
-        <p>趣味や仕事など、紹介文（仮）</p>
+        <p>出身や趣味、好きなものなど、仮テキストを入れています。後で自由に差し替えてください。</p>
       </div>
     </div>
   </section>
 
-  <!-- ★4ページ目：スケジュール -->
-<section class="page schedule">
-  <h2 class="visually-hidden">Schedule</h2>
-  <div class="pdf-wrap">
-    <iframe
-      class="pdf-frame"
-      src="assets/site.pdf#page=2"
-      title="Schedule PDF page 2"
-      loading="lazy"
-    ></iframe>
-    <p class="pdf-fallback">
-      PDFを表示できない場合は
-      <a href="assets/site.pdf#page=2" target="_blank" rel="noopener">こちら</a>
-      から開いてください。
-    </p>
-  </div>
-</section>
+  <!-- 4ページ目：Schedule（PDF 2ページ目を埋め込み） -->
+  <section class="page schedule">
+    <h2 class="visually-hidden">Schedule</h2>
+    <div class="pdf-wrap">
+      <iframe
+        class="pdf-frame"
+        src="assets/site.pdf#page=2&zoom=page-fit"
+        title="Schedule (PDF page 2)"
+        loading="lazy"
+      ></iframe>
+    </div>
+  </section>
 
-
-  <section class="page extra-pdf">
-  <h2 class="visually-hidden">Extra</h2>
-  <div class="pdf-wrap">
-    <iframe
-      class="pdf-frame"
-      src="assets/site.pdf#page=3"
-      title="PDF page 3"
-      loading="lazy"
-    ></iframe>
-    <p class="pdf-fallback">
-      PDFを表示できない場合は
-      <a href="assets/site.pdf#page=3" target="_blank" rel="noopener">こちら</a>
-      から開いてください。
-    </p>
-  </div>
-</section>
-
-
-  <!-- ★5ページ目：宿泊施設 -->
+  <!-- 5ページ目：宿泊（例：ホテル） -->
   <section class="page hotel">
-    <h2>宿泊施設のご案内</h2>
-    <p>ハイアットリージェンシー瀬良垣<br>10/9~ 2泊（朝食ビュッフェ付き）<br>施設内ナイトプールではアルコールも提供されています。チケットもご利用ください。</p>
-    <iframe src="https://www.google.com/maps?q=ハイアットリージェンシー瀬良垣&output=embed" width="100%" height="300" style="border:0;"></iframe>
+    <h2>Hotel</h2>
+    <p>ハイアットリージェンシー瀬良垣 / 10/9～2泊（朝食ビュッフェ付き）など、必要な情報をここに。</p>
+    <!-- Google Map等は必要に応じて埋め込んでください -->
+    <!-- <iframe src="..."></iframe> -->
   </section>
 
-  <!-- ★6ページ目：観光スポット -->
+  <!-- 6ページ目：観光スポット（例） -->
   <section class="page sightseeing">
-    <h2>沖縄おすすめスポット</h2>
-    <img src="assets/okinawa_map.jpg" alt="沖縄マップ">
-    <p>地図上におすすめスポットのピン（仮）</p>
+    <h2>Okinawa Spots</h2>
+    <p>おすすめスポットをマップなどで紹介できます。後で差し替えてください。</p>
   </section>
 
-  <script>
-    // ▼ text/message.txt の読み込み処理
-    fetch('text/message.txt')
-      .then(response => response.text())
-      .then(text => {
-        document.getElementById('message-text').textContent = text;
-      });
-  </script>
+  <!-- 7ページ目：その他（PDF 3ページ目を続けて挿入） -->
+  <section class="page extra-pdf">
+    <h2 class="visually-hidden">More Information</h2>
+    <div class="pdf-wrap">
+      <iframe
+        class="pdf-frame"
+        src="assets/site.pdf#page=3&zoom=page-fit"
+        title="More Info (PDF page 3)"
+        loading="lazy"
+      ></iframe>
+    </div>
+  </section>
+
+  <!-- スクリプト -->
+  <script src="js/script.js"></script>
 </body>
 </html>
-
