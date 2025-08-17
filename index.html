@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wedding Invention Takumi & Ayaka</title>
   <link rel="stylesheet" href="css/style.css" />
-  <!-- pdf.js v2 UMD（SRIなしで確実にロード） -->
+  <!-- pdf.js v2 UMD -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -21,36 +21,32 @@
     <div id="countdown"></div>
   </section>
 
-  <!-- 2ページ目：Message（site1.pdf 1枚目） -->
+  <!-- Message -->
   <section class="page message">
     <h2 class="visually-hidden">Message</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/site1.pdf" data-page="1"></div>
   </section>
 
-  <!-- 3ページ目：プロフィール（PDFに差し替え） -->
+  <!-- Profile -->
   <section class="page profile">
     <h2 class="visually-hidden">Profile</h2>
-
-    <!-- 新郎：右からフェードイン（50%で発火） -->
     <div class="pdf-canvas-wrap pdf-slide groom" data-pdf="assets/groom.pdf" data-page="1"></div>
-
-    <!-- 新婦：左からフェードイン（50%で発火） -->
     <div class="pdf-canvas-wrap pdf-slide bride" data-pdf="assets/bride.pdf" data-page="1"></div>
   </section>
 
-  <!-- 4ページ目：Schedule（site2.pdf 1枚目） -->
+  <!-- Schedule -->
   <section class="page schedule">
     <h2 class="visually-hidden">Schedule</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/site2.pdf" data-page="1"></div>
   </section>
 
-  <!-- 5ページ目：Okinawa Spots（spot.pdf 1枚目／影なし・ギミックなし） -->
+  <!-- Okinawa Spots -->
   <section class="page sightseeing">
-    <h2>Okinawa Spots</h2>
+    <h2 class="visually-hidden">Okinawa Spots</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/spot.pdf" data-page="1"></div>
   </section>
 
-  <!-- 6ページ目：その他（site3.pdf 1枚目） -->
+  <!-- Extra PDF -->
   <section class="page extra-pdf">
     <h2 class="visually-hidden">More Information</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/site3.pdf" data-page="1"></div>
