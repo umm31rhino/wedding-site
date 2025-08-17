@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wedding Invention Takumi & Ayaka</title>
   <link rel="stylesheet" href="css/style.css" />
+  <!-- pdf.js（CDN）: 自前ホストに切り替えたい場合は公式配布をassetsに置いてパス変更してください -->
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.js"></script>
 </head>
 <body>
 
@@ -19,17 +21,10 @@
     <div id="countdown"></div>
   </section>
 
-  <!-- 2ページ目：Message（site1.pdf を“静的埋め込み” 全幅） -->
+  <!-- 2ページ目：Message（site1.pdfの1ページ目を“画像のように”描画） -->
   <section class="page message">
     <h2 class="visually-hidden">Message</h2>
-    <div class="pdf-still-wrap">
-      <embed
-        class="pdf-still"
-        src="assets/site1.pdf#view=Fit&zoom=page-fit&toolbar=0&navpanes=0&scrollbar=0"
-        type="application/pdf"
-        title="Message (site1.pdf)"
-      />
-    </div>
+    <div class="pdf-canvas-wrap" data-pdf="assets/site1.pdf" data-page="1"></div>
   </section>
 
   <!-- 3ページ目：プロフィール -->
@@ -40,7 +35,7 @@
       <img src="assets/groom.jpg" alt="Groom" />
       <div class="profile-text">
         <h3>Takumi</h3>
-        <p>出身や趣味、好きなものなど、仮テキストを入れています。後で自由に差し替えてください。</p>
+        <p>出身や趣味、好きなものなど、仮テキストです。後で差し替えてください。</p>
       </div>
     </div>
 
@@ -48,47 +43,33 @@
       <img src="assets/bride.jpg" alt="Bride" />
       <div class="profile-text">
         <h3>Ayaka</h3>
-        <p>出身や趣味、好きなものなど、仮テキストを入れています。後で自由に差し替えてください。</p>
+        <p>出身や趣味、好きなものなど、仮テキストです。後で差し替えてください。</p>
       </div>
     </div>
   </section>
 
-  <!-- 4ページ目：Schedule（site2.pdf を“静的埋め込み” 全幅） -->
+  <!-- 4ページ目：Schedule（site2.pdfの1ページ目） -->
   <section class="page schedule">
     <h2 class="visually-hidden">Schedule</h2>
-    <div class="pdf-still-wrap">
-      <embed
-        class="pdf-still"
-        src="assets/site2.pdf#view=Fit&zoom=page-fit&toolbar=0&navpanes=0&scrollbar=0"
-        type="application/pdf"
-        title="Schedule (site2.pdf)"
-      />
-    </div>
+    <div class="pdf-canvas-wrap" data-pdf="assets/site2.pdf" data-page="1"></div>
   </section>
 
   <!-- 5ページ目：宿泊（例） -->
   <section class="page hotel">
     <h2>Hotel</h2>
-    <p>ハイアットリージェンシー瀬良垣 / 10/9～2泊（朝食ビュッフェ付き）など、必要な情報をここに。</p>
+    <p>ハイアットリージェンシー瀬良垣 / 10/9～2泊（朝食ビュッフェ付き）など、必要情報を記載。</p>
   </section>
 
   <!-- 6ページ目：観光（例） -->
   <section class="page sightseeing">
     <h2>Okinawa Spots</h2>
-    <p>おすすめスポットをマップなどで紹介できます。後で差し替えてください。</p>
+    <p>おすすめスポットなど。後で差し替え可能。</p>
   </section>
 
-  <!-- 7ページ目：その他（site3.pdf を“静的埋め込み” 全幅） -->
+  <!-- 7ページ目：その他（site3.pdfの1ページ目） -->
   <section class="page extra-pdf">
     <h2 class="visually-hidden">More Information</h2>
-    <div class="pdf-still-wrap">
-      <embed
-        class="pdf-still"
-        src="assets/site3.pdf#view=Fit&zoom=page-fit&toolbar=0&navpanes=0&scrollbar=0"
-        type="application/pdf"
-        title="More Info (site3.pdf)"
-      />
-    </div>
+    <div class="pdf-canvas-wrap" data-pdf="assets/site3.pdf" data-page="1"></div>
   </section>
 
   <script src="js/script.js"></script>
