@@ -36,7 +36,7 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   z-index: -1;
 }
 .cover-text h1, .cover-text h2, .cover-text h3 {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Dancing+Script', cursive;
   font-weight: 700;
   font-size: 3rem;
   opacity: 1;
@@ -52,9 +52,9 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   text-align: center;
   margin-top: 20px;
 
-  /* ▼ レイアウトシフト防止：出る前提の高さを先に確保＆折り返し禁止 */
-  min-height: 1.8em;   /* 1行ぶんの高さを常時キープ */
-  white-space: nowrap; /* 折り返し禁止 */
+  /* レイアウトシフト防止 */
+  min-height: 1.8em;
+  white-space: nowrap;
 
   opacity: 0; /* 初期は透明 → JSでフェードイン */
   transition: opacity 1.5s ease-in-out;
@@ -84,7 +84,6 @@ h1, h2, h3, p { margin: 0 0 1rem; }
 }
 
 /* ========= PDF Canvas 埋め込み（共通） ========= */
-/* セクション内で中央寄せ。横幅は90vwで、両サイドにピンクが見える */
 .pdf-canvas-wrap {
   width: min(90vw, 1100px);  /* ← 外側余白：数字を増やすと余白が減る */
   margin: 0 auto 40px;       /* 下マージンでカード間の余白 */
@@ -92,14 +91,14 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   position: relative;
 }
 
-/* pdf.jsが描画するcanvas（内側グレー余白は出ない） */
+/* pdf.js が描画する canvas（内側グレー余白は出ない） */
 .pdf-canvas {
-  width: 100%;       /* 横幅はwrapにフィット */
-  height: auto;      /* 縦は比率維持で自動計算（JSで描画サイズを指定） */
+  width: 100%;
+  height: auto;      /* 比率維持で自動計算（JSの描画サイズに追従） */
   display: block;
-  background: #fff;  /* 紙色：白（ビューワのグレー背景は出ない） */
-  border-radius: 8px;/* お好みで角丸（不要なら削除） */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* 少しだけ浮かせる（不要なら削除） */
+  background: #fff;  /* 紙色：白 */
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* 少しだけ浮かせる */
   pointer-events: none; /* 画像のように表示だけ（操作不可） */
 }
 
@@ -113,7 +112,13 @@ h1, h2, h3, p { margin: 0 0 1rem; }
 .pdf-slide.bride { transform: translateX(-80px); } /* 左から */
 .pdf-slide.show  { opacity: 1; transform: translateX(0); }
 
-/* ========= 旧プロフィール画像系は不要だが残しても害なし（未使用） ========= */
+/* ========= Okinawa Spots は影なし ========= */
+.page.sightseeing .pdf-canvas {
+  box-shadow: none;         /* ← 影を無しに */
+  border-radius: 0;         /* 好みで角丸も外す（任意・不要なら消す） */
+}
+
+/* ========= 旧プロフィール画像系は未使用 ========= */
 .profile-item { display: none; }
 
 /* ========= Text blocks ========= */
