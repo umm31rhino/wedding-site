@@ -30,7 +30,6 @@ function updateCountdownText() {
   const m = Math.floor((diff / (1000 * 60)) % 60);
   const s = Math.floor((diff / 1000) % 60);
 
-  // 数字＋単位のみ
   return `${d}日 ${h}時間 ${m}分 ${s}秒`;
 }
 
@@ -46,8 +45,6 @@ function showCountdown() {
     countdown.textContent = updateCountdownText(); // 以降は数値のみ更新
   }, 1000);
 }
-
-// ========= （旧）プロフィール画像フェードは未使用 =========
 
 // ========= 表紙タイトル：1文字ずつ・行順に表示 =========
 const letterDelay = 80;  // 1文字間隔(ms)
@@ -72,9 +69,9 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
 }
 
 // ========= PDF を Canvas へ安定描画（pdf.js v2） =========
-// ・IntersectionObserver：可視化された“最初の一回だけ”描画（data-renderedで抑止）
-// ・ResizeObserver：コンテナ幅が実際に変わったときだけ再描画（±2px以上、デバウンス）
-// ・renderToken：非同期競合を排除（最新トークン以外の結果は破棄）
+// ・groom/bride のスライドイン発火は「50%可視で発火」
+// ・その他（Message, Schedule, Spots, More）は従来どおり早めに描画（10%可視）
+// ・ResizeObserver で実幅変化時のみ再描画、競合防止トークンで安定化
 function initPdfRenderingStable() {
   if (typeof window.pdfjsLib === 'undefined') {
     console.error('[PDF] pdfjsLib が見つかりません。index.html で pdf.min.js の読み込みを確認してください。');
@@ -88,9 +85,10 @@ function initPdfRenderingStable() {
     console.warn('[PDF] GlobalWorkerOptions の設定に失敗:', e);
   }
 
-  const containers = Array.from(document.querySelectorAll('.pdf-canvas-wrap'));
+  const allContainers = Array.from(document.querySelectorAll('.pdf-canvas-wrap'));
+  const slideContainers = Array.from(document.querySelectorAll('.pdf-canvas-wrap.pdf-slide'));
+  const nonSlideContainers = allContainers.filter(el => !el.classList.contains('pdf-slide'));
 
-  // 各コンテナの状態
   const stateMap = new WeakMap();
   function getState(container) {
     let s = stateMap.get(container);
@@ -109,7 +107,6 @@ function initPdfRenderingStable() {
     const state = getState(container);
     const width = Math.round(container.clientWidth);
 
-    // 幅変化が小さいときはスキップ（揺れ対策）
     if (!force && Math.abs(width - state.lastWidth) < 2 && container.dataset.rendered === '1') {
       return;
     }
@@ -124,7 +121,6 @@ function initPdfRenderingStable() {
       try {
         pdf = await loadDoc({ withCredentials: false });
       } catch (err) {
-        // Worker問題がある環境向けフォールバック
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = null;
         pdf = await loadDoc({ disableWorker: true });
       }
@@ -160,24 +156,34 @@ function initPdfRenderingStable() {
     }
   }
 
-  // 初回：可視化で描画＆スライドイン発火
-  const io = new IntersectionObserver((entries) => {
+  // ▼ スライド系（groom/bride）：50%入ったら描画＆スライドイン
+  const ioSlide = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       const el = entry.target;
       if (entry.isIntersecting) {
-        // スライドイン（groom=右から, bride=左から）
-        el.classList.add('show');
-        // PDF描画（未描画なら一回だけ）
-        if (el.dataset.rendered !== '1') {
+        el.classList.add('show');          // 右/左から表示
+        if (el.dataset.rendered !== '1') { // 初回だけ描画
           renderPdf(el, true);
         }
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.5 }); // ★ 50% 可視で発火
 
-  containers.forEach((c) => io.observe(c));
+  slideContainers.forEach((c) => ioSlide.observe(c));
 
-  // コンテナ幅が本当に変わった時だけ再描画
+  // ▼ 非スライド（Message, Schedule, Spots, More）：早めに描画（体感の安定重視）
+  const ioNoSlide = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const el = entry.target;
+      if (entry.isIntersecting && el.dataset.rendered !== '1') {
+        renderPdf(el, true);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  nonSlideContainers.forEach((c) => ioNoSlide.observe(c));
+
+  // ▼ 実幅が変わった時だけ再描画（全てに適用）
   const ro = new ResizeObserver((entries) => {
     entries.forEach((entry) => {
       const el = entry.target;
@@ -188,7 +194,7 @@ function initPdfRenderingStable() {
       }, 200);
     });
   });
-  containers.forEach((c) => ro.observe(c));
+  allContainers.forEach((c) => ro.observe(c));
 }
 
 // ========= 初期：タイトル → カウントダウン → 背景フェード開始 & PDF安定描画初期化 =========
