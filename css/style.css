@@ -33,7 +33,7 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   z-index: -1;
 }
 .cover-text h1, .cover-text h2, .cover-text h3 {
-  font-family: 'Georgia', serif; /* ← 元のフォントに戻す */
+  font-family: 'Dancing Script', cursive; /* ✅ 表紙だけ筆記体に戻す */
   font-weight: 700;
   font-size: 3rem;
   opacity: 1;
