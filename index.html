@@ -1,3 +1,4 @@
+<!-- index.html（修正版・全文） -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -5,8 +6,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wedding Invention Takumi & Ayaka</title>
   <link rel="stylesheet" href="css/style.css" />
-  <!-- pdf.js（CDN）: 自前ホストに切り替えたい場合は公式配布をassetsに置いてパス変更してください -->
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.js"></script>
+  <!-- ✅ pdf.js は v2 系の UMD ビルドを利用（グローバルに pdfjsLib を提供） -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" integrity="sha512-VxE5xvj3bq0CqIUV5fpeY6y8d8rF9aL80f1iE7JkqH2H3kD0hKz2p2H9H9mLQ6r5c3K5FQd2r5Jt7kq8x8E3VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 
@@ -21,7 +22,7 @@
     <div id="countdown"></div>
   </section>
 
-  <!-- 2ページ目：Message（site1.pdfの1ページ目を“画像のように”描画） -->
+  <!-- 2ページ目：Message（site1.pdf 1枚目を Canvas で“画像のように”表示） -->
   <section class="page message">
     <h2 class="visually-hidden">Message</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/site1.pdf" data-page="1"></div>
@@ -35,7 +36,7 @@
       <img src="assets/groom.jpg" alt="Groom" />
       <div class="profile-text">
         <h3>Takumi</h3>
-        <p>出身や趣味、好きなものなど、仮テキストです。後で差し替えてください。</p>
+        <p>出身や趣味、好きなものなど、仮テキストです。後で自由に差し替えてください。</p>
       </div>
     </div>
 
@@ -43,30 +44,30 @@
       <img src="assets/bride.jpg" alt="Bride" />
       <div class="profile-text">
         <h3>Ayaka</h3>
-        <p>出身や趣味、好きなものなど、仮テキストです。後で差し替えてください。</p>
+        <p>出身や趣味、好きなものなど、仮テキストです。後で自由に差し替えてください。</p>
       </div>
     </div>
   </section>
 
-  <!-- 4ページ目：Schedule（site2.pdfの1ページ目） -->
+  <!-- 4ページ目：Schedule（site2.pdf 1枚目） -->
   <section class="page schedule">
     <h2 class="visually-hidden">Schedule</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/site2.pdf" data-page="1"></div>
   </section>
 
-  <!-- 5ページ目：宿泊（例） -->
+  <!-- 5ページ目：宿泊 -->
   <section class="page hotel">
     <h2>Hotel</h2>
     <p>ハイアットリージェンシー瀬良垣 / 10/9～2泊（朝食ビュッフェ付き）など、必要情報を記載。</p>
   </section>
 
-  <!-- 6ページ目：観光（例） -->
+  <!-- 6ページ目：観光 -->
   <section class="page sightseeing">
     <h2>Okinawa Spots</h2>
     <p>おすすめスポットなど。後で差し替え可能。</p>
   </section>
 
-  <!-- 7ページ目：その他（site3.pdfの1ページ目） -->
+  <!-- 7ページ目：その他（site3.pdf 1枚目） -->
   <section class="page extra-pdf">
     <h2 class="visually-hidden">More Information</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/site3.pdf" data-page="1"></div>
