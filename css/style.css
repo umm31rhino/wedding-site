@@ -6,7 +6,7 @@ body {
   margin: 0;
   font-family: 'Georgia', serif;
   line-height: 1.6;
-  color: #333; /* 本文の基本色（カウントダウンは個別指定で白） */
+  color: #333; /* 本文の基本色（カウントダウンは個別で白） */
   scroll-behavior: smooth;
 }
 
@@ -26,7 +26,7 @@ h1, h2, h3, p {
   height: 100vh;
   overflow: hidden;
   text-align: center;
-  color: white;
+  color: white; /* 表紙の文字は白基調 */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,7 +40,7 @@ h1, h2, h3, p {
   width: 100%; height: 100%;
   background-size: cover;
   background-position: center;
-  transition: opacity 2s ease-in-out; /* 背景フェード時間：JSで上書き可 */
+  transition: opacity 2s ease-in-out; /* JSで上書き可 */
   z-index: -1;
 }
 
@@ -49,23 +49,23 @@ h1, h2, h3, p {
 .cover-text h3 {
   font-family: 'Dancing Script', cursive; /* 筆記体 */
   font-weight: 700;
-  font-size: 3rem; /* 表紙タイトルのサイズ（スマホは下の@mediaで縮小） */
+  font-size: 3rem; /* スマホは @media で縮小 */
   opacity: 1;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.5); /* タイトルの影 */
   display: inline-block;
   white-space: pre-wrap;
-  visibility: hidden; /* JSで可視化＆1文字ずつ表示 */
+  visibility: hidden; /* JSで1文字ずつ表示 */
 }
 
 /* カウントダウン（白＋影＋フェード） */
 #countdown {
-  font-size: 1.6rem;         /* 文字サイズを変えるならここ */
+  font-size: 1.6rem;
   text-align: center;
   margin-top: 20px;
-  opacity: 0;                /* 初期は透明 → JSでフェードイン */
+  opacity: 0; /* 初期は透明 → JSでフェードイン */
   transition: opacity 1.5s ease-in-out;
-  color: #fff;               /* ← カウントダウンの文字色（白） */
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.45); /* ← 影（濃さは最後の0.45で調整） */
+  color: #fff; /* 白文字（ここを変えれば色変更可） */
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.45); /* 影の濃さは最後の数値で調整 */
 }
 
 /* 1文字ずつ出すときのスパン（表紙タイトル用） */
@@ -79,37 +79,27 @@ h1, h2, h3, p {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ========= PDF埋め込み（Message=PDF1 / Schedule=PDF2 / 追加PDF3） ========= */
-/* 画面に出さない見出し（アクセシビリティ用） */
-.visually-hidden {
-  position: absolute !important;
-  width: 1px; height: 1px;
-  margin: -1px; border: 0; padding: 0;
-  white-space: nowrap; clip-path: inset(50%);
-  clip: rect(0 0 0 0); overflow: hidden;
-}
-
-/* 各セクション共通の背景色（2ページ目以降ピンクベージュ） */
+/* ========= 2ページ目以降の背景色を統一 ========= */
 .page.message,
 .page.profile,
 .page.schedule,
 .page.hotel,
 .page.sightseeing,
-.page.ending,
 .page.extra-pdf {
-  background-color: #f3e5e1; /* ← 背景色を変えるならここ */
+  background-color: #f3e5e1; /* ← ここを変えると全セクションの背景色を一括変更 */
 }
 
-/* PDFの外枠：左右合計で約10%の余白が見えるよう90vw */
+/* ========= PDF埋め込み（Message=PDF1 / Schedule=PDF2 / その他=PDF3） ========= */
+/* PDF外枠（左右に余白が見えるよう 90vw） */
 .pdf-wrap {
-  width: 90vw;               /* ← 余白量：92vwで余白減 / 85vwで余白増 */
-  max-width: 1100px;         /* PCで広がり過ぎ防止（好みで変更） */
-  height: min(80vh, 1000px); /* 縦の見え方。端末に合わせて 80〜90vh 等に調整 */
-  margin: 0 auto;            /* 中央寄せ */
-  border-radius: 12px;       /* 角丸（不要なら削除） */
-  overflow: hidden;          /* 角丸を有効化 */
+  width: 90vw;                  /* ← 余白量：85〜95vwで微調整 */
+  max-width: 1100px;            /* PCで広がり過ぎ防止（好みで） */
+  height: min(88vh, 1100px);    /* “全体表示”を意識して縦優先。端末に応じて 80〜90vh など調整 */
+  margin: 0 auto;
+  border-radius: 12px;          /* 角丸（不要なら削除） */
+  overflow: hidden;             /* 角丸を有効に */
   box-shadow: 0 10px 30px rgba(0,0,0,0.12); /* ほんのり影（不要なら削除） */
-  background: #fff;          /* PDF読み込み前の下地色 */
+  background: #fff;             /* PDF読み込み前の下地 */
 }
 
 /* PDF本体（iframe） */
@@ -120,15 +110,14 @@ h1, h2, h3, p {
   display: block;
 }
 
-/* PDF埋め込み失敗時のフォールバック案内 */
-.pdf-fallback {
-  margin: 0;
-  padding: 12px;
-  text-align: center;
-  font-size: 0.95rem;
-  background: #fff;
+/* セクション全体を中央寄せ（横・縦とも） */
+.page.schedule,
+.page.extra-pdf {
+  display: flex;
+  align-items: center;  /* 縦方向センター */
+  justify-content: center; /* 横方向センター */
+  padding: 40px 0;      /* 上下余白（好みで調整） */
 }
-.pdf-fallback a { text-decoration: underline; }
 
 /* ========= プロフィール ========= */
 .profile-item {
@@ -151,27 +140,6 @@ h1, h2, h3, p {
   margin: 10px;
 }
 .profile-text { max-width: 400px; margin: 10px; }
-
-/* ========= 以前の“白い枠のメッセージ”用（今は未使用でも他で再利用可） ========= */
-.message-box {
-  background: #fff;
-  padding: 30px;
-  border: 2px solid #e2cfc3;
-  max-width: 700px;
-  text-align: center;
-  border-radius: 16px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  position: relative;
-}
-.message-box::before,
-.message-box::after {
-  content: "";
-  position: absolute;
-  width: 100px; height: 5px;
-  background: #e2cfc3;
-  top: -10px; left: calc(50% - 50px);
-  border-radius: 5px;
-}
 
 /* ========= 共通テキスト領域 ========= */
 .page h2 {
@@ -198,11 +166,12 @@ iframe {
   .cover-text h1, .cover-text h2, .cover-text h3 { font-size: 2.2rem; }
 
   .profile-item { flex-direction: column !important; }
+  .profile-item img { width: 150px; height: 150px; }
 
-  .profile-item img {
-    width: 150px; height: 150px;
+  /* スマホでは少し余白を減らして高さを確保 */
+  .pdf-wrap {
+    width: 94vw;   /* 左右合計の余白を約6%に */
+    height: 86vh;  /* なるべく縦いっぱいで収める */
+    border-radius: 10px;
   }
-
-  /* スマホ時、PDFの高さを少し高めにしたい場合はここを調整 */
-  .pdf-wrap { height: min(85vh, 1000px); }
 }
