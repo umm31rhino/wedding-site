@@ -1,12 +1,12 @@
-/* ========= フォント ========= */
+/* ========= Fonts ========= */
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
-/* ========= ベース ========= */
+/* ========= Base ========= */
 body {
   margin: 0;
   font-family: 'Georgia', serif;
   line-height: 1.6;
-  color: #333; /* 本文の基本色（カウントダウンは個別で白） */
+  color: #333;
   scroll-behavior: smooth;
 }
 
@@ -16,59 +16,48 @@ section {
   box-sizing: border-box;
 }
 
-h1, h2, h3, p {
-  margin: 0 0 1rem;
-}
+h1, h2, h3, p { margin: 0 0 1rem; }
 
-/* ========= 表紙 ========= */
+/* ========= Cover ========= */
 #cover {
   position: relative;
   height: 100vh;
   overflow: hidden;
   text-align: center;
-  color: white; /* 表紙の文字は白基調 */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  color: white;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
   padding: 0 20px;
 }
-
 #background {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-size: cover;
-  background-position: center;
-  transition: opacity 2s ease-in-out; /* JSで上書き可 */
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transition: opacity 2s ease-in-out;
   z-index: -1;
 }
-
-.cover-text h1,
-.cover-text h2,
-.cover-text h3 {
-  font-family: 'Dancing Script', cursive; /* 筆記体 */
+.cover-text h1, .cover-text h2, .cover-text h3 {
+  font-family: 'Dancing Script', cursive;
   font-weight: 700;
-  font-size: 3rem; /* スマホは @media で縮小 */
+  font-size: 3rem;
   opacity: 1;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.5); /* タイトルの影 */
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
   display: inline-block;
   white-space: pre-wrap;
-  visibility: hidden; /* JSで1文字ずつ表示 */
+  visibility: hidden; /* JSで出現 */
 }
 
-/* カウントダウン（白＋影＋フェード） */
+/* Countdown (white + shadow + fade) */
 #countdown {
   font-size: 1.6rem;
   text-align: center;
   margin-top: 20px;
-  opacity: 0; /* 初期は透明 → JSでフェードイン */
+  opacity: 0; /* → JSで1に */
   transition: opacity 1.5s ease-in-out;
-  color: #fff; /* 白文字（ここを変えれば色変更可） */
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.45); /* 影の濃さは最後の数値で調整 */
+  color: #fff; /* ここで白 */
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.45);
 }
 
-/* 1文字ずつ出すときのスパン（表紙タイトル用） */
+/* Title letters animation */
 .letter {
   display: inline-block;
   opacity: 0;
@@ -79,99 +68,95 @@ h1, h2, h3, p {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ========= 2ページ目以降の背景色を統一 ========= */
+/* ========= Pages (2+ bg) ========= */
 .page.message,
 .page.profile,
 .page.schedule,
 .page.hotel,
 .page.sightseeing,
 .page.extra-pdf {
-  background-color: #f3e5e1; /* ← ここを変えると全セクションの背景色を一括変更 */
+  background-color: #f3e5e1; /* 2ページ目以降の背景 */
 }
 
-/* ========= PDF埋め込み（Message=PDF1 / Schedule=PDF2 / その他=PDF3） ========= */
-/* PDF外枠（左右に余白が見えるよう 90vw） */
-.pdf-wrap {
-  width: 90vw;                  /* ← 余白量：85〜95vwで微調整 */
-  max-width: 1100px;            /* PCで広がり過ぎ防止（好みで） */
-  height: min(88vh, 1100px);    /* “全体表示”を意識して縦優先。端末に応じて 80〜90vh など調整 */
-  margin: 0 auto;
-  border-radius: 12px;          /* 角丸（不要なら削除） */
-  overflow: hidden;             /* 角丸を有効に */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12); /* ほんのり影（不要なら削除） */
-  background: #fff;             /* PDF読み込み前の下地 */
-}
-
-/* PDF本体（iframe） */
-.pdf-frame {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-
-/* セクション全体を中央寄せ（横・縦とも） */
+/* ========= PDF “静的埋め込み” ========= */
+/* 中央寄せ（セクション全体） */
 .page.schedule,
-.page.extra-pdf {
+.page.extra-pdf,
+.page.message {
   display: flex;
-  align-items: center;  /* 縦方向センター */
-  justify-content: center; /* 横方向センター */
-  padding: 40px 0;      /* 上下余白（好みで調整） */
+  align-items: center;   /* 縦センター */
+  justify-content: center; /* 横センター */
 }
 
-/* ========= プロフィール ========= */
+/* 画像のように表示する枠（左右合わせて約10%の余白） */
+.pdf-still-wrap {
+  width: 90vw;              /* 余白変えたければ 85〜95vw に */
+  max-width: 1100px;        /* PCで広がりすぎ防止 */
+  /* A4想定の比率：幅:高さ = 210:297（≈0.707）。別サイズならここを変更 */
+  aspect-ratio: 210 / 297;  /* ← ★用紙比率を固定して“全体を収める” */
+  background: #fff;         /* 読み込み前の下地 */
+  border-radius: 12px;      /* 任意 */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12); /* 任意 */
+  overflow: hidden;         /* 枠外を隠す（PDF内スクロール不可化の一助） */
+  position: relative;       /* 内部の embed をフィットさせるため */
+}
+
+/* PDF本体：操作できない“静的”表示にする */
+.pdf-still {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: none; display: block;
+  pointer-events: none;        /* ← ★クリック/スクロール/ズーム等を無効化 */
+  /* 一部環境のスクロールバー対策（埋め込みビューアが出しても枠外を隠す） */
+}
+
+/* ========= Profile ========= */
 .profile-item {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: center;
   margin: 50px 0;
   transition: all 1s ease-out;
-  opacity: 0; /* JSで .show を付与して表示 */
+  opacity: 0; /* JSで .show 付与 */
 }
 .profile-item.groom { transform: translateX(100px); }  /* 右→左 */
 .profile-item.bride { transform: translateX(-100px); } /* 左→右 */
 .profile-item.show { opacity: 1; transform: translateX(0); }
 
 .profile-item img {
-  width: 200px; height: 200px; /* 正方形 */
-  object-fit: cover;
-  border-radius: 8px;
-  margin: 10px;
+  width: 200px; height: 200px;
+  object-fit: cover; border-radius: 8px; margin: 10px;
 }
 .profile-text { max-width: 400px; margin: 10px; }
 
-/* ========= 共通テキスト領域 ========= */
+/* ========= Text blocks ========= */
 .page h2 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  text-align: center; font-size: 2rem; margin-bottom: 1rem;
 }
 .page ul, .page p {
-  max-width: 700px;
-  margin: 0 auto 1rem;
-  font-size: 1rem;
-  line-height: 1.8;
+  max-width: 700px; margin: 0 auto 1rem;
+  font-size: 1rem; line-height: 1.8;
 }
 
-/* ========= Google Map等のiframe共通 ========= */
-iframe {
-  border: none;
-  border-radius: 8px;
-  margin-top: 1rem;
+/* ========= Generic iframe (maps等) ========= */
+iframe { border: none; border-radius: 8px; margin-top: 1rem; }
+
+/* ========= Accessibility utility ========= */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; margin: -1px; border: 0; padding: 0;
+  white-space: nowrap; clip-path: inset(50%); clip: rect(0 0 0 0); overflow: hidden;
 }
 
-/* ========= レスポンシブ ========= */
+/* ========= Responsive ========= */
 @media (max-width: 768px) {
   .cover-text h1, .cover-text h2, .cover-text h3 { font-size: 2.2rem; }
 
   .profile-item { flex-direction: column !important; }
   .profile-item img { width: 150px; height: 150px; }
 
-  /* スマホでは少し余白を減らして高さを確保 */
-  .pdf-wrap {
-    width: 94vw;   /* 左右合計の余白を約6%に */
-    height: 86vh;  /* なるべく縦いっぱいで収める */
+  /* スマホ：左右余白を少し減らし高さ確保（比率は維持） */
+  .pdf-still-wrap {
+    width: 94vw;           /* 左右合計約6%の余白に */
     border-radius: 10px;
   }
 }
