@@ -1,4 +1,4 @@
-<!-- index.html（修正版・全文：SRIを外してpdf.jsを確実に読み込む） -->
+<!-- index.html（修正版・全文） -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wedding Invention Takumi & Ayaka</title>
   <link rel="stylesheet" href="css/style.css" />
-  <!-- ✅ pdf.js v2 UMDをSRIなしで読み込み（これでpdfjsLibが必ず定義される） -->
+  <!-- pdf.js v2 UMD（SRIなしで確実にロード） -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -55,19 +55,13 @@
     <div class="pdf-canvas-wrap" data-pdf="assets/site2.pdf" data-page="1"></div>
   </section>
 
-  <!-- 5ページ目：宿泊 -->
-  <section class="page hotel">
-    <h2>Hotel</h2>
-    <p>ハイアットリージェンシー瀬良垣 / 10/9～2泊（朝食ビュッフェ付き）など、必要情報を記載。</p>
-  </section>
-
-  <!-- 6ページ目：観光 -->
+  <!-- 5ページ目：観光 -->
   <section class="page sightseeing">
     <h2>Okinawa Spots</h2>
     <p>おすすめスポットなど。後で差し替え可能。</p>
   </section>
 
-  <!-- 7ページ目：その他（site3.pdf 1枚目） -->
+  <!-- 6ページ目：その他（site3.pdf 1枚目） -->
   <section class="page extra-pdf">
     <h2 class="visually-hidden">More Information</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/site3.pdf" data-page="1"></div>
