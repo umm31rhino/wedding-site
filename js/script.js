@@ -2,8 +2,8 @@
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 
-const displayTime = 5000;   // 画像の表示時間(ms)
-const fadeDuration = 2000;  // フェードイン/アウト時間(ms)
+const displayTime = 5000;   // 画像の表示時間(ms) ← 変更可
+const fadeDuration = 2000;  // フェードイン/アウト時間(ms) ← 変更可
 
 let currentIndex = 0;
 
@@ -18,7 +18,8 @@ function changeBackground() {
 
 // ========= カウントダウン（全文字同時フェードイン：最初だけ） =========
 const countdown = document.getElementById("countdown");
-const weddingDate = new Date("2025-10-10T12:30:00+09:00"); // 変更するならここ
+// JST（UTC+9）
+const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
 function updateCountdownText() {
   const now = new Date();
@@ -99,54 +100,87 @@ animateLettersSequential(
 );
 
 // ========= PDF を“画像のように”Canvasへ描画（pdf.js使用） =========
-// 使い方：.pdf-canvas-wrap に data-pdf="パス" data-page="ページ番号" を指定するだけ。
-// 横幅はCSSの .pdf-canvas-wrap（90vw）にフィット。縦はPDFの比率から自動算出される。
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.js';
+// .pdf-canvas-wrap に data-pdf="パス" data-page="ページ番号" を指定。
+// 横幅はCSSの .pdf-canvas-wrap（90vw相当）にフィット。縦はPDF比率で自動計算。
+function initPdfRendering() {
+  if (typeof pdfjsLib === 'undefined') {
+    console.error('[PDF] pdfjsLib が見つかりません。index.html で pdf.min.js が読み込まれているか確認してください。');
+    return;
+  }
 
-async function renderPdfIntoCanvas(container) {
-  const url = container.getAttribute('data-pdf');
-  const pageNum = parseInt(container.getAttribute('data-page') || '1', 10);
+  // ワーカーの場所を明示（CDN使用時）
+  try {
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.js';
+  } catch (e) {
+    console.warn('[PDF] GlobalWorkerOptions の設定に失敗:', e);
+  }
 
-  // PDF読み込み
-  const pdf = await pdfjsLib.getDocument(url).promise;
-  const page = await pdf.getPage(pageNum);
+  const containers = Array.from(document.querySelectorAll('.pdf-canvas-wrap'));
 
-  // PDFページの実寸サイズ（ptベース）を取得
-  const viewport = page.getViewport({ scale: 1 });
+  async function renderPdfIntoCanvas(container) {
+    const url = container.getAttribute('data-pdf');
+    const pageNum = parseInt(container.getAttribute('data-page') || '1', 10);
 
-  // コンテナの幅にフィットさせるスケールを計算（90vwなどに合わせる）
-  const containerWidth = container.clientWidth;
-  const scale = containerWidth / viewport.width;
-  const scaledViewport = page.getViewport({ scale });
+    if (!url) {
+      console.error('[PDF] data-pdf が未指定です:', container);
+      return;
+    }
 
-  // canvasを作成してサイズ反映
-  const canvas = document.createElement('canvas');
-  canvas.className = 'pdf-canvas';
-  const ctx = canvas.getContext('2d', { alpha: false }); // ← 背景透過しない（真っ白）
-  canvas.width = Math.floor(scaledViewport.width);
-  canvas.height = Math.floor(scaledViewport.height);
+    try {
+      const pdf = await pdfjsLib.getDocument({ url }).promise;
+      const page = await pdf.getPage(pageNum);
 
-  // 実描画
-  await page.render({
-    canvasContext: ctx,
-    viewport: scaledViewport,
-    intent: 'display'
-  }).promise;
+      // コンテナの現在幅にフィットするスケールを計算
+      const baseViewport = page.getViewport({ scale: 1 });
+      const containerWidth = container.clientWidth || container.getBoundingClientRect().width;
 
-  // 既存の子要素を消して置き換え（再レンダリング時の重複防止）
-  container.innerHTML = '';
-  container.appendChild(canvas);
+      // デバイス解像度を考慮（Retinaでも綺麗に）
+      const dpr = window.devicePixelRatio || 1;
+      const scale = (containerWidth * dpr) / baseViewport.width;
+      const viewport = page.getViewport({ scale });
+
+      // canvas生成＆サイズ設定
+      const canvas = document.createElement('canvas');
+      canvas.className = 'pdf-canvas';
+      const ctx = canvas.getContext('2d', { alpha: false });
+
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      canvas.style.width = Math.floor(viewport.width / dpr) + 'px';
+      canvas.style.height = Math.floor(viewport.height / dpr) + 'px';
+
+      // 描画
+      await page.render({ canvasContext: ctx, viewport, intent: 'display' }).promise;
+
+      // 古い子要素を置換
+      container.innerHTML = '';
+      container.appendChild(canvas);
+    } catch (err) {
+      console.error(`[PDF] 描画に失敗: ${url}`, err);
+      // 必要に応じて、ここで簡易フォールバック（テキスト表示など）を入れられます
+      container.innerHTML = '<p style="text-align:center; padding:16px;">PDFを読み込めませんでした。HTTPSで配信されているか、パスが正しいか確認してください。</p>';
+    }
+  }
+
+  // 初期描画
+  containers.forEach(renderPdfIntoCanvas);
+
+  // 端末回転やリサイズで再フィット
+  let pdfResizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(pdfResizeTimer);
+    pdfResizeTimer = setTimeout(() => {
+      containers.forEach(renderPdfIntoCanvas);
+    }, 150);
+  });
 }
 
-// 初回レンダリング
-const pdfContainers = Array.from(document.querySelectorAll('.pdf-canvas-wrap'));
-pdfContainers.forEach(renderPdfIntoCanvas);
-
-// 端末回転やリサイズで再フィット
-let pdfResizeTimer = null;
-window.addEventListener('resize', () => {
-  clearTimeout(pdfResizeTimer);
-  pdfResizeTimer = setTimeout(() => {
-    pdfContainers.forEach(renderPdfIntoCanvas);
-  }, 150);
+// pdf.js のCDNロード・画像・DOMが全て揃ってから初期化
+window.addEventListener('load', () => {
+  try {
+    initPdfRendering();
+  } catch (e) {
+    console.error('[PDF] 初期化エラー:', e);
+  }
 });
