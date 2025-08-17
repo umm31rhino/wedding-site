@@ -51,10 +51,16 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   font-size: 1.6rem;
   text-align: center;
   margin-top: 20px;
-  opacity: 0;
+
+  /* ▼ レイアウトシフト防止：出る前提の高さを先に確保＆折り返し禁止 */
+  min-height: 1.8em;   /* 1行ぶんの高さを常時キープ（数字が出ても高さが変わらない） */
+  white-space: nowrap; /* 折り返さず1行で表示。幅が足りない場合はフォントサイズ調整を */
+
+  opacity: 0; /* 初期は透明 → JSでフェードイン */
   transition: opacity 1.5s ease-in-out;
   color: #fff;
   text-shadow: 2px 2px 5px rgba(0,0,0,0.45);
+  will-change: opacity; /* アニメの滑らかさ改善 */
 }
 
 /* Title letters animation */
@@ -72,7 +78,6 @@ h1, h2, h3, p { margin: 0 0 1rem; }
 .page.message,
 .page.profile,
 .page.schedule,
-.page.hotel,
 .page.sightseeing,
 .page.extra-pdf {
   background-color: #f3e5e1;   /* ← ページの“外側余白”はこの色が見える */
@@ -83,7 +88,6 @@ h1, h2, h3, p { margin: 0 0 1rem; }
 .pdf-canvas-wrap {
   width: min(90vw, 1100px);  /* ← 外側余白：数字を増やすと余白が減る */
   margin: 0 auto;
-  /* 高さはJSでPDFの縦横比に合わせてcanvasサイズを決めるため、ここでは指定しない */
   display: block;
   position: relative;
 }
