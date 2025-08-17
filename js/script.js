@@ -2,8 +2,8 @@
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 
-const displayTime = 5000;   // 画像の表示時間(ms)
-const fadeDuration = 2000;  // フェードイン/アウト時間(ms)
+const displayTime = 5000;   // 画像の表示時間(ms) ← 変更可
+const fadeDuration = 2000;  // フェードイン/アウト時間(ms) ← 変更可
 
 let currentIndex = 0;
 
@@ -16,9 +16,10 @@ function changeBackground() {
   }, fadeDuration);
 }
 
-// ========= カウントダウン（全文字まとめてフェードイン表示：最初だけ） =========
+// ========= カウントダウン（全文字同時フェードイン：最初だけ） =========
 const countdown = document.getElementById("countdown");
-const weddingDate = new Date("2025-10-10T12:30:00+09:00"); // 変更するならここ
+// JST（UTC+9）で式の開始時刻
+const weddingDate = new Date("2025-10-10T12:30:00+09:00");
 
 function updateCountdownText() {
   const now = new Date();
@@ -40,11 +41,11 @@ function showCountdown() {
     });
   });
   setInterval(() => {
-    countdown.textContent = updateCountdownText(); // 以降は数値だけ更新
+    countdown.textContent = updateCountdownText(); // 以降は数値のみ更新
   }, 1000);
 }
 
-// ========= プロフィールのスクロール表示 =========
+// ========= プロフィール（スクロールで表示） =========
 const profileItems = document.querySelectorAll('.profile-item');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -55,7 +56,8 @@ profileItems.forEach(item => observer.observe(item));
 
 // ========= 表紙タイトル：1文字ずつ・行順に表示 =========
 const letterDelay = 80;  // 1文字間隔(ms)
-const lineDelay = 600;   // 行間待機(ms)
+const lineDelay = 600;   // 各行の待機(ms)
+
 function animateLettersSequential(selectors, delayBase = letterDelay, afterLineDelay = lineDelay, onComplete) {
   let totalDelay = 0;
   selectors.forEach(selector => {
@@ -97,3 +99,5 @@ animateLettersSequential(
     }, 1200);
   }
 );
+
+// （注）以前の「Schedule を message-box で囲む」処理は削除済み
