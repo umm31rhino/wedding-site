@@ -77,16 +77,17 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
   if (onComplete) setTimeout(onComplete, totalDelay);
 }
 
-// ========= PDF を“画像のように”Canvasへ描画（pdf.js v2 使用） =========
-// .pdf-canvas-wrap に data-pdf="パス" data-page="ページ番号" を指定。
-// 横幅はCSSの .pdf-canvas-wrap（例：90vw）にフィット。縦はPDF比率を維持して自動算出。
-function initPdfRendering() {
+// ========= PDF を Canvas へ安定描画（pdf.js v2） =========
+// ・IntersectionObserver：可視化された“最初の一回だけ”描画（data-renderedで抑止）
+// ・ResizeObserver：コンテナ幅が実際に変わったときだけ再描画（±2px以上、デバウンス）
+// ・renderToken：非同期競合を排除（最新トークン以外の結果は破棄）
+
+function initPdfRenderingStable() {
   if (typeof window.pdfjsLib === 'undefined') {
-    console.error('[PDF] pdfjsLib が見つかりません。index.html で pdf.min.js が読み込まれているか確認してください。');
+    console.error('[PDF] pdfjsLib が見つかりません。index.html で pdf.min.js の読み込みを確認してください。');
     return;
   }
 
-  // ワーカーの場所を明示（cdnjs の同バージョンに合わせる）
   try {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
@@ -96,47 +97,59 @@ function initPdfRendering() {
 
   const containers = Array.from(document.querySelectorAll('.pdf-canvas-wrap'));
 
-  async function renderPdfIntoCanvas(container) {
+  // 各コンテナごとに状態を保持
+  const stateMap = new WeakMap();
+  function getState(container) {
+    let s = stateMap.get(container);
+    if (!s) {
+      s = { lastWidth: 0, renderToken: 0, debounceTimer: null };
+      stateMap.set(container, s);
+    }
+    return s;
+  }
+
+  async function renderPdf(container, force = false) {
     const url = container.getAttribute('data-pdf');
     const pageNum = parseInt(container.getAttribute('data-page') || '1', 10);
-    if (!url) {
-      console.error('[PDF] data-pdf が未指定です:', container);
+    if (!url) return;
+
+    const state = getState(container);
+    const width = Math.round(container.clientWidth);
+
+    // 幅変化が小さいときはスキップ（揺れ対策）
+    if (!force && Math.abs(width - state.lastWidth) < 2 && container.dataset.rendered === '1') {
       return;
     }
 
-    // 既存要素をクリア（再描画対策）
-    container.innerHTML = '';
+    state.lastWidth = width;
+    const myToken = ++state.renderToken; // この描画のトークン
 
     try {
-      // 一部環境の CORS / Worker 問題に備えてリトライ戦略
+      // 一旦、レンダリング中インジケータ（必要ならCSSで装飾可能）
+      // container.dataset.loading = '1';
+
+      // まず通常設定で試行、失敗したらWorker無効化で再試行
       const loadDoc = (opts = {}) => window.pdfjsLib.getDocument(Object.assign({ url }, opts)).promise;
 
       let pdf;
       try {
-        // 通常ロード
-        pdf = await loadDoc({
-          withCredentials: false
-        });
-      } catch (firstErr) {
-        console.warn('[PDF] 通常ロード失敗。ワーカー無効で再試行します:', firstErr);
-        // ワーカー無効で再試行（制約環境でも動かす）
+        pdf = await loadDoc({ withCredentials: false });
+      } catch (err) {
+        // Worker周りで失敗する端末対策
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = null;
-        pdf = await loadDoc({
-          disableWorker: true
-        });
+        pdf = await loadDoc({ disableWorker: true });
       }
 
       const page = await pdf.getPage(pageNum);
 
-      // コンテナ幅にフィットするスケール（Retina 対応で dpr も考慮）
       const baseViewport = page.getViewport({ scale: 1 });
-      const containerWidthCSS = container.clientWidth || container.getBoundingClientRect().width;
       const dpr = window.devicePixelRatio || 1;
-
-      const scale = (containerWidthCSS * dpr) / baseViewport.width;
+      const scale = (width * dpr) / baseViewport.width;
       const viewport = page.getViewport({ scale });
 
-      // Canvas 準備（背景は白＝グレー余白なし）
+      // 途中で別の描画要求が来ていたら破棄
+      if (state.renderToken !== myToken) return;
+
       const canvas = document.createElement('canvas');
       canvas.className = 'pdf-canvas';
       const ctx = canvas.getContext('2d', { alpha: false });
@@ -146,30 +159,50 @@ function initPdfRendering() {
       canvas.style.width  = Math.floor(viewport.width / dpr) + 'px';
       canvas.style.height = Math.floor(viewport.height / dpr) + 'px';
 
-      // 描画
       await page.render({ canvasContext: ctx, viewport, intent: 'display' }).promise;
 
+      // 最新トークン確認（描画完了直前にも競合チェック）
+      if (state.renderToken !== myToken) return;
+
+      container.innerHTML = '';
       container.appendChild(canvas);
-    } catch (err) {
-      console.error(`[PDF] 描画に失敗: ${url}`, err);
-      container.innerHTML = '<p style="text-align:center; padding:16px;">PDFを読み込めませんでした。HTTPSで配信されているか、パスが正しいか確認してください。</p>';
+      container.dataset.rendered = '1';
+      // delete container.dataset.loading;
+    } catch (e) {
+      console.error('[PDF] 描画に失敗:', url, e);
+      container.innerHTML = '<p style="text-align:center; padding:16px;">PDFを読み込めませんでした。HTTPSやパスをご確認ください。</p>';
+      // delete container.dataset.loading;
     }
   }
 
-  // 初期描画
-  containers.forEach(renderPdfIntoCanvas);
+  // 初回は「可視になったら一度だけ描画」
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const el = entry.target;
+      if (entry.isIntersecting && el.dataset.rendered !== '1') {
+        renderPdf(el, true);
+      }
+    });
+  }, { threshold: 0.1 });
 
-  // 端末回転やリサイズで再フィット
-  let pdfResizeTimer = null;
-  window.addEventListener('resize', () => {
-    clearTimeout(pdfResizeTimer);
-    pdfResizeTimer = setTimeout(() => {
-      containers.forEach(renderPdfIntoCanvas);
-    }, 150);
+  containers.forEach((c) => io.observe(c));
+
+  // 幅が本当に変わった時のみ再描画（各要素ごとにDebounce）
+  const ro = new ResizeObserver((entries) => {
+    entries.forEach((entry) => {
+      const el = entry.target;
+      const state = getState(el);
+      clearTimeout(state.debounceTimer);
+      state.debounceTimer = setTimeout(() => {
+        renderPdf(el, false);
+      }, 200);
+    });
   });
+
+  containers.forEach((c) => ro.observe(c));
 }
 
-// ========= 初期：タイトル → カウントダウン → 背景フェード開始 =========
+// ========= 初期：タイトル → カウントダウン → 背景フェード開始 & PDF安定描画初期化 =========
 background.style.backgroundColor = '#f3e5e1'; // 表紙待機色（2ページ目以降と同じ）
 background.style.opacity = 1;
 
@@ -190,8 +223,7 @@ animateLettersSequential(
       }, fadeDuration);
     }, 1200);
 
-    // ✅ 表紙演出の初期化と同じタイミングで PDF 描画を開始
-    //（window.load 待ちよりも確実に DOM/レイアウト幅が決まった後）
-    initPdfRendering();
+    // ✅ PDF描画の安定化初期化（この一度だけ呼ぶ）
+    initPdfRenderingStable();
   }
 );
