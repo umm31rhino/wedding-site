@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wedding Invention Takumi & Ayaka</title>
-  <!-- スタイル -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -13,7 +12,6 @@
   <section id="cover">
     <div id="background"></div>
     <div class="cover-text">
-      <!-- 行ごとに改行しておく（JSが1文字ずつ表示） -->
       <h1>Wedding Invention</h1>
       <h2>Takumi &amp; Ayaka</h2>
       <h3>2025.10.10</h3>
@@ -21,17 +19,17 @@
     <div id="countdown"></div>
   </section>
 
-  <!-- 2ページ目：Message（PDF 1ページ目を埋め込み） -->
+  <!-- 2ページ目：Message（PDF 1ページ目を“静的埋め込み”） -->
   <section class="page message">
     <h2 class="visually-hidden">Message</h2>
-    <div class="pdf-wrap">
-      <!-- PDFの1ページ目を“全体表示”で埋め込み。クリックで別タブを開く導線は無し -->
-      <iframe
-        class="pdf-frame"
-        src="assets/site.pdf#page=1&zoom=page-fit"
+    <div class="pdf-still-wrap">
+      <!-- 画像のように埋め込む：pointer-events:none でPDFビューア操作を無効化 -->
+      <embed
+        class="pdf-still"
+        src="assets/site.pdf#page=1&view=Fit&zoom=page-fit&toolbar=0&navpanes=0&scrollbar=0"
+        type="application/pdf"
         title="Message (PDF page 1)"
-        loading="lazy"
-      ></iframe>
+      />
     </div>
   </section>
 
@@ -39,66 +37,61 @@
   <section class="page profile">
     <h2>Profile</h2>
 
-    <!-- 新郎（右→左に入ってくる） -->
     <div class="profile-item groom">
       <img src="assets/groom.jpg" alt="Groom" />
       <div class="profile-text">
         <h3>Takumi</h3>
-        <p>出身や趣味、好きなものなど、仮テキストを入れています。後で自由に差し替えてください。</p>
+        <p>出身や趣味、好きなものなど、仮テキストです。後で自由に差し替えてください。</p>
       </div>
     </div>
 
-    <!-- 新婦（左→右に入ってくる） -->
     <div class="profile-item bride">
       <img src="assets/bride.jpg" alt="Bride" />
       <div class="profile-text">
         <h3>Ayaka</h3>
-        <p>出身や趣味、好きなものなど、仮テキストを入れています。後で自由に差し替えてください。</p>
+        <p>出身や趣味、好きなものなど、仮テキストです。後で自由に差し替えてください。</p>
       </div>
     </div>
   </section>
 
-  <!-- 4ページ目：Schedule（PDF 2ページ目を埋め込み） -->
+  <!-- 4ページ目：Schedule（PDF 2ページ目を“静的埋め込み”） -->
   <section class="page schedule">
     <h2 class="visually-hidden">Schedule</h2>
-    <div class="pdf-wrap">
-      <iframe
-        class="pdf-frame"
-        src="assets/site.pdf#page=2&zoom=page-fit"
+    <div class="pdf-still-wrap">
+      <embed
+        class="pdf-still"
+        src="assets/site.pdf#page=2&view=Fit&zoom=page-fit&toolbar=0&navpanes=0&scrollbar=0"
+        type="application/pdf"
         title="Schedule (PDF page 2)"
-        loading="lazy"
-      ></iframe>
+      />
     </div>
   </section>
 
-  <!-- 5ページ目：宿泊（例：ホテル） -->
+  <!-- 5ページ目：宿泊（例） -->
   <section class="page hotel">
     <h2>Hotel</h2>
-    <p>ハイアットリージェンシー瀬良垣 / 10/9～2泊（朝食ビュッフェ付き）など、必要な情報をここに。</p>
-    <!-- Google Map等は必要に応じて埋め込んでください -->
-    <!-- <iframe src="..."></iframe> -->
+    <p>ハイアットリージェンシー瀬良垣 / 10/9～2泊（朝食ビュッフェ付き）など、必要情報を記載。</p>
   </section>
 
-  <!-- 6ページ目：観光スポット（例） -->
+  <!-- 6ページ目：観光（例） -->
   <section class="page sightseeing">
     <h2>Okinawa Spots</h2>
-    <p>おすすめスポットをマップなどで紹介できます。後で差し替えてください。</p>
+    <p>おすすめスポットなど。後で差し替え可能。</p>
   </section>
 
-  <!-- 7ページ目：その他（PDF 3ページ目を続けて挿入） -->
+  <!-- 7ページ目：その他（PDF 3ページ目を“静的埋め込み”） -->
   <section class="page extra-pdf">
     <h2 class="visually-hidden">More Information</h2>
-    <div class="pdf-wrap">
-      <iframe
-        class="pdf-frame"
-        src="assets/site.pdf#page=3&zoom=page-fit"
+    <div class="pdf-still-wrap">
+      <embed
+        class="pdf-still"
+        src="assets/site.pdf#page=3&view=Fit&zoom=page-fit&toolbar=0&navpanes=0&scrollbar=0"
+        type="application/pdf"
         title="More Info (PDF page 3)"
-        loading="lazy"
-      ></iframe>
+      />
     </div>
   </section>
 
-  <!-- スクリプト -->
   <script src="js/script.js"></script>
 </body>
 </html>
