@@ -1,5 +1,3 @@
-// js/script.js（修正版・全文）
-
 // ========= 背景画像スライドショー =========
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
@@ -26,11 +24,14 @@ function updateCountdownText() {
   const now = new Date();
   const diff = weddingDate - now;
   if (diff <= 0) return "いよいよスタート！";
+
   const d = Math.floor(diff / (1000 * 60 * 60 * 24));
   const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const m = Math.floor((diff / (1000 * 60)) % 60);
   const s = Math.floor((diff / 1000) % 60);
-  return `挙式まであと ${d}日 ${h}時間 ${m}分 ${s}秒`;
+
+  // ▼ 「挙式まで」を削除して、数字＋単位のみを表示
+  return `${d}日 ${h}時間 ${m}分 ${s}秒`;
 }
 
 function showCountdown() {
@@ -38,7 +39,7 @@ function showCountdown() {
   countdown.style.opacity = 0;
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      countdown.style.opacity = 1; // フェードイン
+      countdown.style.opacity = 1; // フェードイン（スペースはCSSのmin-heightで確保済み）
     });
   });
   setInterval(() => {
@@ -78,10 +79,6 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
 }
 
 // ========= PDF を Canvas へ安定描画（pdf.js v2） =========
-// ・IntersectionObserver：可視化された“最初の一回だけ”描画（data-renderedで抑止）
-// ・ResizeObserver：コンテナ幅が実際に変わったときだけ再描画（±2px以上、デバウンス）
-// ・renderToken：非同期競合を排除（最新トークン以外の結果は破棄）
-
 function initPdfRenderingStable() {
   if (typeof window.pdfjsLib === 'undefined') {
     console.error('[PDF] pdfjsLib が見つかりません。index.html で pdf.min.js の読み込みを確認してください。');
@@ -97,7 +94,6 @@ function initPdfRenderingStable() {
 
   const containers = Array.from(document.querySelectorAll('.pdf-canvas-wrap'));
 
-  // 各コンテナごとに状態を保持
   const stateMap = new WeakMap();
   function getState(container) {
     let s = stateMap.get(container);
@@ -116,26 +112,20 @@ function initPdfRenderingStable() {
     const state = getState(container);
     const width = Math.round(container.clientWidth);
 
-    // 幅変化が小さいときはスキップ（揺れ対策）
     if (!force && Math.abs(width - state.lastWidth) < 2 && container.dataset.rendered === '1') {
       return;
     }
 
     state.lastWidth = width;
-    const myToken = ++state.renderToken; // この描画のトークン
+    const myToken = ++state.renderToken;
 
     try {
-      // 一旦、レンダリング中インジケータ（必要ならCSSで装飾可能）
-      // container.dataset.loading = '1';
-
-      // まず通常設定で試行、失敗したらWorker無効化で再試行
       const loadDoc = (opts = {}) => window.pdfjsLib.getDocument(Object.assign({ url }, opts)).promise;
 
       let pdf;
       try {
         pdf = await loadDoc({ withCredentials: false });
       } catch (err) {
-        // Worker周りで失敗する端末対策
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = null;
         pdf = await loadDoc({ disableWorker: true });
       }
@@ -147,7 +137,6 @@ function initPdfRenderingStable() {
       const scale = (width * dpr) / baseViewport.width;
       const viewport = page.getViewport({ scale });
 
-      // 途中で別の描画要求が来ていたら破棄
       if (state.renderToken !== myToken) return;
 
       const canvas = document.createElement('canvas');
@@ -161,21 +150,17 @@ function initPdfRenderingStable() {
 
       await page.render({ canvasContext: ctx, viewport, intent: 'display' }).promise;
 
-      // 最新トークン確認（描画完了直前にも競合チェック）
       if (state.renderToken !== myToken) return;
 
       container.innerHTML = '';
       container.appendChild(canvas);
       container.dataset.rendered = '1';
-      // delete container.dataset.loading;
     } catch (e) {
       console.error('[PDF] 描画に失敗:', url, e);
       container.innerHTML = '<p style="text-align:center; padding:16px;">PDFを読み込めませんでした。HTTPSやパスをご確認ください。</p>';
-      // delete container.dataset.loading;
     }
   }
 
-  // 初回は「可視になったら一度だけ描画」
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       const el = entry.target;
@@ -187,7 +172,6 @@ function initPdfRenderingStable() {
 
   containers.forEach((c) => io.observe(c));
 
-  // 幅が本当に変わった時のみ再描画（各要素ごとにDebounce）
   const ro = new ResizeObserver((entries) => {
     entries.forEach((entry) => {
       const el = entry.target;
@@ -223,7 +207,7 @@ animateLettersSequential(
       }, fadeDuration);
     }, 1200);
 
-    // ✅ PDF描画の安定化初期化（この一度だけ呼ぶ）
+    // PDF描画の安定化初期化（この一度だけ呼ぶ）
     initPdfRenderingStable();
   }
 );
