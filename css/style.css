@@ -1,12 +1,12 @@
-/* ========= Fonts ========= */
+/* ========= フォント ========= */
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
-/* ========= Base ========= */
+/* ========= ベース ========= */
 body {
   margin: 0;
   font-family: 'Georgia', serif;
   line-height: 1.6;
-  color: #333;
+  color: #333; /* 本文の基本色（カウントダウンは個別で白） */
   scroll-behavior: smooth;
 }
 
@@ -18,46 +18,50 @@ section {
 
 h1, h2, h3, p { margin: 0 0 1rem; }
 
-/* ========= Cover ========= */
+/* ========= 表紙 ========= */
 #cover {
   position: relative;
   height: 100vh;
   overflow: hidden;
   text-align: center;
-  color: white;
+  color: white; /* 表紙の文字は白基調 */
   display: flex; flex-direction: column;
   justify-content: center; align-items: center;
   padding: 0 20px;
 }
+
 #background {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
-  transition: opacity 2s ease-in-out;
+  transition: opacity 2s ease-in-out; /* JSで上書き可 */
   z-index: -1;
 }
-.cover-text h1, .cover-text h2, .cover-text h3 {
-  font-family: 'Dancing Script', cursive;
+
+.cover-text h1,
+.cover-text h2,
+.cover-text h3 {
+  font-family: 'Dancing Script', cursive; /* 筆記体 */
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 3rem; /* スマホは @media で縮小 */
   opacity: 1;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5); /* タイトルの影 */
   display: inline-block;
   white-space: pre-wrap;
-  visibility: hidden; /* JSで出現 */
+  visibility: hidden; /* JSで1文字ずつ表示 */
 }
 
-/* Countdown (white + shadow + fade) */
+/* ========= カウントダウン（白＋影＋フェード） ========= */
 #countdown {
   font-size: 1.6rem;
   text-align: center;
   margin-top: 20px;
-  opacity: 0; /* → JSで1に */
+  opacity: 0; /* 初期は透明 → JSでフェードイン */
   transition: opacity 1.5s ease-in-out;
-  color: #fff; /* ここで白 */
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.45);
+  color: #fff; /* 白文字（ここを変えれば色変更可） */
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.45); /* 影の濃さは最後の数値で調整 */
 }
 
-/* Title letters animation */
+/* 表紙タイトル：1文字ずつ出すスパン */
 .letter {
   display: inline-block;
   opacity: 0;
@@ -68,49 +72,49 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ========= Pages (2+ bg) ========= */
+/* ========= 2ページ目以降の背景色 ========= */
 .page.message,
 .page.profile,
 .page.schedule,
 .page.hotel,
 .page.sightseeing,
 .page.extra-pdf {
-  background-color: #f3e5e1; /* 2ページ目以降の背景 */
+  background-color: #f3e5e1;
 }
 
-/* ========= PDF “静的埋め込み” ========= */
-/* 中央寄せ（セクション全体） */
+/* ========= PDF “静的埋め込み”（画像のように見せる） ========= */
+/* PDFセクションは左右の余白を消す（全幅で見せるため） */
+.page.message,
 .page.schedule,
-.page.extra-pdf,
-.page.message {
-  display: flex;
-  align-items: center;   /* 縦センター */
-  justify-content: center; /* 横センター */
+.page.extra-pdf {
+  padding-left: 0;
+  padding-right: 0;
+  display: block; /* 全幅化のためフレックス解除 */
 }
 
-/* 画像のように表示する枠（左右合わせて約10%の余白） */
+/* 画像のように表示する枠：余白ゼロで全幅、縦は用紙比率で自動算出 */
 .pdf-still-wrap {
-  width: 90vw;              /* 余白変えたければ 85〜95vw に */
-  max-width: 1100px;        /* PCで広がりすぎ防止 */
-  /* A4想定の比率：幅:高さ = 210:297（≈0.707）。別サイズならここを変更 */
-  aspect-ratio: 210 / 297;  /* ← ★用紙比率を固定して“全体を収める” */
-  background: #fff;         /* 読み込み前の下地 */
-  border-radius: 12px;      /* 任意 */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12); /* 任意 */
-  overflow: hidden;         /* 枠外を隠す（PDF内スクロール不可化の一助） */
-  position: relative;       /* 内部の embed をフィットさせるため */
+  width: 100vw;              /* 画面幅いっぱい。余白なし */
+  max-width: none;
+  /* A4の比率（210:297 ≒ 0.707）→用紙が通常の“縦型PDF”ならこの比率でOK */
+  aspect-ratio: 210 / 297;   /* ★用紙比率が違う場合はここを変更 */
+  margin: 0 auto;
+  background: transparent;   /* 下地なし（PDF自体の紙色をそのまま見せる） */
+  border-radius: 0;          /* 角丸なし（余白ゼロに徹する） */
+  box-shadow: none;          /* 影なし（余白ゼロに徹する） */
+  position: relative;
+  overflow: hidden;          /* 内部のスクロールUIを見せない */
 }
 
-/* PDF本体：操作できない“静的”表示にする */
+/* PDF本体：クリック・スクロール不可の“静的”表示 */
 .pdf-still {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   border: none; display: block;
-  pointer-events: none;        /* ← ★クリック/スクロール/ズーム等を無効化 */
-  /* 一部環境のスクロールバー対策（埋め込みビューアが出しても枠外を隠す） */
+  pointer-events: none; /* ← PDFビューア操作（クリック/スクロール/ズーム）を無効化 */
 }
 
-/* ========= Profile ========= */
+/* ========= プロフィール ========= */
 .profile-item {
   display: flex; flex-wrap: wrap;
   align-items: center; justify-content: center;
@@ -128,7 +132,7 @@ h1, h2, h3, p { margin: 0 0 1rem; }
 }
 .profile-text { max-width: 400px; margin: 10px; }
 
-/* ========= Text blocks ========= */
+/* ========= テキスト領域 ========= */
 .page h2 {
   text-align: center; font-size: 2rem; margin-bottom: 1rem;
 }
@@ -137,26 +141,22 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   font-size: 1rem; line-height: 1.8;
 }
 
-/* ========= Generic iframe (maps等) ========= */
+/* ========= iFrame汎用（Google Map等） ========= */
 iframe { border: none; border-radius: 8px; margin-top: 1rem; }
 
-/* ========= Accessibility utility ========= */
+/* ========= アクセシビリティ補助 ========= */
 .visually-hidden {
   position: absolute !important;
   width: 1px; height: 1px; margin: -1px; border: 0; padding: 0;
   white-space: nowrap; clip-path: inset(50%); clip: rect(0 0 0 0); overflow: hidden;
 }
 
-/* ========= Responsive ========= */
+/* ========= レスポンシブ ========= */
 @media (max-width: 768px) {
   .cover-text h1, .cover-text h2, .cover-text h3 { font-size: 2.2rem; }
 
   .profile-item { flex-direction: column !important; }
   .profile-item img { width: 150px; height: 150px; }
 
-  /* スマホ：左右余白を少し減らし高さ確保（比率は維持） */
-  .pdf-still-wrap {
-    width: 94vw;           /* 左右合計約6%の余白に */
-    border-radius: 10px;
-  }
+  /* PDFは常に画面幅いっぱいなので特別な調整は不要（比率固定で高さが決まる） */
 }
