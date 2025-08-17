@@ -1,4 +1,4 @@
-<!-- index.html（修正版・全文） -->
+<!-- index.html（修正版・全文：SRIを外してpdf.jsを確実に読み込む） -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wedding Invention Takumi & Ayaka</title>
   <link rel="stylesheet" href="css/style.css" />
-  <!-- ✅ pdf.js は v2 系の UMD ビルドを利用（グローバルに pdfjsLib を提供） -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" integrity="sha512-VxE5xvj3bq0CqIUV5fpeY6y8d8rF9aL80f1iE7JkqH2H3kD0hKz2p2H9H9mLQ6r5c3K5FQd2r5Jt7kq8x8E3VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- ✅ pdf.js v2 UMDをSRIなしで読み込み（これでpdfjsLibが必ず定義される） -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -22,7 +22,7 @@
     <div id="countdown"></div>
   </section>
 
-  <!-- 2ページ目：Message（site1.pdf 1枚目を Canvas で“画像のように”表示） -->
+  <!-- 2ページ目：Message（site1.pdf 1枚目を Canvas 表示） -->
   <section class="page message">
     <h2 class="visually-hidden">Message</h2>
     <div class="pdf-canvas-wrap" data-pdf="assets/site1.pdf" data-page="1"></div>
