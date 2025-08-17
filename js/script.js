@@ -1,15 +1,12 @@
 // ========= 背景画像スライドショー =========
-// assets/hyoshi1.jpg ~ hyoshi7.jpg を用意してください。
-// ▶ 表示時間やフェード時間は下の変数で調整可能
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 
-const displayTime = 5000;   // 写真の表示時間（ms）← 変更したい場合ここ
-const fadeDuration = 2000;  // フェードイン/アウトの時間（ms）← 変更したい場合ここ
+const displayTime = 5000;   // 画像の表示時間(ms)
+const fadeDuration = 2000;  // フェードイン/アウト時間(ms)
 
 let currentIndex = 0;
 
-// 画像切替（フェードアウト → 画像差替え → フェードイン）
 function changeBackground() {
   background.style.opacity = 0;
   setTimeout(() => {
@@ -19,40 +16,35 @@ function changeBackground() {
   }, fadeDuration);
 }
 
-// ========= カウントダウン =========
+// ========= カウントダウン（全文字まとめてフェードイン表示：最初だけ） =========
 const countdown = document.getElementById("countdown");
-// ▶ 日付時刻を変更する場合はここ（JST+09:00）
-const weddingDate = new Date("2025-10-10T12:30:00+09:00");
+const weddingDate = new Date("2025-10-10T12:30:00+09:00"); // 変更するならここ
 
-// カウントダウンの文字列を作成
 function updateCountdownText() {
   const now = new Date();
   const diff = weddingDate - now;
   if (diff <= 0) return "いよいよスタート！";
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-  return `挙式まであと ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+  return `挙式まであと ${d}日 ${h}時間 ${m}分 ${s}秒`;
 }
 
-// カウントダウンを“全文字まとめてフェードイン”で表示（最初だけ）
 function showCountdown() {
   countdown.textContent = updateCountdownText();
   countdown.style.opacity = 0;
-  // フェードインを確実に発火させる
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      countdown.style.opacity = 1;
+      countdown.style.opacity = 1; // フェードイン
     });
   });
-  // 以降は数字だけ更新（再フェードはしない）
   setInterval(() => {
-    countdown.textContent = updateCountdownText();
+    countdown.textContent = updateCountdownText(); // 以降は数値だけ更新
   }, 1000);
 }
 
-// ========= プロフィール（スクロールでフワッと） =========
+// ========= プロフィールのスクロール表示 =========
 const profileItems = document.querySelectorAll('.profile-item');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -61,11 +53,9 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 profileItems.forEach(item => observer.observe(item));
 
-// ========= 表紙タイトルを1文字ずつ・行順に表示 =========
-// ▶ 表示速度を変えたいときは以下の2つを調整してください
-const letterDelay = 80;  // 1文字ごとの表示間隔（ms）
-const lineDelay = 600;   // 各行のあとに待つ時間（ms）
-
+// ========= 表紙タイトル：1文字ずつ・行順に表示 =========
+const letterDelay = 80;  // 1文字間隔(ms)
+const lineDelay = 600;   // 行間待機(ms)
 function animateLettersSequential(selectors, delayBase = letterDelay, afterLineDelay = lineDelay, onComplete) {
   let totalDelay = 0;
   selectors.forEach(selector => {
@@ -85,8 +75,8 @@ function animateLettersSequential(selectors, delayBase = letterDelay, afterLineD
   if (onComplete) setTimeout(onComplete, totalDelay);
 }
 
-// ========= 初期処理：タイトル → カウントダウン → 背景フェード → ループ =========
-background.style.backgroundColor = '#f3e5e1'; // タイトル・カウントダウンの間は他ページと同色
+// ========= 初期：タイトル → カウントダウン → 背景フェード開始 =========
+background.style.backgroundColor = '#f3e5e1'; // 表紙待機色（2ページ目以降と同じ）
 background.style.opacity = 1;
 
 animateLettersSequential(
@@ -94,24 +84,16 @@ animateLettersSequential(
   letterDelay,
   lineDelay,
   () => {
-    // カウントダウンを表示（全文字同時フェードイン）
     showCountdown();
-
-    // 少し待ってから背景スライドショーを開始
     setTimeout(() => {
       background.style.transition = `opacity ${fadeDuration}ms ease-in-out`;
-      // 最初の画像（hyoshi1）をフェードインで表示
       background.style.opacity = 0;
       setTimeout(() => {
         background.style.backgroundColor = '';
         background.style.backgroundImage = `url(${images[0]})`;
         background.style.opacity = 1;
-
-        // 通常ループ開始
-        setInterval(changeBackground, displayTime);
+        setInterval(changeBackground, displayTime); // ループ開始
       }, fadeDuration);
-    }, 1200); // カウントダウンが目に入る時間を少し確保
+    }, 1200);
   }
 );
-
-// ========= 以前の「Schedule を message-box で囲む」自動処理は削除しています =========
