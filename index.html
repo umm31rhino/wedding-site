@@ -1,4 +1,3 @@
-<!-- index.html（修正版・全文） -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -28,25 +27,15 @@
     <div class="pdf-canvas-wrap" data-pdf="assets/site1.pdf" data-page="1"></div>
   </section>
 
-  <!-- 3ページ目：プロフィール -->
+  <!-- 3ページ目：プロフィール（PDFに差し替え） -->
   <section class="page profile">
-    <h2>Profile</h2>
+    <h2 class="visually-hidden">Profile</h2>
 
-    <div class="profile-item groom">
-      <img src="assets/groom.jpg" alt="Groom" />
-      <div class="profile-text">
-        <h3>Takumi</h3>
-        <p>出身や趣味、好きなものなど、仮テキストです。後で自由に差し替えてください。</p>
-      </div>
-    </div>
+    <!-- 新郎：右からフェードイン -->
+    <div class="pdf-canvas-wrap pdf-slide groom" data-pdf="assets/groom.pdf" data-page="1"></div>
 
-    <div class="profile-item bride">
-      <img src="assets/bride.jpg" alt="Bride" />
-      <div class="profile-text">
-        <h3>Ayaka</h3>
-        <p>出身や趣味、好きなものなど、仮テキストです。後で自由に差し替えてください。</p>
-      </div>
-    </div>
+    <!-- 新婦：左からフェードイン -->
+    <div class="pdf-canvas-wrap pdf-slide bride" data-pdf="assets/bride.pdf" data-page="1"></div>
   </section>
 
   <!-- 4ページ目：Schedule（site2.pdf 1枚目） -->
