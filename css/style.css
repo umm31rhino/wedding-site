@@ -53,14 +53,14 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   margin-top: 20px;
 
   /* ▼ レイアウトシフト防止：出る前提の高さを先に確保＆折り返し禁止 */
-  min-height: 1.8em;   /* 1行ぶんの高さを常時キープ（数字が出ても高さが変わらない） */
-  white-space: nowrap; /* 折り返さず1行で表示。幅が足りない場合はフォントサイズ調整を */
+  min-height: 1.8em;   /* 1行ぶんの高さを常時キープ */
+  white-space: nowrap; /* 折り返し禁止 */
 
   opacity: 0; /* 初期は透明 → JSでフェードイン */
   transition: opacity 1.5s ease-in-out;
   color: #fff;
   text-shadow: 2px 2px 5px rgba(0,0,0,0.45);
-  will-change: opacity; /* アニメの滑らかさ改善 */
+  will-change: opacity;
 }
 
 /* Title letters animation */
@@ -83,11 +83,11 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   background-color: #f3e5e1;   /* ← ページの“外側余白”はこの色が見える */
 }
 
-/* ========= PDF Canvas 埋め込み ========= */
+/* ========= PDF Canvas 埋め込み（共通） ========= */
 /* セクション内で中央寄せ。横幅は90vwで、両サイドにピンクが見える */
 .pdf-canvas-wrap {
   width: min(90vw, 1100px);  /* ← 外側余白：数字を増やすと余白が減る */
-  margin: 0 auto;
+  margin: 0 auto 40px;       /* 下マージンでカード間の余白 */
   display: block;
   position: relative;
 }
@@ -103,23 +103,18 @@ h1, h2, h3, p { margin: 0 0 1rem; }
   pointer-events: none; /* 画像のように表示だけ（操作不可） */
 }
 
-/* ========= Profile ========= */
-.profile-item {
-  display: flex; flex-wrap: wrap;
-  align-items: center; justify-content: center;
-  margin: 50px 0;
-  transition: all 1s ease-out;
-  opacity: 0; /* JSで .show 付与 */
+/* ========= Profile（PDFスライドイン） ========= */
+.pdf-slide {
+  opacity: 0;
+  transition: transform 800ms ease, opacity 800ms ease;
+  will-change: transform, opacity;
 }
-.profile-item.groom { transform: translateX(100px); }  /* 右→左 */
-.profile-item.bride { transform: translateX(-100px); } /* 左→右 */
-.profile-item.show { opacity: 1; transform: translateX(0); }
+.pdf-slide.groom { transform: translateX(80px); }  /* 右から */
+.pdf-slide.bride { transform: translateX(-80px); } /* 左から */
+.pdf-slide.show  { opacity: 1; transform: translateX(0); }
 
-.profile-item img {
-  width: 200px; height: 200px;
-  object-fit: cover; border-radius: 8px; margin: 10px;
-}
-.profile-text { max-width: 400px; margin: 10px; }
+/* ========= 旧プロフィール画像系は不要だが残しても害なし（未使用） ========= */
+.profile-item { display: none; }
 
 /* ========= Text blocks ========= */
 .page h2 {
@@ -143,9 +138,5 @@ iframe { border: none; border-radius: 8px; margin-top: 1rem; }
 /* ========= Responsive ========= */
 @media (max-width: 768px) {
   .cover-text h1, .cover-text h2, .cover-text h3 { font-size: 2.2rem; }
-
-  .profile-item { flex-direction: column !important; }
-  .profile-item img { width: 150px; height: 150px; }
-
   /* PDFは常にwrap幅にフィット（90vw）なので特別な調整は不要 */
 }
