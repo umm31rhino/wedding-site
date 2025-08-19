@@ -3,7 +3,7 @@ const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 
 const displayTime = 2000;   // 画像の表示時間(ms) ← 変更可
-const fadeDuration = 1000;  // フェードイン/アウト時間(ms) ← 変更可
+const fadeDuration = 2000;  // フェードイン/アウト時間(ms) ← 変更可
 
 let currentIndex = 0;
 
@@ -47,8 +47,8 @@ function showCountdown() {
 }
 
 // ========= 表紙タイトル：1文字ずつ・行順に表示 =========
-const letterDelay = 40;  // 1文字間隔(ms)
-const lineDelay = 300;   // 各行の待機(ms)
+const letterDelay = 80;  // 1文字間隔(ms)
+const lineDelay = 600;   // 各行の待機(ms)
 function animateLettersSequential(selectors, delayBase = letterDelay, afterLineDelay = lineDelay, onComplete) {
   let totalDelay = 0;
   selectors.forEach(selector => {
