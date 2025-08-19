@@ -47,8 +47,8 @@ function showCountdown() {
 }
 
 // ========= 表紙タイトル：1文字ずつ・行順に表示 =========
-const letterDelay = 80;  // 1文字間隔(ms)
-const lineDelay = 600;   // 各行の待機(ms)
+const letterDelay = 40;  // 1文字間隔(ms)
+const lineDelay = 300;   // 各行の待機(ms)
 function animateLettersSequential(selectors, delayBase = letterDelay, afterLineDelay = lineDelay, onComplete) {
   let totalDelay = 0;
   selectors.forEach(selector => {
