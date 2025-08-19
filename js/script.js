@@ -2,7 +2,7 @@
 const images = Array.from({ length: 7 }, (_, i) => `assets/hyoshi${i + 1}.jpg`);
 const background = document.getElementById("background");
 
-const displayTime = 5000;   // 画像の表示時間(ms) ← 変更可
+const displayTime = 2000;   // 画像の表示時間(ms) ← 変更可
 const fadeDuration = 2000;  // フェードイン/アウト時間(ms) ← 変更可
 
 let currentIndex = 0;
