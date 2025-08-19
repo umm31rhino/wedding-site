@@ -136,3 +136,58 @@ iframe { border: none; border-radius: 8px; margin-top: 1rem; }
 @media (max-width: 768px) {
   .cover-text h1, .cover-text h2, .cover-text h3 { font-size: 2.2rem; }
 }
+
+
+/* ===== Section spacing tighten (Message以降を約1/2に) ===== */
+
+/* 既存レイアウトに依存しないよう、個別に上書き */
+#message,
+#schedule,
+#spots,
+#more {
+  /* セクション上下の余白：従来が 100～140px 程度なら約半分に */
+  padding-top: clamp(32px, 4.5vw, 56px);
+  padding-bottom: clamp(32px, 4.5vw, 56px);
+}
+
+/* セクション同士の間隔が margin で作られている場合の保険 */
+#message + section,
+#schedule + section,
+#spots + section,
+#more + section {
+  /* もし後続セクションの上マージンが大きい場合に半分程度へ */
+  margin-top: clamp(24px, 3.5vw, 40px);
+}
+
+/* PDFブロック周りの余白も少しだけ詰める（画面幅に応じて自然に） */
+#message .pdf-canvas-wrap,
+#schedule .pdf-canvas-wrap,
+#spots .pdf-canvas-wrap,
+#more .pdf-canvas-wrap {
+  margin-block: clamp(8px, 1.2vw, 16px);
+}
+
+/* 見出しと本文・PDFの間が広い場合の調整（任意） */
+#message h2,
+#schedule h2,
+#spots h2,
+#more h2 {
+  /* 上を少し詰め、下もやや詰める */
+  margin-top: clamp(12px, 1.2vw, 20px);
+  margin-bottom: clamp(16px, 1.6vw, 24px);
+}
+
+/* 目次ジャンプがある想定で、固定ヘッダー分のスクロール余白を微調整（任意） */
+:root {
+  /* 固定ヘッダーの高さがある場合は適宜増減してください */
+  scroll-padding-top: 72px;
+}
+
+/* もし .section や .page などの共通クラスで大きめ padding/margin を入れている場合の“強制ハーフ”版
+   （上の指定だけで十分なら以下は不要です。適用する場合は、ID指定より弱くならないよう !important を使います） */
+#message.section, #schedule.section, #spots.section, #more.section,
+#message.page,    #schedule.page,    #spots.page,    #more.page {
+  padding-top: clamp(32px, 4.5vw, 56px) !important;
+  padding-bottom: clamp(32px, 4.5vw, 56px) !important;
+  margin-top: clamp(16px, 2vw, 28px) !important;
+}
